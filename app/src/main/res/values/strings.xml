@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">AppSimulator</string>
     <string name="store_name">Temp</string>
-    <string name="edit_email">Enter Email Address</string>
-    <string name="edit_password">Enter Password</string>
+    <string name="edit_email">Email Address</string>
+    <string name="edit_password">Password</string>
+    <string name="register_name">Full Name</string>
+    <string name="register_postal">Postal Code</string>
+    <string name="register_dob">Date of Birth</string>
 </resources>
