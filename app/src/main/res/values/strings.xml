@@ -5,5 +5,5 @@
     <string name="edit_password">Password</string>
     <string name="register_name">Full Name</string>
     <string name="register_postal">Postal Code</string>
-    <string name="register_dob">Date of Birth</string>
+    <string name="register_dob">Birth (MM/DD/YYYY)</string>
 </resources>
