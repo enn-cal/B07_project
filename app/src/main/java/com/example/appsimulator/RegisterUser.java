@@ -1,31 +1,18 @@
 package com.example.appsimulator;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ServerValue;
 
 
 public class RegisterUser extends AppCompatActivity {
     private EditText Name, password, dob, PostalCode, email;
-    private Button register;
-    //private ProgressBar loading;
-    private FirebaseAuth mAuth;
 
     private FirebaseDatabase f_db;
     private DatabaseReference ref;
@@ -39,8 +26,9 @@ public class RegisterUser extends AppCompatActivity {
         PostalCode = findViewById(R.id.editTextTextPostalAddress2);
         email = findViewById(R.id.editTextTextEmailAddress3);
         password = findViewById(R.id.editTextTextPassword3);
-        register = findViewById(R.id.button3);
-        mAuth = FirebaseAuth.getInstance();
+        Button register = findViewById(R.id.button3);
+        //private ProgressBar loading;
+        //FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,9 +48,11 @@ public class RegisterUser extends AppCompatActivity {
                 ref = f_db.getReference();
 
                 User user = new User(name, em, pwd, pCode, bday); // creates new user
-                ref.child("Users").child("Customer").child("1").setValue(user); // adds in database -> need to fix this need to add different numbers so will not overrite
+                ref.child("Users").child("Customer").child(Integer.toString(user.get_counter())).setValue(user); // adds in database
+
 
                 // leave this section
+
 //                mAuth.createUserWithEmailAndPassword(name,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 //                    @Override
 //                    public void onComplete(@NonNull Task<AuthResult> task) {
