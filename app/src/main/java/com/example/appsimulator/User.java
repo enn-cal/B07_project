@@ -31,24 +31,7 @@ public class User {
 
     @Override
     public int hashCode(){
-        // i will use all fields to come up with a unique user id (hashcode)
-
-        //gets an array of ASCII values
-        byte[] s1 = this.name.getBytes(StandardCharsets.UTF_8);
-        byte[] s2 = this.pwd.getBytes(StandardCharsets.UTF_8);
-        byte[] s3 = this.postal.getBytes(StandardCharsets.UTF_8);
-        byte[] s4 = this.email.getBytes(StandardCharsets.UTF_8);
-        byte[] s5 = this.dob.getBytes(StandardCharsets.UTF_8);
-
-        // adds up the sum from the arrays
-        int sum = 0;
-        for (byte i:s1) {sum+=i;}
-        for (byte i:s2) {sum+=i;}
-        for (byte i:s3) {sum+=i;}
-        for (byte i:s4) {sum+=i;}
-        for (byte i:s5) {sum+=i;}
-
-        return sum;
+        return this.email.hashCode();
     }
 
     @Override
@@ -62,18 +45,7 @@ public class User {
 
         User other = (User) obj;
 
-        if (!this.name.equals(other.name))
-            return false;
-        if (!this.email.equals(other.email))
-            return false;
-        if (!this.pwd.equals(other.pwd))
-            return false;
-        if (!this.dob.equals(other.dob))
-            return false;
-        if (!this.postal.equals(other.postal))
-            return false;
-
-        return true;
+        return this.email.equals(other.email);
     }
 
 }
