@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterUser extends AppCompatActivity {
     private EditText Name, password, dob, PostalCode, email;
-
+    private Spinner accountSpinner;
     private FirebaseDatabase f_db;
     private DatabaseReference ref;
 
@@ -27,6 +28,7 @@ public class RegisterUser extends AppCompatActivity {
         email = findViewById(R.id.editTextTextEmailAddress3);
         password = findViewById(R.id.editTextTextPassword3);
         Button register = findViewById(R.id.button3);
+        accountSpinner = findViewById(R.id.spinner);
         //private ProgressBar loading;
         //FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -39,15 +41,21 @@ public class RegisterUser extends AppCompatActivity {
                 String bday = dob.getText().toString();
                 String pCode = PostalCode.getText().toString();
                 String em = email.getText().toString();
+                String spinnerString = accountSpinner.getSelectedItem().toString();
+
+                boolean isCustomer;
+                if(spinnerString.equals("Customer"))
+                    isCustomer = true;
+                else
+                    isCustomer = false;
 
                 // validating input (todo)
 
                 // adding data into database
-
                 f_db = FirebaseDatabase.getInstance();
                 ref = f_db.getReference();
 
-                User user = new User(name, em, pwd, pCode, bday); // creates new user
+                User user = new User(name, em, pwd, pCode, bday, isCustomer); // creates new user
                 ref.child("Users").child("Customer").child(Integer.toString(user.get_counter())).setValue(user); // adds in database
 
 

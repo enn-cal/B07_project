@@ -12,18 +12,20 @@ public class User {
     public String pwd;
     public String dob;
     public String postal;
+    public boolean isCustomer; //Should be a boolean
     private static int counter = 0; // counts the number of users
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String Name, String email, String pwd,String postal,String dob) {
+    public User(String Name, String email, String pwd,String postal,String dob, boolean isCustomer) {
         this.name = Name;
         this.email = email;
         this.pwd = pwd;
         this.dob = dob;
         this.postal = postal;
+        this.isCustomer = isCustomer;
         counter++;
     }
 
