@@ -45,7 +45,7 @@
         android:ems="10"
         android:hint="@string/register_postal"
         android:inputType="textPostalAddress"
-        android:maxLength="6"
+        android:maxLength="7"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"

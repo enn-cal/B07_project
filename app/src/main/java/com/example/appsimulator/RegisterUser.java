@@ -1,6 +1,7 @@
 package com.example.appsimulator;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.lang.reflect.Field;
+import java.util.regex.Pattern;
 
 
 public class RegisterUser extends AppCompatActivity {
@@ -27,16 +28,39 @@ public class RegisterUser extends AppCompatActivity {
      * @param input : The user's input in the EditText
      * @param type : The type of info the user inputted
      */
-    private void isValid(String input, String type){
-        /*
-        //Store all public fields of User in an array
-        Field[] fields = User.class.getFields();
-        //compares type of input with diff fields in User
-        if(fields[0].getName().equals(type)){
-
+    private boolean isValid(String input, String type){
+        //if no input was given
+        boolean v = true;
+        if(input.isEmpty()){
+            return false;
         }
-         */
+        //Consider the type to compare corresponding regex with
+        switch(type){
+            case "name":
+                if(!(Pattern.compile("[A-Za-z]+ [A-Za-z]").matcher(input).matches())) {
+                    v = false;
+                }
+                break;
+            case "email":
+                if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
+                    v = false;
+                }
+            case "pwd":
+                //All non-empty passwords are currently valid
+                break;
 
+            case "dob":
+                if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()){
+                    v = false;
+                }
+                break;
+            case "postal":
+                if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
+                    v = false;
+                }
+                break;
+        }
+        return v;
     }
 
 
@@ -59,17 +83,39 @@ public class RegisterUser extends AppCompatActivity {
             public void onClick(View v) {
                 // getting data from user
                 String name = Name.getText().toString();
+                if(!(isValid(name, "name"))) {
+                    Name.setError("Invalid Name. Try Again");
+                    Name.requestFocus();
+                    return;
+                }
                 String pwd = password.getText().toString();
+                if(!(isValid(pwd, "pwd"))) {
+                    password.setError("Invalid Password. Try Again");
+                    password.requestFocus();
+                    return;
+                }
                 String bday = dob.getText().toString();
+                if(!(isValid(bday, "dob"))) {
+                    dob.setError("Invalid DOB. Try Again");
+                    dob.requestFocus();
+                    return;
+                }
                 String pCode = PostalCode.getText().toString();
+                if(!(isValid(pCode, "postal"))) {
+                    PostalCode.setError("Invalid Postal Code. Try Again");
+                    PostalCode.requestFocus();
+                    return;
+                }
                 String em = email.getText().toString();
+                if(!(isValid(em, "email"))) {
+                    email.setError("Invalid Email. Try Again");
+                    email.requestFocus();
+                    return;
+                }
                 String spinnerString = accountSpinner.getSelectedItem().toString();
 
                 boolean isCustomer;
-                if(spinnerString.equals("Customer"))
-                    isCustomer = true;
-                else
-                    isCustomer = false;
+                isCustomer = spinnerString.equals("Customer");
 
                 // validating input (todo)
 
