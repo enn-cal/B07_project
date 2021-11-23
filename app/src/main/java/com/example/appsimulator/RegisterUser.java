@@ -11,12 +11,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Field;
+
 
 public class RegisterUser extends AppCompatActivity {
     private EditText Name, password, dob, PostalCode, email;
     private Spinner accountSpinner;
     private FirebaseDatabase f_db;
     private DatabaseReference ref;
+
+
+    /**
+     * Helper method for onCreate. Checks if string input are valid or not and prompts user to
+     * resubmit info if invalid.
+     * @param input : The user's input in the EditText
+     * @param type : The type of info the user inputted
+     */
+    private void isValid(String input, String type){
+        /*
+        //Store all public fields of User in an array
+        Field[] fields = User.class.getFields();
+        //compares type of input with diff fields in User
+        if(fields[0].getName().equals(type)){
+
+        }
+         */
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
