@@ -13,7 +13,6 @@ public class User {
     public String dob;
     public String postal;
     public boolean isCustomer; //Should be a boolean
-    private static int counter = 0; // counts the number of users
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -26,10 +25,7 @@ public class User {
         this.dob = dob;
         this.postal = postal;
         this.isCustomer = isCustomer;
-        counter++;
     }
-
-    public int get_counter() { return counter;}
 
     @Override
     public int hashCode(){

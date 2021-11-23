@@ -78,7 +78,7 @@ public class RegisterUser extends AppCompatActivity {
                 ref = f_db.getReference();
 
                 User user = new User(name, em, pwd, pCode, bday, isCustomer); // creates new user
-                ref.child("Users").child("Customer").child(Integer.toString(user.get_counter())).setValue(user); // adds in database
+                ref.child("Users").child(spinnerString).child(Integer.toString(user.hashCode())).setValue(user); // adds in database
 
 
                 // leave this section
