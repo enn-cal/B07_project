@@ -18,8 +18,8 @@ public class PresenterLogin implements Contracts.PresenterLogin {
     }
 
     @Override
-    public void start(String email, String password) {
-        model.login(email, password);
+    public void start(String email, String password, String userType) {
+        model.login(email, password, userType);
     }
 
     @Override

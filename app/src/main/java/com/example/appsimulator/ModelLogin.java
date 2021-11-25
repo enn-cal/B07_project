@@ -1,6 +1,5 @@
 package com.example.appsimulator;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
@@ -43,72 +42,54 @@ public class ModelLogin implements Contracts.ModelLogin {
         return false;
     }
 
-    @Override
-    public boolean match(String email, String password) {
-        /*
-        ref.child("Customer").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void match(String email, String password, String userType) {
+        //checks if the email is the database and if credentials are correct
+        final boolean[] match = {false};
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    //if there was matching email and password in database Users/Customer
-                    if(snapshot.child("email").equals(email) && snapshot.child("pwd").equals(password)){
-                        match = true;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = null;
+                //for each loop checks if user is in the database
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    if (ds.getKey().equals(Integer.toString(email.hashCode()))) {
+                        match[0] = true;
+                        user = ds.getValue(User.class); // gets user object
+                        break;
                     }
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        */
-        ref = ref.child("Store Owner");
-        ValueEventListener v = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    String em = snapshot.child("email").getValue(String.class);
-                    String pw = snapshot.child("password").getValue(String.class);
-                    //Log.i("TestMessage", "email: " +em + "|| password: " +pw);
-                    //if there was matching email and password in database Users/Store Owner
-                    if(em.equals(email) && pw.equals(password)){
-                        match = true;
+
+                 //checks if password is correct if it finds a match
+                if (match[0] == true) {
+                    if (user.pwd.equals(password) == false || user == null) {
+                        listener.loginFailed("Incorrect password");
+//                        Log.i("login failed","INcorrect password");
                     }
+//                    else if(!loginError(email,password)) //-> loginError; something is wrong with regex i think
+//                        Log.i("login failed"," Incorrect credentials");
+                        //listener.loginFailed("Enter valid credentials");
+                    else
+//                        Log.i("login passed","party");
+                        listener.loginSuccess();
                 }
+                else
+                    //Log.i("login failed","user not found");
+                    listener.loginFailed("Not Registered User please register");
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        /*
-        ref.child("Store Owner").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snap) {
-
-            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-         */
-        if(!match){
-            listener.loginFailed("Failed to Login. Try Again");
-        }
-        return match;
     }
 
     @Override
-    public void login(String email, String password) {
+    public void login(String email, String password, String userType) {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                if(loginError(email,password) || !match(email,password)){
-                    return;
-                }
-                listener.loginSuccess();
+                match(email,password, userType);
             }
         });
     }

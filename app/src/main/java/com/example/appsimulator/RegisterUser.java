@@ -1,16 +1,24 @@
 package com.example.appsimulator;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
 
@@ -18,10 +26,61 @@ import java.util.regex.Pattern;
 public class RegisterUser extends AppCompatActivity implements Contract.View{
     private EditText Name, password, dob, PostalCode, email;
     private Spinner accountSpinner;
-    private FirebaseDatabase f_db;
-    private DatabaseReference ref;
 
-    private Contract.Presenter presenter;
+
+    public boolean isValid(String input, String type) {
+        //Consider the type to compare corresponding regex with
+        boolean v = true;
+//        switch(type){
+//            case "name":
+//                if(input.isEmpty()){
+//                    displayError("Empty Name. Try Again", "name");
+//                    v = false;
+//                }
+//                if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
+//                    displayError("Invalid Name. Try Again", "name");
+//                    v = false;
+//                }
+//                break;
+//            case "email":
+//                if(input.isEmpty()){
+//                    displayError("Empty Email. Try Again", "email");
+//                    v = false;
+//                }
+//                if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
+//                    displayError("Invalid Email. Try Again", "email");
+//                    v = false;
+//                }
+//            case "pwd":
+//                if(input.isEmpty()){
+//                    displayError("Empty Password. Try Again", "pwd");
+//                    v = false;
+//                }
+//                break;
+//
+//            case "dob":
+//                if(input.isEmpty()){
+//                    displayError("Empty DOB. Try Again", "dob");
+//                    v = false;
+//                }
+//                if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
+//                    displayError("Invalid DOB. Try Again", "dob");
+//                    v = false;
+//                }
+//                break;
+//            case "postal":
+//                if(input.isEmpty()){
+//                    displayError("Empty Postal Code. Try Again", "postal");
+//                    v = false;
+//                }
+//                if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
+//                    displayError("Invalid Postal Code. Try Again", "postal");
+//                    v = false;
+//                }
+//                break;
+//        }
+        return v;
+    }
 
     @Override
     public void displayError(String error, String type) {
@@ -50,6 +109,36 @@ public class RegisterUser extends AppCompatActivity implements Contract.View{
         }
     }
 
+    private void addToFirebase(User user, String userType){
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean userExists = false;
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    if (ds.getKey().equals(Integer.toString(user.hashCode()))) { // user exists will output error
+                        userExists = true;
+                        break;
+                    }
+                }
+                if (userExists == false) {
+                    ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
+                    return;
+                }
+                else if (userExists)
+                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
+                            Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,56 +150,28 @@ public class RegisterUser extends AppCompatActivity implements Contract.View{
         password = findViewById(R.id.editTextTextPassword3);
         Button register = findViewById(R.id.button3);
         accountSpinner = findViewById(R.id.spinner);
-        presenter = new Presenter(new Model(FirebaseDatabase.getInstance(),FirebaseDatabase.getInstance().getReference()), this);
         //private ProgressBar loading;
-        //FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // getting data from user
                 String name = Name.getText().toString();
-                if(!(presenter.isValid(name, "name")))return;
+                if(!(isValid(name, "name")))return;
                 String bday = dob.getText().toString();
-                if(!(presenter.isValid(bday, "dob")))return;
+                if(!(isValid(bday, "dob")))return;
                 String pCode = PostalCode.getText().toString();
-                if(!(presenter.isValid(pCode, "postal")))return;
+                if(!(isValid(pCode, "postal")))return;
                 String pwd = password.getText().toString();
-                if(!(presenter.isValid(pwd, "pwd")))return;
+                if(!(isValid(pwd, "pwd")))return;
                 String em = email.getText().toString();
-                if(!(presenter.isValid(em, "email")))return;
+                if(!(isValid(em, "email")))return;
                 String spinnerString = accountSpinner.getSelectedItem().toString();
 
-                boolean isCustomer;
-                isCustomer = spinnerString.equals("Customer");
-
-                // validating input (todo)
 
                 // adding data into database
-                //f_db = FirebaseDatabase.getInstance();
-                //ref = f_db.getReference();
-                presenter.addUser(new User(name, em, pwd, pCode, bday, isCustomer), spinnerString);
-                //User user = new User(name, em, pwd, pCode, bday, isCustomer); // creates new user
-                //ref.child("Users").child(spinnerString).child(Integer.toString(user.hashCode())).setValue(user); // adds in database
-
-
-                // leave this section
-
-//                mAuth.createUserWithEmailAndPassword(name,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if(task.isSuccessful()){
-//                            Toast.makeText(RegisterUser.this,"User Registered...", Toast.LENGTH_SHORT).show(); //output
-//                            Intent i = new Intent(RegisterUser.this, MainActivity.class); // calls main activity
-//                            startActivity(i);
-//                            finish();
-//                        }else {
-//                            Toast.makeText(RegisterUser.this,"Failed to Register..",Toast.LENGTH_SHORT).show();//output
-//                        }
-//
-//                    }
-//                });
-
+                User user = new User(name, em, pwd, pCode, bday); // creates new user
+                addToFirebase(user,spinnerString);
             }
         });
 

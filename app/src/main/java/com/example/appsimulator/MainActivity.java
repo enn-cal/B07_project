@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
     private EditText email, password;
     private Button login;
     private Contracts.PresenterLogin presenterLogin;
+    private Spinner userType;
 
     public void setEmail(){
         this.email = findViewById(R.id.editTextTextEmailAddress);
@@ -38,9 +40,13 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
         this.password = findViewById(R.id.editTextTextPassword);
     }
 
-    public String getPassword(){
-        return this.password.getText().toString();
+    public String getPassword(){ return this.password.getText().toString(); }
+
+    public void setUserType(){
+        this.userType = findViewById(R.id.spinner);
     }
+
+    public String getUserType(){ return this. userType.getSelectedItem().toString(); }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +60,12 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
         login = (Button) findViewById(R.id.button);
         setEmail();
         setPassword();
+        setUserType();
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                presenterLogin.start(getEmail(),getPassword());
+                presenterLogin.start(getEmail(),getPassword(), getUserType());
             }
         });
 
