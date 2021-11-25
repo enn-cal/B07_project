@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.regex.Pattern;
 
 
-public class RegisterUser extends AppCompatActivity implements Contract.View{
+public class RegisterUser extends AppCompatActivity{
     private EditText Name, password, dob, PostalCode, email;
     private Spinner accountSpinner;
 
@@ -31,58 +31,58 @@ public class RegisterUser extends AppCompatActivity implements Contract.View{
     public boolean isValid(String input, String type) {
         //Consider the type to compare corresponding regex with
         boolean v = true;
-//        switch(type){
-//            case "name":
-//                if(input.isEmpty()){
-//                    displayError("Empty Name. Try Again", "name");
-//                    v = false;
-//                }
-//                if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
-//                    displayError("Invalid Name. Try Again", "name");
-//                    v = false;
-//                }
-//                break;
-//            case "email":
-//                if(input.isEmpty()){
-//                    displayError("Empty Email. Try Again", "email");
-//                    v = false;
-//                }
-//                if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
-//                    displayError("Invalid Email. Try Again", "email");
-//                    v = false;
-//                }
-//            case "pwd":
-//                if(input.isEmpty()){
-//                    displayError("Empty Password. Try Again", "pwd");
-//                    v = false;
-//                }
-//                break;
-//
-//            case "dob":
-//                if(input.isEmpty()){
-//                    displayError("Empty DOB. Try Again", "dob");
-//                    v = false;
-//                }
-//                if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
-//                    displayError("Invalid DOB. Try Again", "dob");
-//                    v = false;
-//                }
-//                break;
-//            case "postal":
-//                if(input.isEmpty()){
-//                    displayError("Empty Postal Code. Try Again", "postal");
-//                    v = false;
-//                }
-//                if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
-//                    displayError("Invalid Postal Code. Try Again", "postal");
-//                    v = false;
-//                }
-//                break;
-//        }
+        switch(type){
+            case "name":
+                if(input.isEmpty()){
+                    displayError("Empty Name. Try Again", "name");
+                    v = false;
+                }
+                if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
+                    displayError("Invalid Name. Try Again", "name");
+                    v = false;
+                }
+                break;
+            case "email":
+                if(input.isEmpty()){
+                    displayError("Empty Email. Try Again", "email");
+                    v = false;
+                }
+                if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
+                    displayError("Invalid Email. Try Again", "email");
+                    v = false;
+                }
+            case "pwd":
+                if(input.isEmpty()){
+                    displayError("Empty Password. Try Again", "pwd");
+                    v = false;
+                }
+                break;
+
+            case "dob":
+                if(input.isEmpty()){
+                    displayError("Empty DOB. Try Again", "dob");
+                    v = false;
+                }
+                if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
+                    displayError("Invalid DOB. Try Again", "dob");
+                    v = false;
+                }
+                break;
+            case "postal":
+                if(input.isEmpty()){
+                    displayError("Empty Postal Code. Try Again", "postal");
+                    v = false;
+                }
+                if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
+                    displayError("Invalid Postal Code. Try Again", "postal");
+                    v = false;
+                }
+                break;
+        }
         return v;
     }
 
-    @Override
+    //@Override
     public void displayError(String error, String type) {
         //displays the corresponding error based on type of info
         switch(type){

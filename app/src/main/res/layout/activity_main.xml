@@ -69,7 +69,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.551" />
+        app:layout_constraintVertical_bias="0.607" />
 
     <TextView
         android:id="@+id/textView5"
@@ -89,7 +89,7 @@
         android:id="@+id/button"
         android:layout_width="259dp"
         android:layout_height="46dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="132dp"
         android:backgroundTint="@color/shopify_color"
         android:text="LOGIN"
         android:textAlignment="center"
@@ -99,5 +99,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your account type:"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@+id/spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
