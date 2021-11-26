@@ -6,4 +6,8 @@
     <string name="register_name">Full Name</string>
     <string name="register_postal">Postal Code</string>
     <string name="register_dob">Birth (MM/DD/YYYY)</string>
+    <string-array name="account_type">
+        <item>Customer</item>
+        <item>Store Owner</item>
+    </string-array>
 </resources>
