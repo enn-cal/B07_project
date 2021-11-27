@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +22,7 @@ public class OwnerScreen extends AppCompatActivity {
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = db.getReference("products"); // might change depending on how tree structure
+    private DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Products"); // path is hardcoded
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
 
@@ -39,7 +40,7 @@ public class OwnerScreen extends AppCompatActivity {
 
         recycleView.setAdapter(adapterRv);
 
-        ref.addValueEventListener(new ValueEventListener() { //When creating a product subtree for owners we have to child event listner
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 

@@ -171,7 +171,17 @@ public class RegisterUser extends AppCompatActivity{
 
                 // adding data into database
                 User user = new User(name, em, pwd, pCode, bday); // creates new user
+
+                /*
+                  following code is to manually enter data in database for storeowner  1902570695
+                  feel free to remove it or keep it if you want to add data manually again.
+                 */
+//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Products");
+//                Products products = new Products("Pizza6", "Dominoes", "$500", "20");
+//                ref.child(Integer.toString(products.hashCode())).setValue(products);
+
                 addToFirebase(user,spinnerString);
+
             }
         });
 

@@ -20,31 +20,20 @@ public class Products {
         return item;
     }
 
-    public void setItem(String item) {
-        this.item = item;
-    }
-
     public String getBrand() {
         return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
     }
 
     public String getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    @Override
+    public int hashCode(){
+        return this.item.hashCode();
     }
 }
