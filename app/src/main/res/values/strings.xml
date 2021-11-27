@@ -10,4 +10,9 @@
         <item>Customer</item>
         <item>Store Owner</item>
     </string-array>
+    <string name="sign_out">Sign Out</string>
+    <string name="stores">Stores</string>
+    <string name="cart">Cart</string>
+    <string name="past_orders">Past Orders</string>
+    <string name="available_stores">Available Stores</string>
 </resources>
