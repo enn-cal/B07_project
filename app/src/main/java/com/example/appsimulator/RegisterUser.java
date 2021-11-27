@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 
@@ -123,13 +124,13 @@ public class RegisterUser extends AppCompatActivity{
                         break;
                     }
                 }
-                if (userExists == false) {
+                if (!userExists) {
                     ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
-                    return;
                 }
-                else if (userExists)
+                else {
                     Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
                             Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -162,12 +163,11 @@ public class RegisterUser extends AppCompatActivity{
                 if(!(isValid(bday, "dob")))return;
                 String pCode = PostalCode.getText().toString();
                 if(!(isValid(pCode, "postal")))return;
-                String pwd = password.getText().toString();
-                if(!(isValid(pwd, "pwd")))return;
                 String em = email.getText().toString();
                 if(!(isValid(em, "email")))return;
+                String pwd = password.getText().toString();
+                if(!(isValid(pwd, "pwd")))return;
                 String spinnerString = accountSpinner.getSelectedItem().toString();
-
 
                 // adding data into database
                 User user = new User(name, em, pwd, pCode, bday); // creates new user

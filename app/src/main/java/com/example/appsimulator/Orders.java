@@ -23,4 +23,11 @@ public class Orders {
     public void addProduct(Products product){
         order.add(product);
     }
+
+    public void removeProduct(Products product){
+        if(!order.contains(product)){
+           return;
+        }
+        order.remove(product);
+    }
 }
