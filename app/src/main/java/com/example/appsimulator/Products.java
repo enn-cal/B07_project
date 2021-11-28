@@ -7,7 +7,8 @@ public class Products {
     private String price; //price and quantity are string must ensure user enters ints
     private String quantity;
 
-    public Products(){} //default constructor
+    public Products() {
+    } //default constructor
 
     public Products(String item, String brand, String price, String quantity) {
         this.item = item;

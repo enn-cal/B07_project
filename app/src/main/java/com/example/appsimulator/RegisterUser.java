@@ -123,13 +123,13 @@ public class RegisterUser extends AppCompatActivity{
                         break;
                     }
                 }
-                if (userExists == false) {
+                if (!userExists) {
                     ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
                     return;
-                }
-                else if (userExists)
-                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
+                } else {
+                    Toast.makeText(RegisterUser.this, "User Already Exists, Please Login",
                             Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
