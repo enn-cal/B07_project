@@ -6,18 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".CustomerScreen">
 
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="131dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/shopify_color"
+        android:text="Sign Out"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="73dp"
         android:layout_height="40dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="16dp"
         android:text="Stores:"
         android:textColor="@color/shopify_color"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.174"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button6" />
 
     <Button
         android:id="@+id/button5"

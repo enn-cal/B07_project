@@ -22,6 +22,7 @@ public class CustomerScreen extends AppCompatActivity {
     private FirebaseDatabase f_db;
     private DatabaseReference ref;
     private Button myCart;
+    private Button signOut;
     private RecyclerView recyclerView;
 
     @Override
