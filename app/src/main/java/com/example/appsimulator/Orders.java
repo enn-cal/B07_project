@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Orders {
 
-    public ArrayList<Products> order = new ArrayList<Products>();
-    private int customerID;
+    private ArrayList<Products> order;
+    private boolean activator = false; //tells us if the orders are complete (when list is empty) only if activator is true (see pinned db pic on discord)
 
-    public Orders(int customerID){
-        this.customerID = customerID;
+    public Orders(){
+        this.order = new ArrayList<Products>();
     }
 
     public int countProduct(Products product){
@@ -32,8 +32,8 @@ public class Orders {
         order.remove(product);
     }
 
-    public int getCustomerID(){
-        return customerID;
+    public boolean orderComplete (){
+        return (activator == true) && (order.isEmpty());
     }
 
 }

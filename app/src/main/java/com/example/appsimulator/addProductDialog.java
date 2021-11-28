@@ -16,6 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.regex.Pattern;
 
 public class addProductDialog extends AppCompatDialogFragment {
@@ -88,6 +94,39 @@ public class addProductDialog extends AppCompatDialogFragment {
         }
     }
 
+    //adds Store's products to DB
+    public void updateStoreProductDB(Stores store){
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean storeExists = false;
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    if (ds.getKey().equals(Integer.toString(store.getStoreID()))) { // store exists will output error
+                        storeExists = true;
+                        break;
+                    }
+                }
+                if (!storeExists) {
+                    for (Products p : store.getProducts())
+                        ref.child("Stores").child(Integer.toString(store.getStoreID()))
+                                .child(Integer.toString(p.hashCode())).setValue(p); // adds in database
+                }
+                // section below is to portray error if store already in db
+//                else {
+//                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
+//                            Toast.LENGTH_LONG).show();
+//                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     @NonNull
     @Override
@@ -144,6 +183,11 @@ public class addProductDialog extends AppCompatDialogFragment {
                     p.setPrice(itemPrice);
                     p.setQuantity(itemQuantity);
                     d.dismiss();
+
+                    //add data to database
+                    Stores s = new Stores(5054); // value is hard coded for testing
+                    s.addProductStore(p);
+                    updateStoreProductDB(s);
                 }
             });
         }
