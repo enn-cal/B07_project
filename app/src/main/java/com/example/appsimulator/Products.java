@@ -32,6 +32,17 @@ public class Products {
         return quantity;
     }
 
+
+    public void setItem(String item){this.item = item;}
+
+    public void setBrand(String brand){this.brand = brand;}
+
+    public void setPrice(String price){this.price= price;}
+
+    public void setQuantity(String quantity){this.quantity = quantity;}
+
+
+
     @Override
     public int hashCode(){
         return this.item.hashCode();

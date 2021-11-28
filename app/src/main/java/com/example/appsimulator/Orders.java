@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 public class Orders {
 
-    ArrayList<Products> order;
+    public ArrayList<Products> order = new ArrayList<Products>();
+    private int customerID;
 
-    public Orders(){
-        order =  new ArrayList<>();
+    public Orders(int customerID){
+        this.customerID = customerID;
     }
 
     public int countProduct(Products product){
@@ -30,4 +31,9 @@ public class Orders {
         }
         order.remove(product);
     }
+
+    public int getCustomerID(){
+        return customerID;
+    }
+
 }
