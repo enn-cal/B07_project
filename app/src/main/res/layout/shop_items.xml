@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foregroundTint="@color/black">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/shopify_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="113dp">
+
+            <TextView
+                android:id="@+id/shopBrandText"
+                android:layout_width="64dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Brand"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/shopItemName"
+                android:layout_width="159dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="20dp"
+                android:text="Item Name"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@+id/shopBrandText"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/shopPrice"
+                android:layout_width="77dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:text="Price"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/shopBrandText"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shopBrandText"
+                app:layout_constraintVertical_bias="0.088" />
+
+            <TextView
+                android:id="@+id/shopQuantity"
+                android:layout_width="94dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="16dp"
+                android:text="Quantity"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/shopPrice"
+                app:layout_constraintTop_toBottomOf="@+id/shopItemName"
+                app:layout_constraintVertical_bias="0.166" />
+
+            <Button
+                android:id="@+id/addToCartButton"
+                android:layout_width="135dp"
+                android:layout_height="54dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@android:color/holo_orange_light"
+                android:text="Add to Cart"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/shopQuantity"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

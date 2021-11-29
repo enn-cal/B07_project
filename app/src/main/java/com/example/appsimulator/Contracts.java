@@ -8,12 +8,12 @@ public interface Contracts {
     }
 
     public interface ViewLogin {
-        public void loginSuccess();
+        public void loginSuccess(String ID);
         public void loginFailed(String message);
     }
     public interface PresenterLogin {
         public void start(String email, String password, String userType);
-        public void loginSuccess();
+        public void loginSuccess(String ID);
         public void loginFailed(String message);
     }
 }

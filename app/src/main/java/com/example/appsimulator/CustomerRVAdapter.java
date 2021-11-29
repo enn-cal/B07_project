@@ -1,6 +1,8 @@
 package com.example.appsimulator;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,13 @@ import java.util.ArrayList;
 public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.MyViewHolder> {
 
     ArrayList<String> ownerNames;
+    ArrayList<String> ownerIDs;
     Context ct;
 
-    public CustomerRVAdapter(Context ct, ArrayList<String> ownerNames) {
+    public CustomerRVAdapter(Context ct, ArrayList<String> ownerNames, ArrayList<String> ownerIDs) {
         this.ct = ct;
         this.ownerNames = ownerNames;
+        this.ownerIDs = ownerIDs;
     }
 
     @NonNull
@@ -47,6 +51,16 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             storeName = itemView.findViewById(R.id.storeName);
+            storeName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Log.i("TestClick", String.valueOf(getLayoutPosition()));
+                    Intent intent = new Intent(ct, Shop.class);
+                    intent.putExtra("StoreName", ownerNames.get(getLayoutPosition()));
+                    intent.putExtra("OwnerID", ownerIDs.get(getLayoutPosition()));
+                    ct.startActivity(intent);
+                }
+            });
         }
     }
 }

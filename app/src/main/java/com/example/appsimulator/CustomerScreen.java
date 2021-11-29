@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,28 +25,46 @@ public class CustomerScreen extends AppCompatActivity {
     private Button myCart;
     private Button signOut;
     private RecyclerView recyclerView;
+    private int customerID;
+    private Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_screen);
 
+        i = getIntent();
+        customerID = Integer.parseInt(i.getStringExtra("ID"));
+        //Log.i("TestID", String.valueOf(customerID));
+
+        signOut = findViewById(R.id.storeListSignOut);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+
         recyclerView = findViewById(R.id.storeList);
-
         ArrayList<String> ownerNames = new ArrayList<>();
+        ArrayList<String> ownerIDs = new ArrayList<>();
 
-        CustomerRVAdapter myAdapter = new CustomerRVAdapter(this, ownerNames);
+        CustomerRVAdapter myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner");
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner"); //Might have to change this
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()) {
+                ownerNames.clear();
+                ownerIDs.clear();
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     User user = ds.getValue(User.class);
                     ownerNames.add(user.getName() + "'s Store");
+                    ownerIDs.add(String.valueOf(user.hashCode()));
                 }
                 myAdapter.notifyDataSetChanged();
             }
@@ -57,5 +76,9 @@ public class CustomerScreen extends AppCompatActivity {
         });
 
 
+    }
+
+    public void signOut() {
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

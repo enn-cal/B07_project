@@ -1,5 +1,7 @@
 package com.example.appsimulator;
 
+import android.util.Log;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.nio.charset.StandardCharsets;
@@ -21,8 +23,8 @@ public class User {
         this.name = Name;
         this.email = email;
         this.pwd = pwd;
-        this.dob = dob;
         this.postal = postal;
+        this.dob = dob;
     }
 
     @Override

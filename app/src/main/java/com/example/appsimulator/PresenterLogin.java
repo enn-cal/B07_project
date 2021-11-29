@@ -23,8 +23,8 @@ public class PresenterLogin implements Contracts.PresenterLogin {
     }
 
     @Override
-    public void loginSuccess() {
-        view.loginSuccess();
+    public void loginSuccess(String ID) {
+        view.loginSuccess(ID);
     }
 
     @Override

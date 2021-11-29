@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Orders {
 
     public ArrayList<Products> order = new ArrayList<Products>();
-    private int customerID;
+    public String storeID;
 
-    public Orders(int customerID){
-        this.customerID = customerID;
+    public Orders(String storeID){
+        this.storeID = storeID;
     }
 
     public int countProduct(Products product){
@@ -32,7 +32,7 @@ public class Orders {
         order.remove(product);
     }
 
-    public int getCustomerID(){
-        return customerID;
+    public String getstoreID(){
+        return storeID;
     }
 }

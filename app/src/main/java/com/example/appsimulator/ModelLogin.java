@@ -68,7 +68,7 @@ public class ModelLogin implements Contracts.ModelLogin {
 //                        Log.i("login failed"," Incorrect credentials");
                         //listener.loginFailed("Enter valid credentials");
                     else {
-                        listener.loginSuccess();
+                        listener.loginSuccess(Integer.toString(user.hashCode()));
                     }
                 }
                 else

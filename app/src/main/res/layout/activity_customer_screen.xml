@@ -7,7 +7,7 @@
     tools:context=".CustomerScreen">
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/storeListSignOut"
         android:layout_width="131dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.174"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
+        app:layout_constraintTop_toBottomOf="@+id/storeListSignOut" />
 
     <Button
         android:id="@+id/button5"
