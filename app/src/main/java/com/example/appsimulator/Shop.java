@@ -47,15 +47,15 @@ public class Shop extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner");
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(storeOwnerID).child("Store");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 products.clear();
-                products.add(new Products("Spicy Chips", "Lays", "$1", "200"));
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Log.i("TestID", ds.getKey() +  ", " + storeOwnerID);
 
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Products p = ds.getValue(Products.class);
+                    products.add(p);
                 }
                 myAdapter.notifyDataSetChanged();
             }
