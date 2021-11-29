@@ -12,7 +12,7 @@
     </string-array>
     <string name="sign_out">Sign Out</string>
     <string name="stores">Stores</string>
-    <string name="cart">Cart</string>
+    <string name="cart">My Cart</string>
     <string name="orders">Orders</string>
     <string name="available_stores">Available Stores</string>
 </resources>
