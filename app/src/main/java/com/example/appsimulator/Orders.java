@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Orders {
 
-    private ArrayList<Products> order;
+    public ArrayList<Products> order;
+    public String storeID;
     private boolean activator = false; //tells us if the orders are complete (when list is empty) only if activator is true (see pinned db pic on discord)
 
     public Orders(){
@@ -34,6 +35,10 @@ public class Orders {
 
     public boolean orderComplete (){
         return (activator == true) && (order.isEmpty());
+    }
+
+    public void setStoreID(String ID){
+        storeID = ID;
     }
 
 }

@@ -26,14 +26,17 @@ public class OwnerScreen extends AppCompatActivity {
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = db.getReference();
+    private DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Products"); // path is hardcoded
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
+    public Stores s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_screen);
+
+        //s = new Stores(1902570695); //hardcoded
 
         recycleView = findViewById(R.id.recyclerview);
         recycleView.setHasFixedSize(true);
@@ -52,13 +55,14 @@ public class OwnerScreen extends AppCompatActivity {
             }
         });
 
-        ref.child("Stores").child("5054").addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
+
                 for (DataSnapshot ds : snapshot.getChildren()){
                     Products product = ds.getValue(Products.class);
                     list.add(product);
+                    //s.products.add(product);
                 }
                 adapterRv.notifyDataSetChanged();
             }
@@ -70,14 +74,29 @@ public class OwnerScreen extends AppCompatActivity {
         });
     }
 
+    /*
+    //adds Store's products to DB
+    public void updateStoreProductDB(Stores store){
+        DatabaseReference dref = FirebaseDatabase.getInstance().getReference("Stores");
+        for(Products p: store.products){
+            dref.child(Integer.toString(store.getStoreID())).setValue(p);
+        }
+    }
 
-
+     */
 
     //creates Dialog and adds product to recycler view
     public void openDialog(){
         addProductDialog pd = new addProductDialog();
         pd.show(getSupportFragmentManager(), "example dialog");
+        list.add(pd.getProduct());
+        adapterRv.notifyDataSetChanged();
+        //adapterRv.notifyItemInserted(list.size()-1);
 
+        //ADD TO DATABASE CODE
+        //s.products.add(pd.getProduct());
+        //Log.i("TAG", s.products.toString()); THIS GIVES NULL POINTER EXCEPTION. S.PRODUCTS = NULL FOR SOME REASON
+        //updateStoreProductDB(s);
     }
 
 
@@ -85,5 +104,13 @@ public class OwnerScreen extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void orderScreen(View v){
+        Intent intent = new Intent(this, storeOwnerOrder.class);
+        //intent.putExtra("ID", sessionID);
+        startActivity(intent);
+    }
+
+
 
 }

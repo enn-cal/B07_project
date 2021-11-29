@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppSimulator">
-
+        <activity
+            android:name=".storeOwnerOrder"
+            android:exported="false" />
         <activity
             android:name=".OwnerScreen"
             android:exported="true">

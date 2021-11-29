@@ -4,12 +4,22 @@ import java.util.ArrayList;
 
 public class Stores {
 
-    private ArrayList<Products> products;
-    private int ID;
+    public ArrayList<Products> products;
+    public ArrayList<Orders> customerOrders;
+    private int storeID;
 
-    public Stores( int ID){
-        this.ID = ID;
+    public Stores(int storeID){
+
+        this.storeID = storeID;
         products = new ArrayList<Products>();
+        customerOrders = new ArrayList<Orders>();
+    }
+
+    public void completeOrder(Orders order){
+        if(!customerOrders.contains(order)){
+            return;
+        }
+        customerOrders.remove(order);
     }
 
     public void addProductStore(Products product){
@@ -17,8 +27,8 @@ public class Stores {
     }
 
     public int getStoreID(){
-        return  ID;
-    } // assuming unique names
+        return storeID;
+    }
 
     public ArrayList<Products> getProducts(){
         return products;

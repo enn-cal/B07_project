@@ -78,8 +78,18 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
     }
 
     @Override
-    public void loginSuccess() {
-        startActivity(new Intent(this, ProfilePage.class));
+    public void loginSuccess(String ID) {
+        if(getUserType().equals("Store Owner")){
+            Intent intent = new Intent(this, OwnerScreen.class);
+            intent.putExtra("ID", ID);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(this, ProfilePage.class);
+            intent.putExtra("ID", ID);
+            startActivity(intent);
+        }
+        //startActivity(new Intent(this, ProfilePage.class));
     }
 
     @Override

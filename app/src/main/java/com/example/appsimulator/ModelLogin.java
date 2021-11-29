@@ -74,7 +74,7 @@ public class ModelLogin implements Contracts.ModelLogin {
                         //listener.loginFailed("Enter valid credentials");
                     else
 //                        Log.i("login passed","party");
-                        listener.loginSuccess();
+                        listener.loginSuccess(Integer.toString(user.hashCode()));
                 }
                 else
                     //Log.i("login failed","user not found");
@@ -98,5 +98,7 @@ public class ModelLogin implements Contracts.ModelLogin {
         });
     }
 
+    public void userType(User user){
 
+    }
 }
