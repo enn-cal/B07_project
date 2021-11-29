@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,7 @@ public class storeOwnerOrder extends AppCompatActivity {
     private ArrayList<String> customerList;
     private ArrayList<Products> productsList;
     private ownerOrderAdapter adapter;
+    private String email;
 
 
     @Override
@@ -54,7 +56,7 @@ public class storeOwnerOrder extends AppCompatActivity {
 
 
         //hard code testing stuff
-
+        /*
         ref2 = db.getReference("Users").child("Store Owner").child("1902570695").child("Customers").child("m");
         Orders o = new Orders();
         o.setStoreID("123456");
@@ -64,18 +66,24 @@ public class storeOwnerOrder extends AppCompatActivity {
         cs.order = o;
         ref2.setValue(cs);
 
+         */
+        ref2 = db.getReference("Users").child("Store Owner").child(sessionID).child("Customers");
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()){
-                    if(ds.exists() && ds.getKey().equals("email")){
-                        customerList.add(ds.getValue().toString());
-                    }
-                    if(ds.exists() && ds.getKey().equals("order")){
+                    if(ds.exists()){
                         for(DataSnapshot d: ds.getChildren()){
+                            if(d.exists() && d.getKey().equals("email")){
+                                Log.i("TAG", d.getValue().toString());
+                                email = d.getValue().toString();
+                                //customerList.add(d.getValue().toString());
+                            }
                             if(d.exists() && d.getKey().equals("order")){
                                 for(DataSnapshot p: d.getChildren()){
                                     Products product = p.getValue(Products.class);
+                                    Log.i("TAG", product.getItem());
+                                    customerList.add(email);
                                     productsList.add(product);
                                 }
                             }
