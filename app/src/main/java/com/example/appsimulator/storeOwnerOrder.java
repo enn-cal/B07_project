@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +31,7 @@ public class storeOwnerOrder extends AppCompatActivity {
     private ArrayList<String> customerList;
     private ArrayList<Products> productsList;
     private ownerOrderAdapter adapter;
-
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,34 +56,57 @@ public class storeOwnerOrder extends AppCompatActivity {
 
         //hard code testing stuff
 
-        ref2 = db.getReference("Users").child("Store Owner").child("1902570695").child("Customers").child("m");
-        Orders o = new Orders();
-        o.setStoreID("123456");
-        Products p3 = new Products("PIE", "pizzahut", "$50", "3");
-        o.addProduct(p3);
-        customerStore cs = new customerStore("m@gmail.com", "123456");
-        cs.order = o;
-        ref2.setValue(cs);
+        ref2 = db.getReference("Users").child("Store Owner").child(sessionID).child("Customers");
+//
 
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    if(ds.exists() && ds.getKey().equals("email")){
-                        customerList.add(ds.getValue().toString());
-                    }
-                    if(ds.exists() && ds.getKey().equals("order")){
-                        for(DataSnapshot d: ds.getChildren()){
-                            if(d.exists() && d.getKey().equals("order")){
-                                for(DataSnapshot p: d.getChildren()){
-                                    Products product = p.getValue(Products.class);
-                                    productsList.add(product);
-                                }
-                            }
+
+                //Daniyals version
+                productsList.clear();
+                for (DataSnapshot ds1 : snapshot.getChildren()){
+                    for (DataSnapshot ds2 : ds1.getChildren()){
+                        // adds email to customerList;
+                        if(ds2.exists() && ds2.getKey().equals("email")){
+                            //customerList.add(ds2.getValue().toString());
+                             email = ds2.getValue().toString();
+                        }
+//                        DataSnapshot orders = ds2.child("order"); // goes to last order path to get all orders made by customer
+                        // final loop to get the orders
+                        for (DataSnapshot ds3 : ds2.getChildren()){
+                            Products product = ds3.getValue(Products.class);
+                            Log.i(ds3.getKey(), ds3.getValue().toString());
+                            productsList.add(product);
+                        }
+                        for (DataSnapshot ds3 : ds2.getChildren()){
+                            Products product = ds3.getValue(Products.class);
+                            Log.i(ds3.getKey(), ds3.getValue().toString());
+                            customerList.add(email);
+                            productsList.add(product);
                         }
                     }
+
                 }
                 adapter.notifyDataSetChanged();
+                //Williams version
+//                for (DataSnapshot datasnap : snapshot.getChildren()){
+//                    for(DataSnapshot ds: datasnap.getChildren()){
+//                        if(ds.exists() && ds.getKey().equals("email")){
+//                            customerList.add(ds.getValue().toString());
+//                        }
+//                        if(ds.exists() && ds.getKey().equals("order")){
+//                            for(DataSnapshot d: ds.getChildren()){
+//                                if(d.exists() && d.getKey().equals("order")){
+//                                    for(DataSnapshot p: d.getChildren()){
+//                                        Products product = p.getValue(Products.class);
+//                                        productsList.add(product);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
             }
 
             @Override
@@ -95,12 +119,7 @@ public class storeOwnerOrder extends AppCompatActivity {
     }
 
     public void completeOrder(){
-        /*
-        Intent intent = new Intent(this, customerOrderList.class);
-        intent.putExtra("storeID",sessionID);
-        intent.putExtra("userID", adapter.email);
-        startActivity(intent);
-        */
+
 
     }
 }

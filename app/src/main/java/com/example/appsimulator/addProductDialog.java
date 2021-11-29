@@ -98,22 +98,22 @@ public class addProductDialog extends AppCompatDialogFragment {
     public void updateStoreProductDB(Stores store){
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference();
+        DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Store"); // path is hardcoded
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean storeExists = false;
-                for (DataSnapshot ds : snapshot.getChildren()){
-                    if (ds.getKey().equals(Integer.toString(store.getStoreID()))) { // store exists will output error
-                        storeExists = true;
-                        break;
-                    }
-                }
+                //code below checks for duplicates in stores, need to change it to check for dupes in products
+//                for (DataSnapshot ds : snapshot.getChildren()){
+//                    if (ds.getKey().equals(Integer.toString(store.getStoreID()))) { // store exists will output error
+//                        storeExists = true;
+//                        break;
+//                    }
+//                }
                 if (!storeExists) {
                     for (Products p : store.getProducts())
-                        ref.child("Stores").child(Integer.toString(store.getStoreID()))
-                                .child(Integer.toString(p.hashCode())).setValue(p); // adds in database
+                        ref.child(Integer.toString(p.hashCode())).setValue(p); // adds in database
                 }
                 // section below is to portray error if store already in db
 //                else {

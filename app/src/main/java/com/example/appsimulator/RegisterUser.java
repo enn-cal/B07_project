@@ -203,15 +203,29 @@ public class RegisterUser extends AppCompatActivity{
                 // adding data into database
                 //if user is Store Owner
                 //Log.i("TAG", spinnerString);
+
                 User user = new User(name, em, pwd, pCode, bday);
                 addToFirebase(user,spinnerString);
+
                 /*
-                  following code is to manually enter data in database for storeowner  1902570695
+                  following code is to manually enter data in database
                   feel free to remove it or keep it if you want to add data manually again.
                  */
-//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Products");
-//                Products products = new Products("Pizza6", "Dominoes", "$500", "20");
-//                ref.child(Integer.toString(products.hashCode())).setValue(products);
+//                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Customers");
+//                Products products = new Products("Pie", "Pizza Hut", "$12.5", "30");
+//                Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1");
+//                Stores s = new Stores(5095);
+//                Orders o = new Orders( );
+//                o.addProduct(products);
+//                o.addProduct(products2);
+//                o.setStoreID("5095");
+//                customerStore cs = new customerStore(em,o.storeID);
+//                cs.setOrder(o);
+//                String key_path = ref1.push().getKey();
+//                ref1.child(key_path).setValue(cs);
+////                int i = 0;
+////                for (Products p : o.order)
+////                    ref1.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
 
             }
         });

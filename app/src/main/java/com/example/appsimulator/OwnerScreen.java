@@ -26,7 +26,7 @@ public class OwnerScreen extends AppCompatActivity {
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Products"); // path is hardcoded
+    private DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Store"); // path is hardcoded
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
     public Stores s;
@@ -58,11 +58,10 @@ public class OwnerScreen extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                list.clear();
                 for (DataSnapshot ds : snapshot.getChildren()){
                     Products product = ds.getValue(Products.class);
                     list.add(product);
-                    //s.products.add(product);
                 }
                 adapterRv.notifyDataSetChanged();
             }

@@ -1,9 +1,13 @@
 package com.example.appsimulator;
 
-public class customerStore{
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+@IgnoreExtraProperties
 
+public class customerStore{
     public String email;
     public String storeID;
+    @Exclude
     public Orders order = new Orders();
 
     public customerStore(String email, String storeID){
