@@ -7,15 +7,15 @@
     tools:context=".CustomerScreen">
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/storeListOrders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/orders"
         android:textColor="#FFFFFF"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/storeListSignOut"
         app:layout_constraintEnd_toStartOf="@+id/button5"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button6" />
+        app:layout_constraintStart_toEndOf="@+id/storeListSignOut" />
 
     <Button
         android:id="@+id/button5"
@@ -24,20 +24,20 @@
         android:layout_marginEnd="16dp"
         android:text="@string/cart"
         android:textColor="#FFFFFF"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/storeListSignOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button4" />
+        app:layout_constraintStart_toEndOf="@+id/storeListOrders" />
 
     <Button
         android:id="@+id/storeListSignOut"
-        android:layout_width="131dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/sign_out"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/storeListOrders"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,26 +45,16 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_width="73dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
         android:text="@string/stores"
+        android:textColor="@color/shopify_color"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.174"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storeListSignOut" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="36dp"
-        android:text="@string/cart"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/storeList"
@@ -73,71 +63,10 @@
         android:layout_marginTop="91dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    tools:context=".CustomerScreen">-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button6"-->
-    <!--        android:layout_width="131dp"-->
-    <!--        android:layout_height="40dp"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:backgroundTint="@color/shopify_color"-->
-    <!--        android:text="Sign Out"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/button5"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/textView4"-->
-    <!--        android:layout_width="73dp"-->
-    <!--        android:layout_height="40dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:text="Stores:"-->
-    <!--        android:textColor="@color/shopify_color"-->
-    <!--        android:textSize="24sp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.174"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/button6" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button5"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="36dp"-->
-    <!--        android:text="My Cart"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/storeList"-->
-    <!--        android:layout_width="412dp"-->
-    <!--        android:layout_height="528dp"-->
-    <!--        android:layout_marginTop="91dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/textView4"-->
-    <!--        app:layout_constraintVertical_bias="1.0" />-->
-
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
 

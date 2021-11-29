@@ -7,26 +7,23 @@
         <entry key="..\:/B07_project/app/src/main/res/layout/activity_owner_screen.xml" value="0.20989583333333334" />
         <entry key="..\:/B07_project/app/src/main/res/layout/item.xml" value="0.2601851851851852" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_available_stores.xml" value="0.23738738738738738" />
-        <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_customer_screen.xml" value="0.23738738738738738" />
+        <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_customer_screen.xml" value="0.264" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_owner_screen.xml" value="0.23738738738738738" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_profile_page.xml" value="0.23738738738738738" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_register_user.xml" value="0.264" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/item.xml" value="0.23369565217391305" />
+        <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/shop.xml" value="0.23738738738738738" />
+        <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/shop_items.xml" value="0.23738738738738738" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/store_row.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/Emin's Desktop/Desktop/B07_Project/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Emin's Desktop/Desktop/B07_Project/app/src/main/res/layout/activity_profile_page.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Emin's Desktop/Desktop/B07_Project/app/src/main/res/layout/activity_register_user.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_customer_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_owner_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/shop.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/shop_items.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/store_row.xml" value="0.9036742800397219" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
