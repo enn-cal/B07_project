@@ -39,8 +39,8 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String s = uList.get(position);
-        Products product = pList.get(position);
+        Products product = pList.get(holder.getAdapterPosition());
+        String s = uList.get(holder.getAdapterPosition());
 
         holder.customerName.setText(s);
         holder.item.setText(product.getItem());
@@ -54,7 +54,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
 
     @Override
     public int getItemCount() {
-        return uList.size();
+        return pList.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
