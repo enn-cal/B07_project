@@ -6,9 +6,9 @@ public class Stores {
 
     public ArrayList<Products> products;
     public ArrayList<Orders> customerOrders;
-    private int storeID;
+    private String storeID;
 
-    public Stores(int storeID){
+    public Stores(String storeID){
 
         this.storeID = storeID;
         products = new ArrayList<Products>();
@@ -26,7 +26,7 @@ public class Stores {
         products.add(product);
     }
 
-    public int getStoreID(){
+    public String getStoreID(){
         return storeID;
     }
 

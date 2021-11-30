@@ -8,7 +8,7 @@ public class customerStore{
     public String email;
     public String storeID;
     @Exclude
-    public Orders order = new Orders();
+    public Orders orderList = new Orders();
 
     public customerStore(String email, String storeID){
         this.email = email;
@@ -16,6 +16,6 @@ public class customerStore{
     }
 
     public void setOrder(Orders o){
-        order = o;
+        orderList = o;
     }
 }

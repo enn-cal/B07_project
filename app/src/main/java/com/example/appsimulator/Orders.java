@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Orders {
 
     public ArrayList<Products> order;
-    public String storeID;
+    //public String storeID;
     private boolean activator = false; //tells us if the orders are complete (when list is empty) only if activator is true (see pinned db pic on discord)
 
     public Orders(){
@@ -37,8 +37,21 @@ public class Orders {
         return (activator == true) && (order.isEmpty());
     }
 
+    /*
     public void setStoreID(String ID){
         storeID = ID;
     }
 
+     */
+
+    public Orders getStoreProducts(String storeID){
+        Orders o = new Orders();
+        //for every product in Orders get the products associated with the storeID
+        for(Products product:order){
+            if(product.getStoreID().equals(storeID)){
+                o.order.add(product);
+            }
+        }
+        return o;
+    }
 }

@@ -30,6 +30,7 @@ public class addProductDialog extends AppCompatDialogFragment {
     private EditText editTextItemBrand;
     private EditText editTextItemPrice;
     private EditText editTextItemQuantity;
+    private String sessionID;
     private Products p = new Products();
 
     public boolean isValid(String input, String type){
@@ -98,7 +99,7 @@ public class addProductDialog extends AppCompatDialogFragment {
     public void updateStoreProductDB(Stores store){
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Store"); // path is hardcoded
+        DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store"); // path is hardcoded
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -111,10 +112,8 @@ public class addProductDialog extends AppCompatDialogFragment {
 //                        break;
 //                    }
 //                }
-                if (!storeExists) {
-                    for (Products p : store.getProducts())
-                        ref.child(Integer.toString(p.hashCode())).setValue(p); // adds in database
-                }
+                for (Products p : store.getProducts())
+                    ref.child(Integer.toString(p.hashCode())).setValue(p); // adds in database
                 // section below is to portray error if store already in db
 //                else {
 //                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
@@ -185,7 +184,7 @@ public class addProductDialog extends AppCompatDialogFragment {
                     d.dismiss();
 
                     //add data to database
-                    Stores s = new Stores(5054); // value is hard coded for testing
+                    Stores s = new Stores(sessionID); // value is hard coded for testing
                     s.addProductStore(p);
                     updateStoreProductDB(s);
                 }
@@ -196,5 +195,7 @@ public class addProductDialog extends AppCompatDialogFragment {
     public Products getProduct(){
         return p;
     }
+
+    public void setSessionID(String sessionID){ this.sessionID = sessionID;}
 
 }
