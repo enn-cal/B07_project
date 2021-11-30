@@ -1,15 +1,21 @@
 package com.example.appsimulator;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,11 +43,33 @@ public class CustomerScreen extends AppCompatActivity {
         customerID = Integer.parseInt(i.getStringExtra("ID"));
         //Log.i("TestID", String.valueOf(customerID));
 
-        signOut = findViewById(R.id.storeListSignOut);
+        signOut = (Button) findViewById(R.id.storeListSignOut);
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                signOut();
+            public void onClick(View view) {
+//                Log.d("CustomerScreen", "onClick: attempting to sign out the user");
+//                FirebaseAuth.getInstance().signOut();
+//                Toast.makeText(CustomerScreen.this, "Signed Out", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(CustomerScreen.this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(CustomerScreen.this);
+                builder.setMessage(R.string.sign_out_msg)
+                        .setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(CustomerScreen.this, "Signed Out", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CustomerScreen.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null);
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -76,9 +104,5 @@ public class CustomerScreen extends AppCompatActivity {
         });
 
 
-    }
-
-    public void signOut() {
-        startActivity(new Intent(this, MainActivity.class));
     }
 }
