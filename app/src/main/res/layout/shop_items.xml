@@ -21,10 +21,10 @@
 
             <TextView
                 android:id="@+id/shopBrandText"
-                android:layout_width="64dp"
-                android:layout_height="37dp"
+                android:layout_width="131dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:text="Brand"
                 android:textColor="@color/white"
                 android:textSize="24sp"
@@ -33,9 +33,10 @@
 
             <TextView
                 android:id="@+id/shopItemName"
-                android:layout_width="159dp"
-                android:layout_height="37dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="142dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
                 android:text="Item Name"
                 android:textColor="@color/white"
                 android:textSize="24sp"
@@ -47,6 +48,7 @@
                 android:layout_width="77dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Price"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -54,11 +56,11 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shopBrandText"
-                app:layout_constraintVertical_bias="0.088" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/shopQuantity"
-                android:layout_width="94dp"
+                android:layout_width="50dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginBottom="16dp"
@@ -66,15 +68,15 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/shopPrice"
-                app:layout_constraintTop_toBottomOf="@+id/shopItemName"
-                app:layout_constraintVertical_bias="0.166" />
+                app:layout_constraintTop_toTopOf="@+id/shopPrice"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/addToCartButton"
-                android:layout_width="135dp"
-                android:layout_height="54dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="91dp"
+                android:layout_height="76dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:backgroundTint="@android:color/holo_orange_light"
                 android:text="Add to Cart"
                 android:textAlignment="center"
@@ -83,6 +85,13 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/shopQuantity"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
