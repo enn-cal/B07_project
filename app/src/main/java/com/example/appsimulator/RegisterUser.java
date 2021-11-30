@@ -11,10 +11,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -115,12 +117,14 @@ public class RegisterUser extends AppCompatActivity{
     private void addToFirebase(User user, String userType){
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
-
-        ref.addValueEventListener(new ValueEventListener() {
+        // user exists will output error
+        // adds in database
+        ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean userExists = false;
-                for (DataSnapshot ds : snapshot.getChildren()){
+                Toast toast = Toast.makeText(RegisterUser.this, "", Toast.LENGTH_LONG);
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     if (ds.getKey().equals(Integer.toString(user.hashCode()))) { // user exists will output error
                         userExists = true;
                         break;
@@ -128,47 +132,22 @@ public class RegisterUser extends AppCompatActivity{
                 }
                 if (!userExists) {
                     ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
-                }
-                else {
-                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
-                            Toast.LENGTH_LONG).show();
+
+                } else {
+                    toast.setText("User Already Exists, Please Login");
+                    toast.show();
+                    toast.setText("");
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-    }
-/*
-    private void addToFirebase(Stores store){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        //if store has no products
-        if(store.products.size() == 0){
-            ref.child("Stores").child(Integer.toString(store.getStoreID()));
-            return;
-        }
-        //if store has products
-        for(Products p: store.products){
-            ref.child("Stores").child(Integer.toString(store.getStoreID())).child(Integer.toString(p.hashCode())).setValue(p);
-        }
+      //  ref.removeEventListener(listener);
     }
 
-    private void addToFirebase(Orders o){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders");
-        //if user has no orders
-        if(o.order.size() == 0){
-            ref.child(Integer.toString(o.getCustomerID())).setValue(o.order);
-            return;
-        }
-        //if user has orders
-        for(Products p: o.order){
-            ref.child(Integer.toString(o.getCustomerID())).child(Integer.toString(p.hashCode())).setValue(p);
-        }
-    }
-
- */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,54 +160,84 @@ public class RegisterUser extends AppCompatActivity{
         password = findViewById(R.id.editTextTextPassword3);
         Button register = findViewById(R.id.button3);
         accountSpinner = findViewById(R.id.spinner);
-        //private ProgressBar loading;
 
-        register.setOnClickListener(new View.OnClickListener() {
+//                /*
+//                  following code is to manually enter data in database
+//                  feel free to remove it or keep it if you want to add data manually again.
+//                 */
+////                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Customers");
+////                Products products = new Products("Pie", "Pizza Hut", "$12.5", "30");
+////                Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1");
+////                Stores s = new Stores(5095);
+////                Orders o = new Orders( );
+////                o.addProduct(products);
+////                o.addProduct(products2);
+////                o.setStoreID("5095");
+////                customerStore cs = new customerStore(em,o.storeID);
+////                cs.setOrder(o);
+////                String key_path = ref1.push().getKey();
+////                ref1.child(key_path).setValue(cs);
+//////                int i = 0;
+//////                for (Products p : o.order)
+//////                    ref1.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
+//
+//            }
+//
+
+    }
+
+    public void clickRegister(View v){
+        String name = Name.getText().toString();
+        if(!(isValid(name, "name")))return;
+        String bday = dob.getText().toString();
+        if(!(isValid(bday, "dob")))return;
+        String pCode = PostalCode.getText().toString();
+        if(!(isValid(pCode, "postal")))return;
+        String em = email.getText().toString();
+        if(!(isValid(em, "email")))return;
+        String pwd = password.getText().toString();
+        if(!(isValid(pwd, "pwd")))return;
+        String spinnerString = accountSpinner.getSelectedItem().toString();
+
+
+        User user = new User(name, em, pwd, pCode, bday);
+        addToFirebase(user,spinnerString);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+        ChildEventListener childLister = ref.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onClick(View v) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child("Store Owner").child("1902570695").child("Products");
-                // getting data from user
-                String name = Name.getText().toString();
-                if(!(isValid(name, "name")))return;
-                String bday = dob.getText().toString();
-                if(!(isValid(bday, "dob")))return;
-                String pCode = PostalCode.getText().toString();
-                if(!(isValid(pCode, "postal")))return;
-                String em = email.getText().toString();
-                if(!(isValid(em, "email")))return;
-                String pwd = password.getText().toString();
-                if(!(isValid(pwd, "pwd")))return;
-                String spinnerString = accountSpinner.getSelectedItem().toString();
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.i("tag", "child changes");
+                Intent intent;
+                if (spinnerString.equals("Store Owner")) {
+                    intent = new Intent(RegisterUser.this, OwnerScreen.class);
+                } else {
+                    intent = new Intent(RegisterUser.this, ProfilePage.class);
+                }
+                intent.putExtra("ID", Integer.toString(user.hashCode()));
+                startActivity(intent);
+            }
 
-                // adding data into database
-                //if user is Store Owner
-                //Log.i("TAG", spinnerString);
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                User user = new User(name, em, pwd, pCode, bday);
-                addToFirebase(user,spinnerString);
+            }
 
-                /*
-                  following code is to manually enter data in database
-                  feel free to remove it or keep it if you want to add data manually again.
-                 */
-//                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Customers");
-//                Products products = new Products("Pie", "Pizza Hut", "$12.5", "30");
-//                Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1");
-//                Stores s = new Stores(5095);
-//                Orders o = new Orders( );
-//                o.addProduct(products);
-//                o.addProduct(products2);
-//                o.setStoreID("5095");
-//                customerStore cs = new customerStore(em,o.storeID);
-//                cs.setOrder(o);
-//                String key_path = ref1.push().getKey();
-//                ref1.child(key_path).setValue(cs);
-////                int i = 0;
-////                for (Products p : o.order)
-////                    ref1.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
     }
 }

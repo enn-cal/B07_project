@@ -112,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/shopify_color"
+        android:onClick="clickRegister"
         android:text="REGISTER"
         android:textColor="@color/white"
         android:textSize="24sp"
