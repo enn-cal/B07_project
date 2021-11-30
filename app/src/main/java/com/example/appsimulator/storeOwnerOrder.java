@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,7 +73,8 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
                 for (Products p : cs.orderList.order)ref2.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
 /*
         //hard code testing stuff
-        ref2 = db.getReference("Users").child("Store Owner").child(sessionID).child("Customers");
+
+        ref2 = db.getReference("Users").child("Store Owner").child("1902570695").child("Customers").child("m");
         Orders o = new Orders();
         Products p1 = new Products("A", "B", "$5.0", "5");
         Products p2 = new Products("C", "D", "$5.0", "5");
@@ -111,12 +110,16 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
+
     }
+
     public void completeOrder(){
     }
 
