@@ -34,6 +34,7 @@ public class Shop extends AppCompatActivity {
         setContentView(R.layout.shop);
 
         i = getIntent();
+        // to add store owner's name to the store page
         shopText = findViewById(R.id.shopText);
         storeOwnerID = i.getStringExtra("OwnerID");
         shopText.setText(i.getStringExtra("StoreName"));

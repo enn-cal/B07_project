@@ -20,7 +20,7 @@
             android:layout_height="113dp">
 
             <TextView
-                android:id="@+id/shopBrandText"
+                android:id="@+id/cartBrandText"
                 android:layout_width="131dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
@@ -32,19 +32,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/shopItemName"
-                android:layout_width="142dp"
-                android:layout_height="80dp"
+                android:id="@+id/cartItemName"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:text="Item Name"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/shopBrandText"
+                app:layout_constraintStart_toEndOf="@+id/cartBrandText"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/shopPrice"
+                android:id="@+id/cartPrice"
                 android:layout_width="77dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="16dp"
@@ -52,14 +52,14 @@
                 android:text="Price"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/shopBrandText"
+                app:layout_constraintEnd_toEndOf="@+id/cartBrandText"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/shopBrandText"
+                app:layout_constraintTop_toBottomOf="@+id/cartBrandText"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/shopQuantity"
+                android:id="@+id/cartQuantity"
                 android:layout_width="50dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="4dp"
@@ -67,24 +67,53 @@
                 android:text="Quantity"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/shopPrice"
-                app:layout_constraintTop_toTopOf="@+id/shopPrice"
+                app:layout_constraintStart_toEndOf="@+id/cartPrice"
+                app:layout_constraintTop_toTopOf="@+id/cartPrice"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <TextView
+                android:id="@+id/cartCost"
+                android:layout_width="69dp"
+                android:layout_height="85dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Cost"
+                android:textColor="@color/white"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cartItemName"
+                app:layout_constraintTop_toTopOf="@+id/cartItemName" />
+
             <Button
-                android:id="@+id/addToCartButton"
-                android:layout_width="91dp"
-                android:layout_height="76dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:id="@+id/increaseQuantity"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:backgroundTint="@android:color/holo_orange_light"
-                android:text="Add to Cart"
+                android:text="+"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/shopQuantity"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cartQuantity"
+                app:layout_constraintTop_toBottomOf="@+id/cartItemName" />
+
+            <Button
+                android:id="@+id/decreaseQuantity"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:backgroundTint="@android:color/holo_orange_light"
+                android:text="-"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/increaseQuantity"
+                app:layout_constraintTop_toTopOf="@+id/increaseQuantity" />
 
             <android.widget.Space
                 android:layout_width="wrap_content"
@@ -96,3 +125,10 @@
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent">-->
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

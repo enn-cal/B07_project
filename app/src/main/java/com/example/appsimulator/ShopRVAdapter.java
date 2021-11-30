@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,15 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
         holder.itemName.setText(storeProducts.get(position).getItem());
         holder.price.setText(storeProducts.get(position).getPrice());
         holder.quantity.setText(storeProducts.get(position).getQuantity());
+
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO!
+                // code to add item details to cart_items array
+                Toast.makeText(ct, holder.itemName.getText() + " added to cart.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

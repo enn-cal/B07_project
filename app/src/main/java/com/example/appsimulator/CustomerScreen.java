@@ -105,4 +105,10 @@ public class CustomerScreen extends AppCompatActivity {
 
 
     }
+
+    public void viewCart (View view) {
+        Intent intent = new Intent(this, Cart.class);
+        startActivity(intent);
+    }
+
 }
