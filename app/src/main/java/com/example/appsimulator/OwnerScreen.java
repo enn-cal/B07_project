@@ -26,17 +26,20 @@ public class OwnerScreen extends AppCompatActivity {
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = db.getReference("Users").child("Store Owner").child("1902570695").child("Store"); // path is hardcoded
+    private DatabaseReference ref;// = db.getReference("Users").child("Store Owner").child("1902570695").child("Store"); // path is hardcoded
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
-    public Stores s;
+    public String sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_screen);
 
-        //s = new Stores(1902570695); //hardcoded
+        Bundle bundle = getIntent().getExtras();
+        sessionID = bundle.getString("ID");
+        ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store");
+        //sessionID = "1902570695"; //hardcoded
 
         recycleView = findViewById(R.id.recyclerview);
         recycleView.setHasFixedSize(true);
@@ -87,6 +90,7 @@ public class OwnerScreen extends AppCompatActivity {
     //creates Dialog and adds product to recycler view
     public void openDialog(){
         addProductDialog pd = new addProductDialog();
+        pd.setSessionID(sessionID);
         pd.show(getSupportFragmentManager(), "example dialog");
         list.add(pd.getProduct());
         adapterRv.notifyDataSetChanged();
@@ -106,7 +110,7 @@ public class OwnerScreen extends AppCompatActivity {
 
     public void orderScreen(View v){
         Intent intent = new Intent(this, storeOwnerOrder.class);
-        //intent.putExtra("ID", sessionID);
+        intent.putExtra("ID", sessionID);
         startActivity(intent);
     }
 

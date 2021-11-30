@@ -40,10 +40,10 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_owner_order);
 
-        //Bundle bundle = getIntent().getExtras();
-        //sessionID = bundle.getString("ID");
+        Bundle bundle = getIntent().getExtras();
+        sessionID = bundle.getString("ID");
 
-        sessionID = "1902570695";
+        //sessionID = "1902570695";
 
         rView = findViewById(R.id.storeOwnerRCView);
         rView.setHasFixedSize(true);
@@ -52,9 +52,9 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
         customerList = new ArrayList<>();
         productsList = new ArrayList<>();
         adapter = new ownerOrderAdapter(storeOwnerOrder.this, customerList, productsList,this);
-
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
         rView.setAdapter(adapter);
-
+/*
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
                 Products products = new Products("Pie", "Pizza Hut", "$12.5", "30", "2");
                 Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1", sessionID);
@@ -71,6 +71,8 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
                 ref2.child(key_path).setValue(cs);
                 int i = 0;
                 for (Products p : cs.orderList.order)ref2.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
+
+ */
 /*
         //hard code testing stuff
 
