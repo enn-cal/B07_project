@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,17 +31,22 @@ public class Cart extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         i = getIntent();
+        // get cart data from CustomerScreen (on MyCart clicked)
+        ArrayList<Products> cartItems = i.getParcelableArrayListExtra("itemsArray");
+        ArrayList<String> cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
 
         recyclerView = findViewById(R.id.cartItemsList);
-        ArrayList<Products> items = new ArrayList<>();
-        ArrayList<String> itemQuantities = new ArrayList<>();
 
-        CartRVAdapter myAdapter = new CartRVAdapter(this, items, itemQuantities);
+        CartRVAdapter myAdapter = new CartRVAdapter(this, cartItems, cartItemQuantities);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        Log.d("Cart", "after MyCart pressed: " + cartItems.size());
+
+
         // TODO!!!
         // CHANGE THIS STUFF!!
+        // use cartItems and cartItemQuantities to populate the recyclerView
 
 //        items.add(new Products("Chips", "Lays", "$3", "200"));
 //        itemQuantities.add("1");

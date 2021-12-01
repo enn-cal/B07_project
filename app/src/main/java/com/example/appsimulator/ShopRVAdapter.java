@@ -17,10 +17,14 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
 
     Context ct;
     ArrayList<Products> storeProducts;
+    ArrayList<Products> cartItems;
+    ArrayList<String> cartItemQuantities;
 
-    public ShopRVAdapter(Context ct, ArrayList<Products> storeProducts) {
+    public ShopRVAdapter(Context ct, ArrayList<Products> storeProducts, ArrayList<Products> cartItems, ArrayList<String> cartItemQuantities) {
         this.ct = ct;
         this.storeProducts = storeProducts;
+        this.cartItems = cartItems;
+        this.cartItemQuantities = cartItemQuantities;
     }
 
     @NonNull
@@ -37,15 +41,6 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
         holder.itemName.setText(storeProducts.get(position).getItem());
         holder.price.setText(storeProducts.get(position).getPrice());
         holder.quantity.setText(storeProducts.get(position).getQuantity());
-
-        holder.addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO!
-                // code to add item details to cart_items array
-                Toast.makeText(ct, holder.itemName.getText() + " added to cart.", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -69,6 +64,19 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
             price = itemView.findViewById(R.id.shopPrice);
             quantity = itemView.findViewById(R.id.shopQuantity);
             addToCart = itemView.findViewById(R.id.addToCartButton);
+
+            addToCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!(cartItems.contains(storeProducts.get(getLayoutPosition())))) {
+                        Toast.makeText(ct, itemName.getText() + " added to cart.", Toast.LENGTH_SHORT).show();
+                        cartItems.add(storeProducts.get(getLayoutPosition()));
+                        cartItemQuantities.add("1");
+                    } else {
+                        Toast.makeText(ct, itemName.getText() + " is already added to cart.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 }

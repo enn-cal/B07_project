@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +34,8 @@ public class CustomerScreen extends AppCompatActivity {
     private RecyclerView recyclerView;
     private int customerID;
     private Intent i;
+    private ArrayList<Products> cartItems;
+    private ArrayList<String> cartItemQuantities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,6 @@ public class CustomerScreen extends AppCompatActivity {
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Log.d("CustomerScreen", "onClick: attempting to sign out the user");
-//                FirebaseAuth.getInstance().signOut();
-//                Toast.makeText(CustomerScreen.this, "Signed Out", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(CustomerScreen.this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(intent);
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(CustomerScreen.this);
                 builder.setMessage(R.string.sign_out_msg)
                         .setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
@@ -76,8 +72,14 @@ public class CustomerScreen extends AppCompatActivity {
         recyclerView = findViewById(R.id.storeList);
         ArrayList<String> ownerNames = new ArrayList<>();
         ArrayList<String> ownerIDs = new ArrayList<>();
+        cartItems = new ArrayList<>();
+        cartItemQuantities = new ArrayList<>();
+        Log.d("Customer Screen", "this executes second time");
 
-        CustomerRVAdapter myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs);
+        // TODO!!!
+        // somehow need to update cartItems and cartItemQuantities to new values received in
+        // onActivityResult method (scroll down) to reflect items added
+        CustomerRVAdapter myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, cartItemQuantities);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -106,9 +108,28 @@ public class CustomerScreen extends AppCompatActivity {
 
     }
 
+    // method for MyCart button
     public void viewCart (View view) {
         Intent intent = new Intent(this, Cart.class);
+        intent.putParcelableArrayListExtra("itemsArray", cartItems);
+        intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
         startActivity(intent);
     }
 
+    // used to receive updated cart details from Shop activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check that it is the Shop activity with an OK result
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+
+                // Get cart data from Intent
+                cartItems = data.getParcelableArrayListExtra("updatedCartItems");
+                cartItemQuantities = (ArrayList<String>) data.getStringArrayListExtra("updatedCartItemQuantities");
+                Log.d("CustomerScreen", "after result: " + cartItems.size());
+            }
+        }
+    }
 }
