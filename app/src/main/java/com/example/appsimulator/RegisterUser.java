@@ -117,13 +117,41 @@ public class RegisterUser extends AppCompatActivity{
     private void addToFirebase(User user, String userType){
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
-        // user exists will output error
+
         // adds in database
-        ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
+//        ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                boolean userExists = false;
+//                Toast toast = Toast.makeText(RegisterUser.this, "", Toast.LENGTH_LONG);
+//                for (DataSnapshot ds : snapshot.getChildren()) {
+//                    if (ds.getKey().equals(Integer.toString(user.hashCode()))) { // user exists will output error
+//                        userExists = true;
+//                        break;
+//                    }
+//                }
+//                if (!userExists) {
+//                    ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
+//
+//                } else {
+//                    toast.setText("User Already Exists, Please Login");
+//                    toast.show();
+//                    toast.setText("");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+      //  ref.removeEventListener(listener);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean userExists = false;
                 Toast toast = Toast.makeText(RegisterUser.this, "", Toast.LENGTH_LONG);
+
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     if (ds.getKey().equals(Integer.toString(user.hashCode()))) { // user exists will output error
                         userExists = true;
@@ -145,7 +173,6 @@ public class RegisterUser extends AppCompatActivity{
 
             }
         });
-      //  ref.removeEventListener(listener);
     }
 
 

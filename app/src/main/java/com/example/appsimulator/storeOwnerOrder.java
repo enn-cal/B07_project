@@ -168,4 +168,11 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
             }
         });
     }
+
+    public void clickBack(View v){
+        Intent intent;
+        intent = new Intent(this, OwnerScreen.class);
+        intent.putExtra("ID", sessionID);
+        startActivity(intent);
+    }
 }
