@@ -10,17 +10,14 @@ public class Products {
     private String brand;
     private String price; //price and quantity are string must ensure user enters ints
     private String quantity;
-    @Exclude
-    private String storeID;
 
     public Products(){} //default constructor
 
-    public Products(String item, String brand, String price, String quantity, String storeID) {
+    public Products(String item, String brand, String price, String quantity) {
         this.item = item;
         this.brand = brand;
         this.price = price;
         this.quantity = quantity;
-        this.storeID = storeID;
     }
 
     public String getItem() {
@@ -39,8 +36,6 @@ public class Products {
         return quantity;
     }
 
-    public String getStoreID() { return storeID; }
-
     public void setItem(String item){this.item = item;}
 
     public void setBrand(String brand){this.brand = brand;}
@@ -49,12 +44,24 @@ public class Products {
 
     public void setQuantity(String quantity){this.quantity = quantity;}
 
-    public void setStoreID(String storeID) {this.storeID = storeID;}
-
 
 
     @Override
     public int hashCode(){
         return this.item.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        Products other = (Products) obj;
+        //if both products have same name for item
+        return this.item.equals(other.item);
     }
 }

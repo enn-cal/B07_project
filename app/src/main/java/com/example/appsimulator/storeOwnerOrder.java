@@ -99,7 +99,6 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
                     for(DataSnapshot customerInfo: customers.getChildren()){
                         if(customerInfo.exists() && customerInfo.getKey().equals("email")){
                             email = customerInfo.getValue().toString();
-                            //customerList.add(ds.getValue().toString());
                         }
                         if(customerInfo.exists() && customerInfo.getKey().equals("order")){
                             for(DataSnapshot product: customerInfo.getChildren()){
@@ -120,9 +119,6 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
         });
 
 
-    }
-
-    public void completeOrder(){
     }
 
     @Override

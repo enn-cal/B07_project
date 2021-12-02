@@ -35,6 +35,15 @@
                 android:id="@+id/item_text"
                 android:textSize="17sp"/>
 
+            <Button
+                android:id="@+id/button14"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="100dp"
+                android:maxWidth="100dp"
+                android:text="Remove"
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
         <LinearLayout

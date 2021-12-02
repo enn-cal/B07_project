@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/storeOwnerRCView"
-        android:layout_width="407dp"
-        android:layout_height="641dp"
+        android:layout_width="413dp"
+        android:layout_height="615dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -19,14 +19,18 @@
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="128dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="436dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:onClick="clickBack"
         android:text="Back"
+        android:textAlignment="center"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/storeOwnerRCView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.88" />
 </androidx.constraintlayout.widget.ConstraintLayout>

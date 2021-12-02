@@ -43,15 +43,4 @@ public class Orders {
     }
 
      */
-
-    public Orders getStoreProducts(String storeID){
-        Orders o = new Orders();
-        //for every product in Orders get the products associated with the storeID
-        for(Products product:order){
-            if(product.getStoreID().equals(storeID)){
-                o.order.add(product);
-            }
-        }
-        return o;
-    }
 }

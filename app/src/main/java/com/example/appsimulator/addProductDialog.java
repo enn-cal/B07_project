@@ -54,7 +54,7 @@ public class addProductDialog extends AppCompatDialogFragment {
                     displayError("Empty Price. Try Again", "itemPrice");
                     v = false;
                 }
-                else if(!(Pattern.compile("\\$\\d+\\.\\d{1,2}")).matcher(input).matches()){
+                else if(!(Pattern.compile("(\\d+\\.\\d{1,2}|[1-9][0-9]*)")).matcher(input).matches()){ //a decimal number or whole number
                     displayError("Invalid Price. Try Again", "itemPrice");
                     v = false;
                 }

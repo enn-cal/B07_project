@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class OwnerScreen extends AppCompatActivity {
+public class OwnerScreen extends AppCompatActivity implements transferOrder{
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -46,7 +46,7 @@ public class OwnerScreen extends AppCompatActivity {
         recycleView.setLayoutManager(new LinearLayoutManager(this));
 
         list = new ArrayList<>();
-        adapterRv = new AdapterRv(this, list);
+        adapterRv = new AdapterRv(OwnerScreen.this, list, this);
 
         recycleView.setAdapter(adapterRv);
 
@@ -64,7 +64,11 @@ public class OwnerScreen extends AppCompatActivity {
                 list.clear();
                 for (DataSnapshot ds : snapshot.getChildren()){
                     Products product = ds.getValue(Products.class);
-                    list.add(product);
+                    //add product to store only if quantity >= 1
+                    if(!product.getQuantity().equals("0")){
+                        list.add(product);
+                    }
+
                 }
                 adapterRv.notifyDataSetChanged();
             }
@@ -92,7 +96,10 @@ public class OwnerScreen extends AppCompatActivity {
         addProductDialog pd = new addProductDialog();
         pd.setSessionID(sessionID);
         pd.show(getSupportFragmentManager(), "example dialog");
-        list.add(pd.getProduct());
+        //add product to store only if quantity >= 1
+        if(!pd.getProduct().getQuantity().equals("0")){
+            list.add(pd.getProduct());
+        }
         adapterRv.notifyDataSetChanged();
         //adapterRv.notifyItemInserted(list.size()-1);
 
@@ -115,5 +122,30 @@ public class OwnerScreen extends AppCompatActivity {
     }
 
 
+    @Override
+    public void setEmailPassword(String email, Products p) {
+        deleteProduct(p);
+    }
 
+    public void deleteProduct(Products p){
+        DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot products: snapshot.getChildren()){
+                    Products product = products.getValue(Products.class);
+                    //if product that needs to be removed is found in database
+                    if(product.equals(p)){
+                        products.getRef().removeValue();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
