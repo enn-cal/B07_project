@@ -77,8 +77,10 @@ public class CustomerScreen extends AppCompatActivity {
         ArrayList<String> ownerIDs = new ArrayList<>();
         cartItems = new ArrayList<>();
         cartItemQuantities = new ArrayList<>();
+//        cartItemDetails = new ArrayList<>();
 
         myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, cartItemQuantities);
+//        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItemsDetails);
         mRecyclerView.setAdapter(myAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

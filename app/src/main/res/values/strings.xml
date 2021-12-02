@@ -19,6 +19,7 @@
     <string name="proceed">Proceed</string>
     <string name="cancel">Cancel</string>
     <string name="total">Total</string>
-    <string name="placeOrder">Place Order</string>
+    <string name="place_order">Place Order</string>
+    <string name="remove_item">Remove Item</string>
 
 </resources>

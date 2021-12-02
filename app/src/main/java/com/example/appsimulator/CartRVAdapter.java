@@ -1,7 +1,6 @@
 package com.example.appsimulator;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,13 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
     Context ct;
     ArrayList<Products> items;
     ArrayList<String> itemQuantities;
+    TextView totalCostView;
 
-    public CartRVAdapter(Context ct, ArrayList<Products> items, ArrayList<String> itemQuantities) {
+    public CartRVAdapter(Context ct, ArrayList<Products> items, ArrayList<String> itemQuantities, TextView totalCostView) {
         this.ct = ct;
         this.items = items;
         this.itemQuantities = itemQuantities;
+        this.totalCostView = totalCostView;
     }
 
     @NonNull
@@ -40,7 +41,6 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         holder.price.setText(items.get(position).getPrice());
         holder.quantity.setText(itemQuantities.get(position));
         // multiplying price and quantity to obtain cost
-        Log.d("CRV", "price '" + holder.price.getText().toString() + "'");
         holder.cost.setText("$" +
                 String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
                         Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
@@ -57,6 +57,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                         String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
                                 Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
                 );
+                totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
             }
         });
 
@@ -72,11 +73,11 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                             String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
                                     Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
                     );
+                    totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
                 }
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

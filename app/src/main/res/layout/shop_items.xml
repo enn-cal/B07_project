@@ -28,6 +28,9 @@
                 android:text="Brand"
                 android:textColor="@color/white"
                 android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/shopItemName"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,11 +38,12 @@
                 android:id="@+id/shopItemName"
                 android:layout_width="142dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:text="Item Name"
                 android:textColor="@color/white"
                 android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/addToCartButton"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/shopBrandText"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +55,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Price"
                 android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/shopBrandText"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -66,6 +71,7 @@
                 android:layout_marginBottom="16dp"
                 android:text="Quantity"
                 android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/shopPrice"
                 app:layout_constraintTop_toTopOf="@+id/shopPrice"
@@ -82,8 +88,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/shopQuantity"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shopItemName"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <android.widget.Space

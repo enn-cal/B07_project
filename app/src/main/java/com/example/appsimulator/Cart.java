@@ -22,8 +22,7 @@ public class Cart extends AppCompatActivity {
 
     private Intent i;
     private RecyclerView recyclerView;
-    private FirebaseDatabase f_db;
-    private DatabaseReference ref;
+    private TextView totalCost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,36 +36,21 @@ public class Cart extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.cartItemsList);
 
-        CartRVAdapter myAdapter = new CartRVAdapter(this, cartItems, cartItemQuantities);
+        totalCost = findViewById(R.id.totalCost);
+        totalCost.setText(updateTotalCost(cartItems, cartItemQuantities));
+
+        CartRVAdapter myAdapter = new CartRVAdapter(this, cartItems, cartItemQuantities, totalCost);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
 
-        Log.d("Cart", "after MyCart pressed: " + cartItems.size());
+    public String updateTotalCost(ArrayList<Products> mCartItems, ArrayList<String> mCartItemQuantities) {
+        double cost = 0;
 
-
-        // TODO!!!
-        // CHANGE THIS STUFF!!
-        // use cartItems and cartItemQuantities to populate the recyclerView
-
-//        items.add(new Products("Chips", "Lays", "$3", "200"));
-//        itemQuantities.add("1");
-
-//        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(storeOwnerID).child("Store");
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                items.clear();
-//                for (DataSnapshot productSnapshot : snapshot.getChildren()) {
-//                    items.add(productSnapshot.getValue(Products.class));
-//                }
-//
-//                myAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        for (int i=0; i<mCartItems.size(); i++) {
+            cost += Double.parseDouble(mCartItems.get(i).getPrice().replaceAll("[^\\d\\.]", "")) *
+                    Double.parseDouble(mCartItemQuantities.get(i).replaceAll("[^\\d\\.]", ""));
+        }
+        return "$" + String.valueOf(cost);
     }
 }

@@ -83,7 +83,7 @@
             <Button
                 android:id="@+id/increaseQuantity"
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
@@ -99,7 +99,7 @@
             <Button
                 android:id="@+id/decreaseQuantity"
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:layout_marginStart="16dp"
                 android:backgroundTint="@android:color/holo_orange_light"
                 android:text="-"
@@ -109,6 +109,19 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/increaseQuantity"
                 app:layout_constraintEnd_toEndOf="@+id/cartBrandText"
                 app:layout_constraintStart_toEndOf="@+id/increaseQuantity" />
+
+            <Button
+                android:id="@+id/decreaseQuantity2"
+                android:layout_width="100dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="16dp"
+                android:backgroundTint="@android:color/holo_orange_light"
+                android:text="@string/remove_item"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/decreaseQuantity"
+                app:layout_constraintTop_toTopOf="@+id/increaseQuantity" />
 
             <android.widget.Space
                 android:layout_width="wrap_content"
