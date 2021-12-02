@@ -235,7 +235,11 @@ public class RegisterUser extends AppCompatActivity{
         ChildEventListener childLister = ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.i("tag", "child changes");
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Intent intent;
                 if (spinnerString.equals("Store Owner")) {
                     intent = new Intent(RegisterUser.this, OwnerScreen.class);
@@ -244,11 +248,6 @@ public class RegisterUser extends AppCompatActivity{
                 }
                 intent.putExtra("ID", Integer.toString(user.hashCode()));
                 startActivity(intent);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
