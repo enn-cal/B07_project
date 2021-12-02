@@ -18,4 +18,7 @@
     <string name="sign_out_msg">You are about to be signed out.</string>
     <string name="proceed">Proceed</string>
     <string name="cancel">Cancel</string>
+    <string name="total">Total</string>
+    <string name="placeOrder">Place Order</string>
+
 </resources>

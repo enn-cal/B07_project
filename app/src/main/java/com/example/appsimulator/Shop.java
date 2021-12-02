@@ -77,7 +77,6 @@ public class Shop extends AppCompatActivity {
     // so that they accumulate over activities
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Intent resultIntent = new Intent();
         resultIntent.putParcelableArrayListExtra("updatedCartItems", cartItems);
         resultIntent.putStringArrayListExtra("updatedCartItemQuantities", cartItemQuantities);

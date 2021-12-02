@@ -67,12 +67,23 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
                     intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
                     // startActivityForResult is used to return results (from Shop) to parent (CustomerScreen) activity
                     ((Activity) ct).startActivityForResult(intent, 100);
+                    notifyDataSetChanged();
                 }
 
-
             });
+
         }
 
+    }
+
+    public void updateAdapter(ArrayList<Products> updatedCartItems, ArrayList<String> updatedCartItemQuantities){
+
+        // update cart details
+        cartItems = updatedCartItems;
+        cartItemQuantities = updatedCartItemQuantities;
+
+        // notify the RecyclerView in order to refresh the views
+        notifyDataSetChanged();
     }
 
 

@@ -12,11 +12,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,11 +29,16 @@ public class CustomerScreen extends AppCompatActivity {
     private DatabaseReference ref;
     private Button myCart;
     private Button signOut;
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private int customerID;
     private Intent i;
-    private ArrayList<Products> cartItems;
-    private ArrayList<String> cartItemQuantities;
+    ArrayList<Products> cartItems;
+    ArrayList<String> cartItemQuantities;
+    CustomerRVAdapter myAdapter;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,19 +72,15 @@ public class CustomerScreen extends AppCompatActivity {
             }
         });
 
-        recyclerView = findViewById(R.id.storeList);
+        mRecyclerView = findViewById(R.id.storeList);
         ArrayList<String> ownerNames = new ArrayList<>();
         ArrayList<String> ownerIDs = new ArrayList<>();
         cartItems = new ArrayList<>();
         cartItemQuantities = new ArrayList<>();
-        Log.d("Customer Screen", "this executes second time");
 
-        // TODO!!!
-        // somehow need to update cartItems and cartItemQuantities to new values received in
-        // onActivityResult method (scroll down) to reflect items added
-        CustomerRVAdapter myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, cartItemQuantities);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, cartItemQuantities);
+        mRecyclerView.setAdapter(myAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner"); //Might have to change this
 
@@ -104,8 +103,6 @@ public class CustomerScreen extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     // method for MyCart button
@@ -124,11 +121,13 @@ public class CustomerScreen extends AppCompatActivity {
         // Check that it is the Shop activity with an OK result
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
-
                 // Get cart data from Intent
                 cartItems = data.getParcelableArrayListExtra("updatedCartItems");
                 cartItemQuantities = (ArrayList<String>) data.getStringArrayListExtra("updatedCartItemQuantities");
                 Log.d("CustomerScreen", "after result: " + cartItems.size());
+                // update adapter to reflect changes
+                myAdapter.updateAdapter(cartItems, cartItemQuantities);
+
             }
         }
     }

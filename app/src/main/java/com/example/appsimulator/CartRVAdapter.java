@@ -1,6 +1,7 @@
 package com.example.appsimulator;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,16 +40,43 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         holder.price.setText(items.get(position).getPrice());
         holder.quantity.setText(itemQuantities.get(position));
         // multiplying price and quantity to obtain cost
-        holder.cost.setText(
-                String.valueOf(Double.parseDouble(holder.price.getText().toString()) *
-                        Double.parseDouble(holder.quantity.getText().toString()))
+        Log.d("CRV", "price '" + holder.price.getText().toString() + "'");
+        holder.cost.setText("$" +
+                String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+                        Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
         );
 
-//        holder.cost.setText(
-//                String.valueOf(Double.parseDouble(items.get(position).getPrice()) *
-//                        Double.parseDouble(items.get(position).getQuantity()))
-//        );
+        // increase quantity
+        holder.increaseQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemQuantities.set(holder.getAdapterPosition(), String.valueOf(Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) + 1));
+                holder.quantity.setText(itemQuantities.get(holder.getAdapterPosition()));
+
+                holder.cost.setText("$" +
+                        String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+                                Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
+                );
+            }
+        });
+
+        // decrease quantity
+        holder.decreaseQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) > 1) {
+                    itemQuantities.set(holder.getAdapterPosition(), String.valueOf(Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) - 1));
+                    holder.quantity.setText(itemQuantities.get(holder.getAdapterPosition()));
+
+                    holder.cost.setText("$" +
+                            String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+                                    Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
+                    );
+                }
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -62,6 +90,8 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         TextView price;
         TextView quantity;
         TextView cost;
+        Button increaseQ;
+        Button decreaseQ;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -71,6 +101,8 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
             price = itemView.findViewById(R.id.cartPrice);
             quantity = itemView.findViewById(R.id.cartQuantity);
             cost = itemView.findViewById(R.id.cartCost);
+            increaseQ = itemView.findViewById(R.id.increaseQuantity);
+            decreaseQ = itemView.findViewById(R.id.decreaseQuantity);
         }
     }
 }
