@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Orders {
 
-    public ArrayList<Products> order = new ArrayList<Products>();
+    public ArrayList<Products> order = new ArrayList<>();
     public String storeID;
 
     public Orders(String storeID){

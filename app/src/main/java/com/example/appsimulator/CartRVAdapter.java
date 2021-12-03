@@ -39,12 +39,14 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         holder.brand.setText(items.get(position).getBrand());
         holder.itemName.setText(items.get(position).getItem());
         holder.price.setText(items.get(position).getPrice());
-        holder.quantity.setText(itemQuantities.get(position));
+
+        //TODO Fix itemQuantities
+        //holder.quantity.setText(itemQuantities.get(position));
         // multiplying price and quantity to obtain cost
-        holder.cost.setText("$" +
-                String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
-                        Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
-        );
+//        holder.cost.setText("$" +
+//                String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+//                        Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
+//        );
 
         // increase quantity
         holder.increaseQ.setOnClickListener(new View.OnClickListener() {

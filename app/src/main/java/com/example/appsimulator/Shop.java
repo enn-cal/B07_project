@@ -29,6 +29,7 @@ public class Shop extends AppCompatActivity {
     private String storeOwnerID;
     private ArrayList<Products> cartItems;
     private ArrayList<String> cartItemQuantities;
+    private ArrayList<Products> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +39,16 @@ public class Shop extends AppCompatActivity {
         i = getIntent();
         // to add store owner's name to the store page
         shopText = findViewById(R.id.shopText);
-        storeOwnerID = i.getStringExtra("OwnerID");
         shopText.setText(i.getStringExtra("StoreName"));
+        storeOwnerID = i.getStringExtra("OwnerID");
+
         // to update items for cart
         cartItems = i.getParcelableArrayListExtra("itemsArray");
         cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
-
+        //Log.i("Shop", "Cart size: " + cartItems.size());
 
         recyclerView = findViewById(R.id.userShopList);
-        ArrayList<Products> products = new ArrayList<>();
+        products = new ArrayList<>();
 
         ShopRVAdapter myAdapter = new ShopRVAdapter(this, products, cartItems, cartItemQuantities);
         recyclerView.setAdapter(myAdapter);
@@ -61,7 +63,6 @@ public class Shop extends AppCompatActivity {
                 for (DataSnapshot productSnapshot : snapshot.getChildren()) {
                     products.add(productSnapshot.getValue(Products.class));
                 }
-
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -83,5 +84,6 @@ public class Shop extends AppCompatActivity {
         Log.d("Shop", "on back pressed: " + cartItems.size());
         setResult(RESULT_OK, resultIntent);
         finish();
+        super.onBackPressed();
     }
 }

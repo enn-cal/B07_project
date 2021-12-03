@@ -38,8 +38,6 @@ public class CustomerScreen extends AppCompatActivity {
 
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +110,20 @@ public class CustomerScreen extends AppCompatActivity {
         Intent intent = new Intent(this, Cart.class);
         intent.putParcelableArrayListExtra("itemsArray", cartItems);
         intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
+        intent.putExtra("customerID", String.valueOf(customerID));
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Adds Cart to database (We probably should change when this happens)
+        if(!cartItems.isEmpty()){
+            Intent i = getIntent();
+            ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(String.valueOf(customerID));
+            ref.child("Cart").setValue(cartItems);
+        }
     }
 
     // used to receive updated cart details from Shop activity
