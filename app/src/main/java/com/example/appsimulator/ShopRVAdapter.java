@@ -1,6 +1,7 @@
 package com.example.appsimulator;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
         holder.itemName.setText(storeProducts.get(position).getItem());
         holder.price.setText(storeProducts.get(position).getPrice());
         holder.quantity.setText(storeProducts.get(position).getQuantity());
+        if (cartItems.contains(storeProducts.get(position)))
+            holder.addToCart.setBackgroundColor(Color.WHITE);
     }
 
     @Override
@@ -72,6 +75,7 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
                         Toast.makeText(ct, itemName.getText() + " added to cart.", Toast.LENGTH_SHORT).show();
                         cartItems.add(storeProducts.get(getLayoutPosition()));
                         cartItemQuantities.add("1");
+                        addToCart.setBackgroundColor(Color.WHITE);
                     } else {
                         Toast.makeText(ct, itemName.getText() + " is already added to cart.", Toast.LENGTH_SHORT).show();
                     }

@@ -111,7 +111,7 @@
                 app:layout_constraintStart_toEndOf="@+id/increaseQuantity" />
 
             <Button
-                android:id="@+id/decreaseQuantity2"
+                android:id="@+id/removeItem"
                 android:layout_width="100dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="16dp"

@@ -49,6 +49,16 @@ public class Products implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Products other = (Products) obj;
+        return item.equals(other.item) && brand.equals(other.brand) && price.equals(other.price);
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

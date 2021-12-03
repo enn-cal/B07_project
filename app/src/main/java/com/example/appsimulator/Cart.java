@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Cart extends AppCompatActivity {
@@ -23,6 +24,8 @@ public class Cart extends AppCompatActivity {
     private Intent i;
     private RecyclerView recyclerView;
     private TextView totalCost;
+    ArrayList<Products> cartItems;
+    ArrayList<String> cartItemQuantities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,8 @@ public class Cart extends AppCompatActivity {
 
         i = getIntent();
         // get cart data from CustomerScreen (on MyCart clicked)
-        ArrayList<Products> cartItems = i.getParcelableArrayListExtra("itemsArray");
-        ArrayList<String> cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
+        cartItems = i.getParcelableArrayListExtra("itemsArray");
+        cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
 
         recyclerView = findViewById(R.id.cartItemsList);
 
@@ -46,11 +49,21 @@ public class Cart extends AppCompatActivity {
 
     public String updateTotalCost(ArrayList<Products> mCartItems, ArrayList<String> mCartItemQuantities) {
         double cost = 0;
-
+        DecimalFormat df = new DecimalFormat("###.##");
         for (int i=0; i<mCartItems.size(); i++) {
             cost += Double.parseDouble(mCartItems.get(i).getPrice().replaceAll("[^\\d\\.]", "")) *
                     Double.parseDouble(mCartItemQuantities.get(i).replaceAll("[^\\d\\.]", ""));
         }
-        return "$" + String.valueOf(cost);
+        return "$" + df.format(cost);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        resultIntent.putParcelableArrayListExtra("updatedCartItems", cartItems);
+        resultIntent.putStringArrayListExtra("updatedCartItemQuantities", cartItemQuantities);
+        Log.d("Cart", "on back pressed: " + cartItems.size());
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }
