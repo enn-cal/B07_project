@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Orders {
 
-    public ArrayList<Products> order = new ArrayList<Products>();
-    private int customerID;
+    public ArrayList<Products> order = new ArrayList<>();
+    public String storeID;
 
-    public Orders(int customerID){
-       this.customerID = customerID;
+    public Orders(String storeID){
+        this.storeID = storeID;
     }
 
     public int countProduct(Products product){
@@ -27,14 +27,12 @@ public class Orders {
 
     public void removeProduct(Products product){
         if(!order.contains(product)){
-           return;
+            return;
         }
         order.remove(product);
     }
 
-    public int getCustomerID(){
-        return customerID;
+    public String getstoreID(){
+        return storeID;
     }
-
 }
-

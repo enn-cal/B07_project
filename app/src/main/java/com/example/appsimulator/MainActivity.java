@@ -50,13 +50,11 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
         setContentView(R.layout.activity_main);
         presenterLogin = new PresenterLogin(FirebaseDatabase.getInstance(), FirebaseDatabase.getInstance().getReference(), this);
 
-        login = findViewById(R.id.button);
+
+        login = (Button) findViewById(R.id.button);
         setEmail();
         setPassword();
         setUserType();
-
-        DatabaseReference m = FirebaseDatabase.getInstance().getReference();
-        m.push().setValue("Stores");
 
         login.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -71,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
     {
         Intent intent = new Intent(this, RegisterUser.class);
         startActivity(intent);
+//        TextView tv= (TextView) findViewById(R.id.text_view);
+//
+//        //alter text of textview widget
+//        tv.setText("This text view is clicked");
+//
+//        //assign the textview forecolor
+//        tv.setTextColor(Color.GREEN);
     }
 
     @Override
