@@ -10,4 +10,16 @@
         <item>Customer</item>
         <item>Store Owner</item>
     </string-array>
+    <string name="sign_out">Sign Out</string>
+    <string name="stores">Stores</string>
+    <string name="cart">My Cart</string>
+    <string name="orders">Orders</string>
+    <string name="available_stores">Available Stores</string>
+    <string name="sign_out_msg">You are about to be signed out.</string>
+    <string name="proceed">Proceed</string>
+    <string name="cancel">Cancel</string>
+    <string name="total">Total</string>
+    <string name="place_order">Place Order</string>
+    <string name="remove_item">Remove Item</string>
+
 </resources>

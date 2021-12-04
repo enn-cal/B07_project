@@ -1,7 +1,6 @@
 package com.example.appsimulator;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,11 +12,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements Contracts.ViewLogin {
 
@@ -46,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
         this.userType = findViewById(R.id.spinner);
     }
 
-    public String getUserType(){ return this. userType.getSelectedItem().toString(); }
+    public String getUserType(){ return this.userType.getSelectedItem().toString(); }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
         setContentView(R.layout.activity_main);
         presenterLogin = new PresenterLogin(FirebaseDatabase.getInstance(), FirebaseDatabase.getInstance().getReference(), this);
 
-
-        //Log.i("TestMessage", "HELLO");
 
         login = (Button) findViewById(R.id.button);
         setEmail();
@@ -85,8 +79,16 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
     }
 
     @Override
-    public void loginSuccess() {
-        startActivity(new Intent(this, ProfilePage.class));
+    public void loginSuccess(String ID) {
+        if(getUserType().equals("Store Owner")) {
+            Intent intent = new Intent(this, OwnerScreen.class);
+            intent.putExtra("ID", ID);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, CustomerScreen.class);
+            intent.putExtra("ID", ID);
+            startActivity(intent);
+        }
     }
 
     @Override
