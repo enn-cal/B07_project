@@ -43,6 +43,10 @@ public class ModelLogin implements Contracts.ModelLogin {
     }
 
     public void match(String email, String password, String userType) {
+        if(loginError(email,password)){
+            return;
+        }
+        //Consider the type to compare corresponding regex with
         //checks if the email is the database and if credentials are correct
         final boolean[] match = {false};
         ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
