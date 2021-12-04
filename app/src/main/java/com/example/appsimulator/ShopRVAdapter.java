@@ -38,8 +38,8 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ShopRVAdapter.MyViewHolder holder, int position) {
-        holder.brand.setText(storeProducts.get(position).getBrand());
-        holder.itemName.setText(storeProducts.get(position).getItem());
+        String brandItemName = storeProducts.get(position).getBrand() + " - " + storeProducts.get(position).getItem(); //Combined brand and item name
+        holder.itemName.setText(brandItemName);
         holder.price.setText(storeProducts.get(position).getPrice());
         holder.quantity.setText(storeProducts.get(position).getQuantity());
         if (cartItems.contains(storeProducts.get(position)))
@@ -52,17 +52,13 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        TextView brand;
         TextView itemName;
         TextView price;
         TextView quantity;
         Button addToCart;
 
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            brand = itemView.findViewById(R.id.shopBrandText);
             itemName = itemView.findViewById(R.id.shopItemName);
             price = itemView.findViewById(R.id.shopPrice);
             quantity = itemView.findViewById(R.id.shopQuantity);

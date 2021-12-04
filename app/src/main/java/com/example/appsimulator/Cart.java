@@ -27,8 +27,7 @@ public class Cart extends AppCompatActivity {
     private DatabaseReference ref;
     private String customerID;
     private ArrayList<Products> cartItems;
-    ArrayList<Products> cartItems;
-    ArrayList<String> cartItemQuantities;
+    private ArrayList<String> cartItemQuantities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +39,8 @@ public class Cart extends AppCompatActivity {
         //ArrayList<Products> cartItems = i.getParcelableArrayListExtra("itemsArray");
 
         cartItems = new ArrayList<>();
-        ArrayList<String> cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
-        Log.i("Cart", "cartItemQuantities :" + cartItemQuantities.toString());
+        cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
+        //Log.i("Cart", "cartItemQuantities :" + cartItemQuantities.toString());
         customerID = i.getStringExtra("customerID");
 
         recyclerView = findViewById(R.id.cartItemsList);
