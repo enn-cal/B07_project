@@ -1,10 +1,11 @@
 package com.example.appsimulator;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -12,8 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,12 +20,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 
 public class RegisterUser extends AppCompatActivity{
     private EditText Name, password, dob, PostalCode, email;
     private Spinner accountSpinner;
+    private Calendar calendar = Calendar.getInstance();
+    private int day, month, year;
 
 
     public boolean isValid(String input, String type) {
@@ -173,14 +175,24 @@ public class RegisterUser extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
+
         Name = findViewById(R.id.editTextTextPersonName3);
-        dob = findViewById(R.id.editTextDate3);
         PostalCode = findViewById(R.id.editTextTextPostalAddress2);
         email = findViewById(R.id.editTextTextEmailAddress3);
         password = findViewById(R.id.editTextTextPassword3);
         Button register = findViewById(R.id.button3);
         accountSpinner = findViewById(R.id.spinner);
-        //private ProgressBar loading;
+
+        dob = (EditText)findViewById(R.id.editTextDate3);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        year = calendar.get(Calendar.YEAR);
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CalendarPopUp();
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,6 +226,17 @@ public class RegisterUser extends AppCompatActivity{
 
             }
         });
+    }
 
+    public void CalendarPopUp(){
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                dob.setText(month+1 + "/" + day + "/" + year);
+            }
+        };
+
+        DatePickerDialog popUp = new DatePickerDialog(RegisterUser.this, listener, year, month, day);
+        popUp.show();
     }
 }

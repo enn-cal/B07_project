@@ -8,7 +8,7 @@ public class Orders {
     private int customerID;
 
     public Orders(int customerID){
-        this.customerID = customerID;
+       this.customerID = customerID;
     }
 
     public int countProduct(Products product){
@@ -37,3 +37,4 @@ public class Orders {
     }
 
 }
+

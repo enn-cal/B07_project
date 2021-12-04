@@ -65,20 +65,19 @@ public class ModelLogin implements Contracts.ModelLogin {
 
                  //checks if password is correct if it finds a match
                 if (match[0]) {
-                    if (!user.pwd.equals(password)|| user == null) {
+                    if (user == null || !user.pwd.equals(password)) {
                         listener.loginFailed("Incorrect password");
-//                        Log.i("login failed","INcorrect password");
                     }
 //                    else if(!loginError(email,password)) //-> loginError; something is wrong with regex i think
 //                        Log.i("login failed"," Incorrect credentials");
                         //listener.loginFailed("Enter valid credentials");
-                    else
-//                        Log.i("login passed","party");
-                        listener.loginSuccess();
+                    else {
+                        listener.loginSuccess(Integer.toString(user.hashCode()));
+                    }
                 }
                 else
                     //Log.i("login failed","user not found");
-                    listener.loginFailed("Not Registered User please register");
+                    listener.loginFailed("Not a registered user, please register.");
             }
 
             @Override
