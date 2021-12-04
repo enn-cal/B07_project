@@ -1,23 +1,34 @@
 package com.example.appsimulator;
 
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import android.os.Parcel;
+import android.os.Parcelable;
 @IgnoreExtraProperties
 
-public class Products {
+public class Products implements Parcelable {
 
     private String item;
     private String brand;
     private String price; //price and quantity are string must ensure user enters ints
     private String quantity;
 
-    public Products(){} //default constructor
+    public Products() {
+    } //default constructor
 
     public Products(String item, String brand, String price, String quantity) {
         this.item = item;
         this.brand = brand;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    protected Products(Parcel in) {
+        item = in.readString();
+        brand = in.readString();
+        price = in.readString();
+        quantity = in.readString();
     }
 
     public String getItem() {
@@ -61,7 +72,32 @@ public class Products {
             return false;
 
         Products other = (Products) obj;
-        //if both products have same name for item
-        return this.item.equals(other.item);
+        return item.equals(other.item) && brand.equals(other.brand) && price.equals(other.price);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(item);
+        parcel.writeString(brand);
+        parcel.writeString(price);
+        parcel.writeString(quantity);
+    }
+
+    public static final Creator<Products> CREATOR = new Creator<Products>() {
+        @Override
+        public Products createFromParcel(Parcel in) {
+            return new Products(in);
+        }
+
+        @Override
+        public Products[] newArray(int size) {
+            return new Products[size];
+        }
+    };
+
 }

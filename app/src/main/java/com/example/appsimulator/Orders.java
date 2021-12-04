@@ -3,13 +3,18 @@ package com.example.appsimulator;
 import java.util.ArrayList;
 
 public class Orders {
-
+  
     public ArrayList<Products> order;
-    //public String storeID;
+    public String storeID;
     private boolean activator = false; //tells us if the orders are complete (when list is empty) only if activator is true (see pinned db pic on discord)
 
     public Orders(){
         this.order = new ArrayList<Products>();
+    }
+  
+    public Orders(String storeID){
+        this.order = new ArrayList<Products>();
+        this.storeID = storeID;
     }
 
     public int countProduct(Products product){
@@ -33,6 +38,7 @@ public class Orders {
         order.remove(product);
     }
 
+
     public boolean orderComplete (){
         return (activator == true) && (order.isEmpty());
     }
@@ -43,4 +49,9 @@ public class Orders {
     }
 
      */
+
+    public String getstoreID(){
+        return storeID;
+    }
 }
+

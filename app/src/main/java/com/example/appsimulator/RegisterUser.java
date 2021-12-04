@@ -160,7 +160,6 @@ public class RegisterUser extends AppCompatActivity{
                 }
                 if (!userExists) {
                     ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
-
                 } else {
                     toast.setText("User Already Exists, Please Login");
                     toast.show();
