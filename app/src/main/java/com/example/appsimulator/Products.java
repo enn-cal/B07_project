@@ -3,6 +3,8 @@ package com.example.appsimulator;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.Query;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 @IgnoreExtraProperties
@@ -54,8 +56,6 @@ public class Products implements Parcelable {
     public void setPrice(String price){this.price= price;}
 
     public void setQuantity(String quantity){this.quantity = quantity;}
-
-
 
     @Override
     public int hashCode(){

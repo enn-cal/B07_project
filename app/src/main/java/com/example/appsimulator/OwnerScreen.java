@@ -97,9 +97,9 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
         pd.setSessionID(sessionID);
         pd.show(getSupportFragmentManager(), "example dialog");
         //add product to store only if quantity >= 1
-        if(!pd.getProduct().getQuantity().equals("0")){
+        //if(!pd.getProduct().getQuantity().equals("0")){
             list.add(pd.getProduct());
-        }
+        //}
         adapterRv.notifyDataSetChanged();
         //adapterRv.notifyItemInserted(list.size()-1);
 
