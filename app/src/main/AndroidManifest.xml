@@ -17,10 +17,10 @@
             android:exported="false" />
         <activity
             android:name=".OwnerScreen"
-            android:exported="true">
-        </activity>
+            android:exported="true"/>
+        <activity
             android:name=".Cart"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".CustomerScreen"
             android:exported="false" />

@@ -243,7 +243,7 @@ public class RegisterUser extends AppCompatActivity{
                 if (spinnerString.equals("Store Owner")) {
                     intent = new Intent(RegisterUser.this, OwnerScreen.class);
                 } else {
-                    intent = new Intent(RegisterUser.this, ProfilePage.class);
+                    intent = new Intent(RegisterUser.this, CustomerScreen.class);
                 }
                 intent.putExtra("ID", Integer.toString(user.hashCode()));
                 startActivity(intent);
