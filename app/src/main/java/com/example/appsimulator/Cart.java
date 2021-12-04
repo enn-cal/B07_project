@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
@@ -103,5 +104,24 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
         for(int i = 1; i < repeats; i++)
             ref.child(Integer.toString(myAdapter.getItemCount())).setValue(cartItems.get(pos));
+    }
+
+    @Override
+    public void onItemRemove(int pos, int repeats) {
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
+        // assuming item names are unique
+        Query itemQuery = ref.orderByChild("item").equalTo(cartItems.get(pos).getItem()).limitToLast(repeats);
+        itemQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren())
+                    ds.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

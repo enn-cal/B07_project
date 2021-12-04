@@ -71,21 +71,21 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 //        });
 
         // decrease quantity
-        holder.decreaseQ.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) > 1) {
-                    itemQuantities.set(holder.getAdapterPosition(), String.valueOf(Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) - 1));
-                    holder.quantity.setText(itemQuantities.get(holder.getAdapterPosition()));
-
-                    holder.cost.setText("$" + df.format(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
-                                    Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
-                    );
-                    totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
-                    notifyDataSetChanged();
-                }
-            }
-        });
+//        holder.decreaseQ.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) > 1) {
+//                    itemQuantities.set(holder.getAdapterPosition(), String.valueOf(Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) - 1));
+//                    holder.quantity.setText(itemQuantities.get(holder.getAdapterPosition()));
+//
+//                    holder.cost.setText("$" + df.format(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+//                                    Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
+//                    );
+//                    totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
+//                    notifyDataSetChanged();
+//                }
+//            }
+//        });
 
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         return items.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView brand;
         TextView itemName;
@@ -131,23 +131,38 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
             remove = itemView.findViewById(R.id.removeItem);
             this.onItemListener = onItemListener;
 
-            increaseQ.setOnClickListener(this);
-        }
+            increaseQ.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    count++;
+                    String[] a = price.getText().toString().split("[^\\d\\.]");
+                    Log.i("TAG", a[0]);
+                    double t_price = Double.parseDouble(a[1]);
+                    t_price = t_price * count;
+                    quantity.setText("" + count);
+                    cost.setText(String.valueOf(t_price));
+                    onItemListener.onItemAdd(getAdapterPosition(), count);
+                }
+            });
 
-        @Override
-        public void onClick(View v) {
-            count++;
-            String[] a = price.getText().toString().split("[^\\d\\.]");
-            Log.i("TAG", a[0]);
-            double t_price = Double.parseDouble(a[1]);
-            t_price = t_price * count;
-            quantity.setText("" + count);
-            cost.setText(String.valueOf(t_price));
-            onItemListener.onItemAdd(getAdapterPosition(), count);
+            decreaseQ.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    count--;
+                    String[] a = price.getText().toString().split("[^\\d\\.]");
+                    Log.i("TAG", a[0]);
+                    double t_price = Double.parseDouble(a[1]);
+                    t_price = t_price * count;
+                    quantity.setText("" + count);
+                    cost.setText(String.valueOf(t_price));
+                    onItemListener.onItemRemove(getAdapterPosition(), count);
+                }
+            });
         }
     }
     // Creating Interface
     public interface OnItemListener{
         void onItemAdd(int pos, int repeats);
+        void onItemRemove(int pos, int repeats);
     }
 }
