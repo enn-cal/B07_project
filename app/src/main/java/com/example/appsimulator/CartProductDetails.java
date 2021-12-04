@@ -15,15 +15,13 @@ public class CartProductDetails implements Parcelable {
     Products item;
     String quantity;
     String storeID;
-    String price;
 
 //        CartProductDetails(ArrayList<Products> item, ArrayList<String> quantity, ArrayList<String> storeID, ArrayList<String> price) {
-        CartProductDetails(Products item, String quantity, String storeID, String price) {
+        CartProductDetails(Products item, String quantity, String storeID) {
 
             this.item = item;
             this.quantity = quantity;
             this.storeID = storeID;
-            this.price = price;
     }
 
     @Override
@@ -33,7 +31,6 @@ public class CartProductDetails implements Parcelable {
 
     protected CartProductDetails(Parcel in) {
         item = in.readParcelable(getClass().getClassLoader());
-        price = in.readString();
         storeID = in.readString();
         quantity = in.readString();
     }
@@ -41,7 +38,6 @@ public class CartProductDetails implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
 //        parcel.writeParcelable(item);
-        parcel.writeString(price);
         parcel.writeString(storeID);
         parcel.writeString(quantity);
     }

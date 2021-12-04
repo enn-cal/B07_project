@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Cart extends AppCompatActivity {
@@ -26,6 +27,8 @@ public class Cart extends AppCompatActivity {
     private DatabaseReference ref;
     private String customerID;
     private ArrayList<Products> cartItems;
+    ArrayList<Products> cartItems;
+    ArrayList<String> cartItemQuantities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,6 @@ public class Cart extends AppCompatActivity {
         Log.i("Cart", "cartItemQuantities :" + cartItemQuantities.toString());
         customerID = i.getStringExtra("customerID");
 
-        Log.i("Cart", "Cart Size: " + cartItems.size());
         recyclerView = findViewById(R.id.cartItemsList);
 
         totalCost = findViewById(R.id.totalCost);
@@ -73,11 +75,21 @@ public class Cart extends AppCompatActivity {
 
     public String updateTotalCost(ArrayList<Products> mCartItems, ArrayList<String> mCartItemQuantities) {
         double cost = 0;
-
+        DecimalFormat df = new DecimalFormat("###.##");
         for (int i=0; i<mCartItems.size(); i++) {
             cost += Double.parseDouble(mCartItems.get(i).getPrice().replaceAll("[^\\d\\.]", "")) *
                     Double.parseDouble(mCartItemQuantities.get(i).replaceAll("[^\\d\\.]", ""));
         }
-        return "$" + String.valueOf(cost);
+        return "$" + df.format(cost);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        resultIntent.putParcelableArrayListExtra("updatedCartItems", cartItems);
+        resultIntent.putStringArrayListExtra("updatedCartItemQuantities", cartItemQuantities);
+        Log.d("Cart", "on back pressed: " + cartItems.size());
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }

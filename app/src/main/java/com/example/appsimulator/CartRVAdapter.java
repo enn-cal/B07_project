@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.lang.Double;
 
@@ -36,6 +37,8 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull CartRVAdapter.MyViewHolder holder, int position) {
+        DecimalFormat df = new DecimalFormat("###.##");
+
         holder.brand.setText(items.get(position).getBrand());
         holder.itemName.setText(items.get(position).getItem());
         holder.price.setText(items.get(position).getPrice());
@@ -55,11 +58,11 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                 itemQuantities.set(holder.getAdapterPosition(), String.valueOf(Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) + 1));
                 holder.quantity.setText(itemQuantities.get(holder.getAdapterPosition()));
 
-                holder.cost.setText("$" +
-                        String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+                holder.cost.setText("$" + df.format(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
                                 Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
                 );
                 totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
+                notifyDataSetChanged();
             }
         });
 
@@ -71,12 +74,22 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                     itemQuantities.set(holder.getAdapterPosition(), String.valueOf(Integer.parseInt(itemQuantities.get(holder.getAdapterPosition())) - 1));
                     holder.quantity.setText(itemQuantities.get(holder.getAdapterPosition()));
 
-                    holder.cost.setText("$" +
-                            String.valueOf(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
+                    holder.cost.setText("$" + df.format(Double.parseDouble(holder.price.getText().toString().replaceAll("[^\\d\\.]", "")) *
                                     Double.parseDouble(holder.quantity.getText().toString().replaceAll("[^\\d\\.]", "")))
                     );
                     totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
+                    notifyDataSetChanged();
                 }
+            }
+        });
+
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.remove(holder.getAdapterPosition());
+                itemQuantities.remove(holder.getAdapterPosition());
+                totalCostView.setText(((Cart)ct).updateTotalCost(items, itemQuantities));
+                notifyDataSetChanged();
             }
         });
     }
@@ -95,6 +108,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         TextView cost;
         Button increaseQ;
         Button decreaseQ;
+        Button remove;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -106,6 +120,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
             cost = itemView.findViewById(R.id.cartCost);
             increaseQ = itemView.findViewById(R.id.increaseQuantity);
             decreaseQ = itemView.findViewById(R.id.decreaseQuantity);
+            remove = itemView.findViewById(R.id.removeItem);
         }
     }
 }

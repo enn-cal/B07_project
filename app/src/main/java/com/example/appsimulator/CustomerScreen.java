@@ -1,5 +1,8 @@
 package com.example.appsimulator;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -112,6 +116,16 @@ public class CustomerScreen extends AppCompatActivity {
         intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
         intent.putExtra("customerID", String.valueOf(customerID));
         startActivity(intent);
+        myCart = findViewById(R.id.myCartButton);
+        myCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CustomerScreen.this, Cart.class);
+                intent.putParcelableArrayListExtra("itemsArray", cartItems);
+                intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
+                startActivityForResult(intent, 200);
+            }
+        });
     }
 
     @Override
@@ -132,7 +146,7 @@ public class CustomerScreen extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Check that it is the Shop activity with an OK result
-        if (requestCode == 100) {
+        if (requestCode == 100 | requestCode == 200) {
             if (resultCode == RESULT_OK) {
                 // Get cart data from Intent
                 cartItems = data.getParcelableArrayListExtra("updatedCartItems");
