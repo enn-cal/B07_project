@@ -79,10 +79,10 @@ public class CustomerScreen extends AppCompatActivity {
         ArrayList<String> ownerIDs = new ArrayList<>();
         cartItems = new ArrayList<>();
         cartItemQuantities = new ArrayList<>();
-//        cartItemDetails = new ArrayList<>();
+//      cartItemDetails = new ArrayList<>();
 
         myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, cartItemQuantities);
-//        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItemsDetails);
+//      myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItemsDetails);
         mRecyclerView.setAdapter(myAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -107,15 +107,7 @@ public class CustomerScreen extends AppCompatActivity {
 
             }
         });
-    }
 
-    // method for MyCart button
-    public void viewCart (View view) {
-        Intent intent = new Intent(this, Cart.class);
-        intent.putParcelableArrayListExtra("itemsArray", cartItems);
-        intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
-        intent.putExtra("customerID", String.valueOf(customerID));
-        startActivity(intent);
         myCart = findViewById(R.id.myCartButton);
         myCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +115,7 @@ public class CustomerScreen extends AppCompatActivity {
                 Intent intent = new Intent(CustomerScreen.this, Cart.class);
                 intent.putParcelableArrayListExtra("itemsArray", cartItems);
                 intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
+                intent.putExtra("customerID", String.valueOf(customerID));
                 startActivityForResult(intent, 200);
             }
         });
