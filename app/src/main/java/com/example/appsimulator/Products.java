@@ -15,15 +15,18 @@ public class Products implements Parcelable {
     private String brand;
     private String price; //price and quantity are string must ensure user enters ints
     private String quantity;
+    @Exclude
+    private String storeID;
 
     public Products() {
     } //default constructor
 
-    public Products(String item, String brand, String price, String quantity) {
+    public Products(String item, String brand, String price, String quantity, String storeID) {
         this.item = item;
         this.brand = brand;
         this.price = price;
         this.quantity = quantity;
+        this.storeID = storeID;
     }
 
     protected Products(Parcel in) {
@@ -49,6 +52,10 @@ public class Products implements Parcelable {
         return quantity;
     }
 
+    public String getStoreID(){
+        return storeID;
+    }
+
     public void setItem(String item){this.item = item;}
 
     public void setBrand(String brand){this.brand = brand;}
@@ -56,6 +63,8 @@ public class Products implements Parcelable {
     public void setPrice(String price){this.price= price;}
 
     public void setQuantity(String quantity){this.quantity = quantity;}
+
+    public void setStoreID(String storeID){this.storeID = storeID;}
 
     @Override
     public int hashCode(){
@@ -72,7 +81,7 @@ public class Products implements Parcelable {
             return false;
 
         Products other = (Products) obj;
-        return item.equals(other.item) && brand.equals(other.brand) && price.equals(other.price);
+        return item.equals(other.item);
     }
 
     @Override

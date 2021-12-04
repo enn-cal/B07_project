@@ -1,7 +1,6 @@
 package com.example.appsimulator;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-
 import java.util.ArrayList;
 
 public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.MyViewHolder>{
@@ -23,20 +18,21 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
     ArrayList<String> uList;
     String email;
     Context context;
-    transferOrder data;
+    //transferOrder data;
+    IMyViewHolder im;
 
-    public ownerOrderAdapter(Context context, ArrayList<String> uList, ArrayList<Products> pList, transferOrder data){
+    public ownerOrderAdapter(Context context, ArrayList<String> uList, ArrayList<Products> pList, IMyViewHolder im){
         this.uList = uList;
         this.pList = pList;
         this.context = context;
-        this.data = data;
+        this.im = im;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.owner_rc_view, parent, false);
-        return new MyViewHolder(v, data).linkAdapter(this);
+        return new MyViewHolder(v, im).linkAdapter(this);
     }
 
     @Override
@@ -48,10 +44,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
         holder.item.setText(product.getItem());
         holder.brand.setText(product.getBrand());
         holder.price.setText(product.getPrice());
-        holder.quantity.setText(product.getQuantity());
         email = s;
-
-
     }
 
     @Override
@@ -61,19 +54,19 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView customerName, item, brand, price, quantity;
+        TextView customerName, item, brand, price;
         private ownerOrderAdapter oa;
-        transferOrder data;
+        //transferOrder data;
+        IMyViewHolder im;
         Button button;
 
-        public MyViewHolder(@NonNull View itemView, transferOrder data) {
+        public MyViewHolder(@NonNull View itemView, IMyViewHolder im) {
             super(itemView);
             customerName = itemView.findViewById(R.id.customerOrdered);
             item = itemView.findViewById(R.id.item_text_2);
             brand = itemView.findViewById(R.id.brand_text_2);
             price = itemView.findViewById(R.id.price_text_2);
-            quantity = itemView.findViewById(R.id.quantity_text_2);
-            this.data = data;
+            this.im = im;
 
             button = itemView.findViewById(R.id.button13);
             button.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +79,8 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
                     oa.pList.remove(getAdapterPosition());
                     oa.notifyItemRemoved(getAdapterPosition());
                     oa.notifyItemRangeChanged(getAdapterPosition(), oa.getItemCount());
-                    data.setEmailPassword(email,p);
+                    im.getEmailProduct(email,p);
+
                 }
             });
         }
@@ -97,4 +91,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
         }
     }
 
+    interface IMyViewHolder{
+        public void getEmailProduct(String email, Products p);
+    }
 }
