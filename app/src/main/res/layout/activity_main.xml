@@ -16,7 +16,6 @@
         android:text="@string/store_name"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/shopify_color"
         android:textSize="58sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

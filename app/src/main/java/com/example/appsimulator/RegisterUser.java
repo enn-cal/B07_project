@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
@@ -40,7 +39,7 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty Name. Try Again", "name");
                     v = false;
                 }
-                else if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
+                if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
                     displayError("Invalid Name. Try Again", "name");
                     v = false;
                 }
@@ -50,11 +49,10 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty Email. Try Again", "email");
                     v = false;
                 }
-                else if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
+                if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
                     displayError("Invalid Email. Try Again", "email");
                     v = false;
                 }
-                break;
             case "pwd":
                 if(input.isEmpty()){
                     displayError("Empty Password. Try Again", "pwd");
@@ -67,7 +65,7 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty DOB. Try Again", "dob");
                     v = false;
                 }
-                else if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
+                if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
                     displayError("Invalid DOB. Try Again", "dob");
                     v = false;
                 }
@@ -77,7 +75,7 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty Postal Code. Try Again", "postal");
                     v = false;
                 }
-                else if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
+                if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
                     displayError("Invalid Postal Code. Try Again", "postal");
                     v = false;
                 }
@@ -129,9 +127,9 @@ public class RegisterUser extends AppCompatActivity{
                 }
                 if (!userExists) {
                     ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
-                }
-                else {
-                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
+                    return;
+                } else {
+                    Toast.makeText(RegisterUser.this, "User Already Exists, Please Login",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -142,34 +140,6 @@ public class RegisterUser extends AppCompatActivity{
         });
 
     }
-/*
-    private void addToFirebase(Stores store){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        //if store has no products
-        if(store.products.size() == 0){
-            ref.child("Stores").child(Integer.toString(store.getStoreID()));
-            return;
-        }
-        //if store has products
-        for(Products p: store.products){
-            ref.child("Stores").child(Integer.toString(store.getStoreID())).child(Integer.toString(p.hashCode())).setValue(p);
-        }
-    }
-
-    private void addToFirebase(Orders o){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders");
-        //if user has no orders
-        if(o.order.size() == 0){
-            ref.child(Integer.toString(o.getCustomerID())).setValue(o.order);
-            return;
-        }
-        //if user has orders
-        for(Products p: o.order){
-            ref.child(Integer.toString(o.getCustomerID())).child(Integer.toString(p.hashCode())).setValue(p);
-        }
-    }
-
- */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +167,6 @@ public class RegisterUser extends AppCompatActivity{
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child("Store Owner").child("1902570695").child("Products");
                 // getting data from user
                 String name = Name.getText().toString();
                 if(!(isValid(name, "name")))return;
@@ -205,17 +174,16 @@ public class RegisterUser extends AppCompatActivity{
                 if(!(isValid(bday, "dob")))return;
                 String pCode = PostalCode.getText().toString();
                 if(!(isValid(pCode, "postal")))return;
-                String em = email.getText().toString();
-                if(!(isValid(em, "email")))return;
                 String pwd = password.getText().toString();
                 if(!(isValid(pwd, "pwd")))return;
+                String em = email.getText().toString();
+                if(!(isValid(em, "email")))return;
                 String spinnerString = accountSpinner.getSelectedItem().toString();
 
+
                 // adding data into database
-                //if user is Store Owner
-                //Log.i("TAG", spinnerString);
-                User user = new User(name, em, pwd, pCode, bday);
-                addToFirebase(user,spinnerString);
+                User user = new User(name, em, pwd, pCode, bday); // creates new user
+
                 /*
                   following code is to manually enter data in database for storeowner  1902570695
                   feel free to remove it or keep it if you want to add data manually again.
@@ -223,6 +191,8 @@ public class RegisterUser extends AppCompatActivity{
 //                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Products");
 //                Products products = new Products("Pizza6", "Dominoes", "$500", "20");
 //                ref.child(Integer.toString(products.hashCode())).setValue(products);
+
+                addToFirebase(user,spinnerString);
 
             }
         });
