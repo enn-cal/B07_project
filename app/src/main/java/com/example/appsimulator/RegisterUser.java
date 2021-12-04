@@ -1,5 +1,6 @@
 package com.example.appsimulator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -10,16 +11,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 
@@ -37,7 +41,7 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty Name. Try Again", "name");
                     v = false;
                 }
-                if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
+                else if(!(Pattern.compile("[A-Za-z]+( [A-Za-z]* | )[A-Za-z]+").matcher(input).matches())) {
                     displayError("Invalid Name. Try Again", "name");
                     v = false;
                 }
@@ -47,10 +51,11 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty Email. Try Again", "email");
                     v = false;
                 }
-                if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
+                else if(!(Patterns.EMAIL_ADDRESS.matcher(input).matches())){
                     displayError("Invalid Email. Try Again", "email");
                     v = false;
                 }
+                break;
             case "pwd":
                 if(input.isEmpty()){
                     displayError("Empty Password. Try Again", "pwd");
@@ -63,7 +68,7 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty DOB. Try Again", "dob");
                     v = false;
                 }
-                if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
+                else if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
                     displayError("Invalid DOB. Try Again", "dob");
                     v = false;
                 }
@@ -73,7 +78,7 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty Postal Code. Try Again", "postal");
                     v = false;
                 }
-                if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
+                else if(!(Pattern.compile("[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]\\d[ABCEGHJ-NPRSTV-Z]\\d")).matcher(input).matches()){
                     displayError("Invalid Postal Code. Try Again", "postal");
                     v = false;
                 }
@@ -113,11 +118,41 @@ public class RegisterUser extends AppCompatActivity{
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
 
-        ref.addValueEventListener(new ValueEventListener() {
+        // adds in database
+//        ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                boolean userExists = false;
+//                Toast toast = Toast.makeText(RegisterUser.this, "", Toast.LENGTH_LONG);
+//                for (DataSnapshot ds : snapshot.getChildren()) {
+//                    if (ds.getKey().equals(Integer.toString(user.hashCode()))) { // user exists will output error
+//                        userExists = true;
+//                        break;
+//                    }
+//                }
+//                if (!userExists) {
+//                    ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
+//
+//                } else {
+//                    toast.setText("User Already Exists, Please Login");
+//                    toast.show();
+//                    toast.setText("");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+      //  ref.removeEventListener(listener);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean userExists = false;
-                for (DataSnapshot ds : snapshot.getChildren()){
+                Toast toast = Toast.makeText(RegisterUser.this, "", Toast.LENGTH_LONG);
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     if (ds.getKey().equals(Integer.toString(user.hashCode()))) { // user exists will output error
                         userExists = true;
                         break;
@@ -125,19 +160,20 @@ public class RegisterUser extends AppCompatActivity{
                 }
                 if (!userExists) {
                     ref.child(Integer.toString(user.hashCode())).setValue(user); // adds in database
-                    return;
                 } else {
-                    Toast.makeText(RegisterUser.this, "User Already Exists, Please Login",
-                            Toast.LENGTH_LONG).show();
+                    toast.setText("User Already Exists, Please Login");
+                    toast.show();
+                    toast.setText("");
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,40 +186,83 @@ public class RegisterUser extends AppCompatActivity{
         password = findViewById(R.id.editTextTextPassword3);
         Button register = findViewById(R.id.button3);
         accountSpinner = findViewById(R.id.spinner);
-        //private ProgressBar loading;
 
-        register.setOnClickListener(new View.OnClickListener() {
+//                /*
+//                  following code is to manually enter data in database
+//                  feel free to remove it or keep it if you want to add data manually again.
+//                 */
+////                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Customers");
+////                Products products = new Products("Pie", "Pizza Hut", "$12.5", "30");
+////                Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1");
+////                Stores s = new Stores(5095);
+////                Orders o = new Orders( );
+////                o.addProduct(products);
+////                o.addProduct(products2);
+////                o.setStoreID("5095");
+////                customerStore cs = new customerStore(em,o.storeID);
+////                cs.setOrder(o);
+////                String key_path = ref1.push().getKey();
+////                ref1.child(key_path).setValue(cs);
+//////                int i = 0;
+//////                for (Products p : o.order)
+//////                    ref1.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
+//
+//            }
+//
+
+    }
+
+    public void clickRegister(View v){
+        String name = Name.getText().toString();
+        if(!(isValid(name, "name")))return;
+        String bday = dob.getText().toString();
+        if(!(isValid(bday, "dob")))return;
+        String pCode = PostalCode.getText().toString();
+        if(!(isValid(pCode, "postal")))return;
+        String em = email.getText().toString();
+        if(!(isValid(em, "email")))return;
+        String pwd = password.getText().toString();
+        if(!(isValid(pwd, "pwd")))return;
+        String spinnerString = accountSpinner.getSelectedItem().toString();
+
+
+        User user = new User(name, em, pwd, pCode, bday);
+        addToFirebase(user,spinnerString);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+        ChildEventListener childLister = ref.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onClick(View v) {
-                // getting data from user
-                String name = Name.getText().toString();
-                if(!(isValid(name, "name")))return;
-                String bday = dob.getText().toString();
-                if(!(isValid(bday, "dob")))return;
-                String pCode = PostalCode.getText().toString();
-                if(!(isValid(pCode, "postal")))return;
-                String pwd = password.getText().toString();
-                if(!(isValid(pwd, "pwd")))return;
-                String em = email.getText().toString();
-                if(!(isValid(em, "email")))return;
-                String spinnerString = accountSpinner.getSelectedItem().toString();
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
+            }
 
-                // adding data into database
-                User user = new User(name, em, pwd, pCode, bday); // creates new user
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Intent intent;
+                if (spinnerString.equals("Store Owner")) {
+                    intent = new Intent(RegisterUser.this, OwnerScreen.class);
+                } else {
+                    intent = new Intent(RegisterUser.this, ProfilePage.class);
+                }
+                intent.putExtra("ID", Integer.toString(user.hashCode()));
+                startActivity(intent);
+            }
 
-                /*
-                  following code is to manually enter data in database for storeowner  1902570695
-                  feel free to remove it or keep it if you want to add data manually again.
-                 */
-//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child("1902570695").child("Products");
-//                Products products = new Products("Pizza6", "Dominoes", "$500", "20");
-//                ref.child(Integer.toString(products.hashCode())).setValue(products);
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-                addToFirebase(user,spinnerString);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
     }
 }

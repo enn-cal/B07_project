@@ -43,6 +43,10 @@ public class ModelLogin implements Contracts.ModelLogin {
     }
 
     public void match(String email, String password, String userType) {
+        if(loginError(email,password)){
+            return;
+        }
+        //Consider the type to compare corresponding regex with
         //checks if the email is the database and if credentials are correct
         final boolean[] match = {false};
         ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
@@ -63,11 +67,7 @@ public class ModelLogin implements Contracts.ModelLogin {
                 if (match[0]) {
                     if (user == null || !user.pwd.equals(password)) {
                         listener.loginFailed("Incorrect password");
-                    }
-//                    else if(!loginError(email,password)) //-> loginError; something is wrong with regex i think
-//                        Log.i("login failed"," Incorrect credentials");
-                        //listener.loginFailed("Enter valid credentials");
-                    else {
+                    } else {
                         listener.loginSuccess(Integer.toString(user.hashCode()));
                     }
                 }
@@ -93,5 +93,7 @@ public class ModelLogin implements Contracts.ModelLogin {
         });
     }
 
+    public void userType(User user){
 
+    }
 }

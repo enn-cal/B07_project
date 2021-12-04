@@ -1,7 +1,11 @@
 package com.example.appsimulator;
 
+
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import android.os.Parcel;
 import android.os.Parcelable;
+@IgnoreExtraProperties
 
 public class Products implements Parcelable {
 
@@ -43,6 +47,16 @@ public class Products implements Parcelable {
         return quantity;
     }
 
+    public void setItem(String item){this.item = item;}
+
+    public void setBrand(String brand){this.brand = brand;}
+
+    public void setPrice(String price){this.price= price;}
+
+    public void setQuantity(String quantity){this.quantity = quantity;}
+
+
+
     @Override
     public int hashCode(){
         return this.item.hashCode();
@@ -50,10 +64,13 @@ public class Products implements Parcelable {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
+
         Products other = (Products) obj;
         return item.equals(other.item) && brand.equals(other.brand) && price.equals(other.price);
     }
@@ -82,4 +99,5 @@ public class Products implements Parcelable {
             return new Products[size];
         }
     };
+
 }
