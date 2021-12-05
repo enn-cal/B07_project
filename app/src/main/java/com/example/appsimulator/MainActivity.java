@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
         setPassword();
         setUserType();
 
-        DatabaseReference m = FirebaseDatabase.getInstance().getReference();
-       // m.push().setValue("Stores"); -> what does this do ?
-
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

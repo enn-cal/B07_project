@@ -42,9 +42,18 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
     public void onBindViewHolder(@NonNull CartRVAdapter.MyViewHolder holder, int position) {
         DecimalFormat df = new DecimalFormat("###.##");
 
-        holder.brand.setText(items.get(position).getBrand());
-        holder.itemName.setText(items.get(position).getItem());
+        String brandItemName = items.get(position).getBrand() + " - " + items.get(position).getItem(); //Combined brand and item name
+        holder.itemName.setText(brandItemName);
+
+        //holder.brand.setText(items.get(position).getBrand());
+        //holder.itemName.setText(items.get(position).getItem());
         holder.price.setText(items.get(position).getPrice());
+        holder.quantity.setText(items.get(position).getQuantity());
+
+        String[] a = items.get(position).getPrice().split("[^\\d\\.]");
+        double t_price = Double.parseDouble(a[1]);
+        t_price = t_price * Integer.parseInt(items.get(position).getQuantity());
+        holder.cost.setText("$" + t_price);
 
         //TODO Fix itemQuantities
         //holder.quantity.setText(itemQuantities.get(position));
@@ -105,7 +114,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView brand;
+        //TextView brand;
         TextView itemName;
         TextView price;
         TextView quantity;
@@ -121,7 +130,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 
         public MyViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
-            brand = itemView.findViewById(R.id.cartBrandText);
+            //brand = itemView.findViewById(R.id.cartBrandText);
             itemName = itemView.findViewById(R.id.cartItemName);
             price = itemView.findViewById(R.id.cartPrice);
             quantity = itemView.findViewById(R.id.cartQuantity);
@@ -140,7 +149,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                     double t_price = Double.parseDouble(a[1]);
                     t_price = t_price * count;
                     quantity.setText("" + count);
-                    cost.setText(String.valueOf(t_price));
+                    cost.setText("$" + String.valueOf(t_price));
                     onItemListener.onItemAdd(getAdapterPosition(), count);
                 }
             });
@@ -154,7 +163,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                     double t_price = Double.parseDouble(a[1]);
                     t_price = t_price * count;
                     quantity.setText("" + count);
-                    cost.setText(String.valueOf(t_price));
+                    cost.setText("$" + String.valueOf(t_price));
                     onItemListener.onItemRemove(getAdapterPosition(), count);
                 }
             });
