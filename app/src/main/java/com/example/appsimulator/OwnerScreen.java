@@ -26,6 +26,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
     public String sessionID;
+    public String storeEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
 
         Bundle bundle = getIntent().getExtras();
         sessionID = bundle.getString("ID");
+        storeEmail = bundle.getString("email");
         ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store");
         //sessionID = "1902570695"; //hardcoded
 
@@ -92,6 +94,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
     public void orderScreen(View v){
         Intent intent = new Intent(this, storeOwnerOrder.class);
         intent.putExtra("ID", sessionID);
+        intent.putExtra("email", storeEmail);
         startActivity(intent);
     }
 

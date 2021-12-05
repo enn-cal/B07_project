@@ -33,8 +33,10 @@ public class CustomerScreen extends AppCompatActivity {
     private DatabaseReference ref;
     private Button myCart;
     private Button signOut;
+    private Button ordersCompleted;
     private RecyclerView mRecyclerView;
     private int customerID;
+    private String sessionID;
     private Intent i;
     ArrayList<Products> cartItems;
     ArrayList<String> cartItemQuantities;
@@ -46,6 +48,9 @@ public class CustomerScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_screen);
+
+        Bundle bundle = getIntent().getExtras();
+        sessionID = bundle.getString("ID");
 
         i = getIntent();
         customerID = Integer.parseInt(i.getStringExtra("ID"));
@@ -73,6 +78,22 @@ public class CustomerScreen extends AppCompatActivity {
                 alert.show();
             }
         });
+
+
+        ordersCompleted = findViewById(R.id.storeListOrders);
+
+        ordersCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomerScreen.this, OrdersCompleted.class);
+                intent.putExtra("ID", sessionID);
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
         mRecyclerView = findViewById(R.id.storeList);
         ArrayList<String> ownerNames = new ArrayList<>();

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
     private ArrayList<Products> productsList;
     private ownerOrderAdapter adapter;
     private String email;
+    private String emailTemp;
 
 
     @Override
@@ -38,6 +40,10 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
 
         Bundle bundle = getIntent().getExtras();
         sessionID = bundle.getString("ID");
+        emailTemp = bundle.getString("email");
+
+        Log.i("testing", emailTemp);
+
 
         //sessionID = "1902570695";
 
@@ -47,48 +53,32 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
 
         customerList = new ArrayList<>();
         productsList = new ArrayList<>();
-        adapter = new ownerOrderAdapter(storeOwnerOrder.this, customerList, productsList,this);
+        adapter = new ownerOrderAdapter(emailTemp,storeOwnerOrder.this, customerList, productsList,this);
         //DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
         rView.setAdapter(adapter);
 
         ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
 /*
-        Products products = new Products("Pie", "Pizza Hut", "$12.5", "30");
-        Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1");
-        Products products3 = new Products("Pizza", "Pizza Hut", "$50", "1");
+        Products products = new Products("Pie", "Pizza Hut", "$12.5", "30","1");
+        Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
+        Products products3 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
         Stores s = new Stores(sessionID);
         Orders o = new Orders("12345678");
         o.addProduct(products);
         o.addProduct(products2);
         o.addProduct(products3);
         //o.storeID = (sessionID);
-        customerStore cs = new customerStore("d@gmail.com",sessionID);
+        customerStore cs = new customerStore("c@gmail.com",sessionID);
         cs.setOrder(o);
-        String key_path = ref2.push().getKey();
-        ref2.child(key_path).setValue(cs);
+
+        //String key_path = ref2.push().getKey();
+        ref2.child(Integer.toString("c@gmail.com".hashCode())).setValue(cs);
         int i = 0;
         for (Products p : cs.orderList.order){
-            ref2.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
+            ref2.child(Integer.toString("c@gmail.com".hashCode())).child("order").child(Integer.toString(++i)).setValue(p);
         }
 
  */
-
-
-        //hard code testing stuff
-/*
-        ref2 = db.getReference("Users").child("Store Owner").child("1902570695").child("Customers").child("m");
-        Orders o = new Orders();
-        Products p1 = new Products("A", "B", "$5.0", "5");
-        Products p2 = new Products("C", "D", "$5.0", "5");
-        o.addProduct(p1);
-        o.addProduct(p2);
-        customerStore cs = new customerStore("d@gmail.com", sessionID);
-        cs.orderList = o;
-        ref2.setValue(cs);
-        //hard code testing stuff
-
- */
-        //ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -117,9 +107,31 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
             }
         });
     }
+
     @Override
-    public void getEmailProduct(String email, Products p) {
-        deleteOrder(email, p);
+    public void orderComplete(String customer, String email, Products p, String customerEmail) {
+        DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Customers").child(customer);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //notify when 1 item left as it will be completed/deleted from database
+                if(snapshot.child("order").getChildrenCount() == 1){
+                    notifyCustomer(customer, email);
+
+                }
+                deleteOrder(customerEmail, p);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void notifyCustomer(String customer, String email){
+        DatabaseReference ref = db.getReference("Users").child("Customer").child(customer);
+        ref.child("orderCompleted").child(sessionID).setValue(new customerStore(email, sessionID));
     }
 
     public void deleteOrder(String orderEmail, Products orderProduct){

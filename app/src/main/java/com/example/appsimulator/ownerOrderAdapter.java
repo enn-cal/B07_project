@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.MyViewHolder>{
@@ -20,8 +23,10 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
     Context context;
     //transferOrder data;
     IMyViewHolder im;
+    String storeEmail;
 
-    public ownerOrderAdapter(Context context, ArrayList<String> uList, ArrayList<Products> pList, IMyViewHolder im){
+    public ownerOrderAdapter(String storeEmail, Context context, ArrayList<String> uList, ArrayList<Products> pList, IMyViewHolder im){
+        this.storeEmail = storeEmail;
         this.uList = uList;
         this.pList = pList;
         this.context = context;
@@ -56,7 +61,6 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
 
         TextView customerName, item, brand, price;
         private ownerOrderAdapter oa;
-        //transferOrder data;
         IMyViewHolder im;
         Button button;
 
@@ -79,7 +83,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
                     oa.pList.remove(getAdapterPosition());
                     oa.notifyItemRemoved(getAdapterPosition());
                     oa.notifyItemRangeChanged(getAdapterPosition(), oa.getItemCount());
-                    im.getEmailProduct(email,p);
+                    im.orderComplete(Integer.toString(email.hashCode()), oa.storeEmail, p, email);
 
                 }
             });
@@ -89,9 +93,11 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
             this.oa = oa;
             return this;
         }
+
     }
 
     interface IMyViewHolder{
-        public void getEmailProduct(String email, Products p);
+
+        public void orderComplete(String customer, String storeEmail, Products p, String customerEmail);
     }
 }

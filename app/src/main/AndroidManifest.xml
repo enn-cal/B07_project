@@ -13,11 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppSimulator">
         <activity
+            android:name=".OrdersCompleted"
+            android:exported="false" />
+        <activity
             android:name=".storeOwnerOrder"
             android:exported="false" />
         <activity
             android:name=".OwnerScreen"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".Cart"
             android:exported="true" />
