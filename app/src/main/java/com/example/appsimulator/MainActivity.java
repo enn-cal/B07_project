@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
     public void loginSuccess(String ID) {
         if(getUserType().equals("Store Owner")) {
             Intent intent = new Intent(this, OwnerScreen.class);
-            intent.putExtra("ID", ID);
+            Bundle extras = new Bundle();
+            extras.putString("ID", ID);
+            extras.putString("email", getEmail());
+            intent.putExtras(extras);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, CustomerScreen.class);

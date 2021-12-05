@@ -37,7 +37,6 @@ public class AdapterRv extends RecyclerView.Adapter<AdapterRv.ViewHolder> {
         holder.item.setText(product.getItem());
         holder.brand.setText(product.getBrand());
         holder.price.setText(product.getPrice());
-        holder.quantity.setText(product.getQuantity());
     }
 
     @Override
@@ -47,7 +46,7 @@ public class AdapterRv extends RecyclerView.Adapter<AdapterRv.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView item, brand, price, quantity;
+        TextView item, brand, price;
         private AdapterRv rv;
         transferOrder data;
         Button button;
@@ -57,7 +56,6 @@ public class AdapterRv extends RecyclerView.Adapter<AdapterRv.ViewHolder> {
             item = itemView.findViewById(R.id.item_text);
             brand = itemView.findViewById(R.id.brand_text);
             price = itemView.findViewById(R.id.price_text);
-            quantity = itemView.findViewById(R.id.quantity_text);
             this.data = data;
 
             button = itemView.findViewById(R.id.button14);

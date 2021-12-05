@@ -29,7 +29,6 @@ public class addProductDialog extends AppCompatDialogFragment {
     private EditText editTextItemName;
     private EditText editTextItemBrand;
     private EditText editTextItemPrice;
-    private EditText editTextItemQuantity;
     private String sessionID;
     private Products p = new Products();
 
@@ -59,16 +58,6 @@ public class addProductDialog extends AppCompatDialogFragment {
                     v = false;
                 }
                 break;
-            case "itemQuantity":
-                if(input.isEmpty()){
-                    displayError("Empty Quantity. Try Again", "itemQuantity");
-                    v = false;
-                }
-                else if(!(Pattern.compile("[1-9][0-9]*")).matcher(input).matches()){
-                    displayError("Invalid Quantity. Try Again", "itemQuantity");
-                    v = false;
-                }
-                break;
         }
         return v;
     }
@@ -87,10 +76,6 @@ public class addProductDialog extends AppCompatDialogFragment {
             case "itemPrice":
                 editTextItemPrice.setError(error);
                 editTextItemPrice.requestFocus();
-                return;
-            case "itemQuantity":
-                editTextItemQuantity.setError(error);
-                editTextItemQuantity.requestFocus();
                 return;
         }
     }
@@ -151,7 +136,6 @@ public class addProductDialog extends AppCompatDialogFragment {
         editTextItemName = view.findViewById(R.id.add_item);
         editTextItemBrand = view.findViewById(R.id.add_brand);
         editTextItemPrice = view.findViewById(R.id.add_price);
-        editTextItemQuantity = view.findViewById(R.id.add_quantity);
         return builder.create();
     }
 
@@ -160,7 +144,7 @@ public class addProductDialog extends AppCompatDialogFragment {
         super.onResume();
         final AlertDialog d = (AlertDialog)getDialog();
         if(d != null){
-            Button pd = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+            Button pd = d.getButton(Dialog.BUTTON_POSITIVE);
             pd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -174,13 +158,9 @@ public class addProductDialog extends AppCompatDialogFragment {
                     String itemPrice = editTextItemPrice.getText().toString();
                     if(!(isValid(itemPrice, "itemPrice")))return;
 
-                    String itemQuantity = editTextItemQuantity.getText().toString();
-                    if(!isValid(itemQuantity, "itemQuantity")) return;
-
                     p.setItem(itemName);
                     p.setBrand(brandName);
                     p.setPrice(itemPrice);
-                    p.setQuantity(itemQuantity);
                     d.dismiss();
 
                     //add data to database

@@ -1,19 +1,15 @@
 package com.example.appsimulator;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +26,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
     public String sessionID;
+    public String storeEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +35,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
 
         Bundle bundle = getIntent().getExtras();
         sessionID = bundle.getString("ID");
+        storeEmail = bundle.getString("email");
         ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store");
         //sessionID = "1902570695"; //hardcoded
 
@@ -64,10 +62,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
                 list.clear();
                 for (DataSnapshot ds : snapshot.getChildren()){
                     Products product = ds.getValue(Products.class);
-                    //add product to store only if quantity >= 1
-                    if(!product.getQuantity().equals("0")){
-                        list.add(product);
-                    }
+                    list.add(product);
 
                 }
                 adapterRv.notifyDataSetChanged();
@@ -80,35 +75,16 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
         });
     }
 
-    /*
-    //adds Store's products to DB
-    public void updateStoreProductDB(Stores store){
-        DatabaseReference dref = FirebaseDatabase.getInstance().getReference("Stores");
-        for(Products p: store.products){
-            dref.child(Integer.toString(store.getStoreID())).setValue(p);
-        }
-    }
-
-     */
 
     //creates Dialog and adds product to recycler view
     public void openDialog(){
         addProductDialog pd = new addProductDialog();
         pd.setSessionID(sessionID);
         pd.show(getSupportFragmentManager(), "example dialog");
-        //add product to store only if quantity >= 1
-        //if(!pd.getProduct().getQuantity().equals("0")){
-            list.add(pd.getProduct());
-        //}
+        list.add(pd.getProduct());
         adapterRv.notifyDataSetChanged();
-        //adapterRv.notifyItemInserted(list.size()-1);
 
-        //ADD TO DATABASE CODE
-        //s.products.add(pd.getProduct());
-        //Log.i("TAG", s.products.toString()); THIS GIVES NULL POINTER EXCEPTION. S.PRODUCTS = NULL FOR SOME REASON
-        //updateStoreProductDB(s);
     }
-
 
     public void loginScreen(View v){
         Intent intent = new Intent(this, MainActivity.class);
@@ -118,6 +94,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
     public void orderScreen(View v){
         Intent intent = new Intent(this, storeOwnerOrder.class);
         intent.putExtra("ID", sessionID);
+        intent.putExtra("email", storeEmail);
         startActivity(intent);
     }
 

@@ -7,19 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
+public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdapter.IMyViewHolder{
 
 
     private RecyclerView rView;
@@ -31,8 +30,7 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
     private ArrayList<Products> productsList;
     private ownerOrderAdapter adapter;
     private String email;
-    private String orderEmail;
-    private Products orderProduct;
+    private String emailTemp;
 
 
     @Override
@@ -42,6 +40,10 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
 
         Bundle bundle = getIntent().getExtras();
         sessionID = bundle.getString("ID");
+        emailTemp = bundle.getString("email");
+
+        Log.i("testing", emailTemp);
+
 
         //sessionID = "1902570695";
 
@@ -51,44 +53,32 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
 
         customerList = new ArrayList<>();
         productsList = new ArrayList<>();
-        adapter = new ownerOrderAdapter(storeOwnerOrder.this, customerList, productsList,this);
-        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
+        adapter = new ownerOrderAdapter(emailTemp,storeOwnerOrder.this, customerList, productsList,this);
+        //DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
         rView.setAdapter(adapter);
+
+        ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
 /*
-        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
-                Products products = new Products("Pie", "Pizza Hut", "$12.5", "30", "2");
-                Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1", sessionID);
-                Products products3 = new Products("Pizza", "Pizza Hut", "$50", "1", sessionID);
-                Stores s = new Stores(sessionID);
-                Orders o = new Orders();
-                o.addProduct(products);
-                o.addProduct(products2);
-                o.addProduct(products3);
-                //o.setStoreID(sessionID);
-                customerStore cs = new customerStore("d@gmail.com",sessionID);
-                cs.setOrder(o.getStoreProducts(sessionID));
-                String key_path = ref2.push().getKey();
-                ref2.child(key_path).setValue(cs);
-                int i = 0;
-                for (Products p : cs.orderList.order)ref2.child(key_path).child("order").child(Integer.toString(++i)).setValue(p);
+        Products products = new Products("Pie", "Pizza Hut", "$12.5", "30","1");
+        Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
+        Products products3 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
+        Stores s = new Stores(sessionID);
+        Orders o = new Orders("12345678");
+        o.addProduct(products);
+        o.addProduct(products2);
+        o.addProduct(products3);
+        //o.storeID = (sessionID);
+        customerStore cs = new customerStore("c@gmail.com",sessionID);
+        cs.setOrder(o);
+
+        //String key_path = ref2.push().getKey();
+        ref2.child(Integer.toString("c@gmail.com".hashCode())).setValue(cs);
+        int i = 0;
+        for (Products p : cs.orderList.order){
+            ref2.child(Integer.toString("c@gmail.com".hashCode())).child("order").child(Integer.toString(++i)).setValue(p);
+        }
 
  */
-/*
-        //hard code testing stuff
-
-        ref2 = db.getReference("Users").child("Store Owner").child("1902570695").child("Customers").child("m");
-        Orders o = new Orders();
-        Products p1 = new Products("A", "B", "$5.0", "5");
-        Products p2 = new Products("C", "D", "$5.0", "5");
-        o.addProduct(p1);
-        o.addProduct(p2);
-        customerStore cs = new customerStore("d@gmail.com", sessionID);
-        cs.order = o;
-        ref2.setValue(cs);
-        //hard code testing stuff
-
- */
-
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,26 +101,42 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
                 }
                 adapter.notifyDataSetChanged();
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    public void orderComplete(String customer, String email, Products p, String customerEmail) {
+        DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Customers").child(customer);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //notify when 1 item left as it will be completed/deleted from database
+                if(snapshot.child("order").getChildrenCount() == 1){
+                    notifyCustomer(customer, email);
+
+                }
+                deleteOrder(customerEmail, p);
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-
     }
 
-    @Override
-    public void setEmailPassword(String email, Products p) {
-        orderEmail = email;
-        orderProduct = p;
-        deleteOrder(orderEmail, orderProduct);
+    public void notifyCustomer(String customer, String email){
+        DatabaseReference ref = db.getReference("Users").child("Customer").child(customer);
+        ref.child("orderCompleted").child(sessionID).setValue(new customerStore(email, sessionID));
     }
 
     public void deleteOrder(String orderEmail, Products orderProduct){
         DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Customers");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot customers : snapshot.getChildren()){
@@ -146,10 +152,9 @@ public class storeOwnerOrder extends AppCompatActivity implements transferOrder{
                             for(DataSnapshot product: customerInfo.getChildren()){
                                 Products p = product.getValue(Products.class);
                                 //if the current product is the one that has been completed
-                                if(p.getItem().equals(orderProduct.getItem()) && p.getBrand().equals(orderProduct.getBrand())){
+                                if(p.equals(orderProduct)){
                                     //remove the product from orders
                                     product.getRef().removeValue();
-                                    //break to avoid deleting more than one product
                                     break;
                                 }
                             }
