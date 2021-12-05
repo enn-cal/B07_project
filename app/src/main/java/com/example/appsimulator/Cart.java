@@ -97,27 +97,23 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
 
     @Override
     public void onItemAdd(int pos, int repeats) {
-//        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
-//        for(int i = 1; i < repeats; i++)
-//            ref.child(Integer.toString(myAdapter.getItemCount())).setValue(cartItems.get(pos));
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
+        ref.child(Integer.toString(pos)).child("quantity").setValue(Integer.toString(repeats));
+        //cartItems.get(pos).setQuantity(Integer.toString(repeats));
     }
 
     @Override
     public void onItemRemove(int pos, int repeats) {
-//        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
-//        // assuming item names are unique
-//        Query itemQuery = ref.orderByChild("item").equalTo(cartItems.get(pos).getItem()).limitToLast(repeats);
-//        itemQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot ds : snapshot.getChildren())
-//                    ds.getRef().removeValue();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
+        // if repeats is zero then we remove item
+        if (repeats == 0) {
+            ref.child(Integer.toString(pos)).removeValue();
+        }else
+            ref.child(Integer.toString(pos)).child("quantity").setValue(Integer.toString(repeats));
+    }
+
+    @Override
+    public void onItemDelete(int pos) {
+        ref.child(Integer.toString(pos)).removeValue();
     }
 }
