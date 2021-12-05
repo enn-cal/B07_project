@@ -18,9 +18,9 @@ public class ModelLogin implements Contracts.ModelLogin {
     private DatabaseReference ref;
     private Contracts.PresenterLogin listener;
 
-    public ModelLogin(FirebaseDatabase f_db, DatabaseReference ref, Contracts.PresenterLogin listener){
-        this.f_db =f_db;
-        this.ref = ref;
+    public ModelLogin(Contracts.PresenterLogin listener){
+        this.f_db = FirebaseDatabase.getInstance();
+        this.ref = FirebaseDatabase.getInstance().getReference();
         this.listener = listener;
     }
 
@@ -50,7 +50,7 @@ public class ModelLogin implements Contracts.ModelLogin {
         //checks if the email is the database and if credentials are correct
         final boolean[] match = {false};
         ref = FirebaseDatabase.getInstance().getReference("Users").child(userType);
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {//changed
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = null;

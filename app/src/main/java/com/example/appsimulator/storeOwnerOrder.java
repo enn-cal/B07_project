@@ -25,6 +25,7 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference ref;
     private DatabaseReference ref2;
+    private ValueEventListener listener;
     private String sessionID;
     private ArrayList<String> customerList;
     private ArrayList<Products> productsList;
@@ -42,7 +43,7 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
         sessionID = bundle.getString("ID");
         emailTemp = bundle.getString("email");
 
-        Log.i("testing", emailTemp);
+        //Log.i("testing", emailTemp);
 
 
         //sessionID = "1902570695";
@@ -77,9 +78,9 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
         for (Products p : cs.orderList.order){
             ref2.child(Integer.toString("c@gmail.com".hashCode())).child("order").child(Integer.toString(++i)).setValue(p);
         }
+*/
 
- */
-        ref2.addValueEventListener(new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 customerList.clear();
@@ -101,11 +102,46 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
                 }
                 adapter.notifyDataSetChanged();
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        ref2.addValueEventListener(listener);
+
+
+        /*
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                customerList.clear();
+                productsList.clear();
+                //loop through customers given store owner id
+                for (DataSnapshot customers : snapshot.getChildren()){
+                    for(DataSnapshot customerInfo: customers.getChildren()){
+                        if(customerInfo.exists() && customerInfo.getKey().equals("email")){
+                            email = customerInfo.getValue().toString();
+                        }
+                        if(customerInfo.exists() && customerInfo.getKey().equals("order")){
+                            for(DataSnapshot product: customerInfo.getChildren()){
+                                Products p = product.getValue(Products.class);
+                                productsList.add(p);
+                                customerList.add(email);
+                            }
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
+         */
     }
 
     @Override
@@ -154,6 +190,7 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
                                 //if the current product is the one that has been completed
                                 if(p.equals(orderProduct)){
                                     //remove the product from orders
+                                    Log.i("asdasd", product.getRef().getKey());
                                     product.getRef().removeValue();
                                     break;
                                 }
@@ -174,6 +211,17 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
         Intent intent;
         intent = new Intent(this, OwnerScreen.class);
         intent.putExtra("ID", sessionID);
+        intent.putExtra("email", emailTemp);
         startActivity(intent);
     }
+
+    @Override
+    public void onPause() {
+        if(ref2 != null && listener != null){
+            ref2.removeEventListener(listener);
+            Log.i("TAG123", "worked");
+        }
+        super.onPause();
+    }
+
 }

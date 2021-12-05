@@ -56,7 +56,7 @@ public class Shop extends AppCompatActivity {
 
 
         ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(storeOwnerID).child("Store");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {//changed
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 products.clear();

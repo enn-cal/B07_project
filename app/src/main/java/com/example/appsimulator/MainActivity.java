@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Contracts.ViewLog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenterLogin = new PresenterLogin(FirebaseDatabase.getInstance(), FirebaseDatabase.getInstance().getReference(), this);
+        presenterLogin = new PresenterLogin( this);
 
         login = findViewById(R.id.button);
       

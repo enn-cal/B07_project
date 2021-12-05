@@ -66,7 +66,7 @@ public class AdapterRv extends RecyclerView.Adapter<AdapterRv.ViewHolder> {
                     rv.plist.remove(getAdapterPosition());
                     rv.notifyDataSetChanged();
                     rv.notifyItemRangeChanged(getAdapterPosition(), rv.getItemCount());
-                    data.setEmailPassword("", p);
+                    data.setProduct(p);
                 }
             });
         }

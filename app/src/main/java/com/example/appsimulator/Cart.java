@@ -31,6 +31,7 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
     private ArrayList<Products> cartItems;
     private ArrayList<String> cartItemQuantities;
     private  CartRVAdapter myAdapter;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +58,9 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
 
 
         //Gets cart data from database
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
-        ref.addValueEventListener(new ValueEventListener() {
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart"); //TODO remove fixed path
+
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cartItems.clear();
@@ -72,7 +74,8 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        ref.addValueEventListener(listener);
     }
 
     public String updateTotalCost(ArrayList<Products> mCartItems, ArrayList<String> mCartItemQuantities) {
@@ -97,14 +100,14 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
 
     @Override
     public void onItemAdd(int pos, int repeats) {
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart"); //TODO remove fixed path
         ref.child(Integer.toString(pos)).child("quantity").setValue(Integer.toString(repeats));
         //cartItems.get(pos).setQuantity(Integer.toString(repeats));
     }
 
     @Override
     public void onItemRemove(int pos, int repeats) {
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart"); //TODO remove fixed path
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart"); //TODO remove fixed path
         // if repeats is zero then we remove item
         if (repeats == 0) {
             ref.child(Integer.toString(pos)).removeValue();
@@ -115,5 +118,13 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
     @Override
     public void onItemDelete(int pos) {
         ref.child(Integer.toString(pos)).removeValue();
+    }
+
+    @Override
+    public void onPause() {
+        if(ref != null && listener != null){
+            ref.removeEventListener(listener);
+        }
+        super.onPause();
     }
 }

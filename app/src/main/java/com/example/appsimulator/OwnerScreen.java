@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class OwnerScreen extends AppCompatActivity implements transferOrder{
+public class OwnerScreen extends AppCompatActivity implements transferOrder {
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -27,6 +29,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
     private ArrayList<Products> list;
     public String sessionID;
     public String storeEmail;
+    private ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +58,31 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
                 openDialog();
             }
         });
-
-        ref.addValueEventListener(new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                for (DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Products product = ds.getValue(Products.class);
+                    list.add(product);
+
+                }
+                adapterRv.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        ref.addValueEventListener(listener);
+
+/*
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Products product = ds.getValue(Products.class);
                     list.add(product);
 
@@ -73,11 +95,14 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
 
             }
         });
+
+ */
+
     }
 
 
     //creates Dialog and adds product to recycler view
-    public void openDialog(){
+    public void openDialog() {
         addProductDialog pd = new addProductDialog();
         pd.setSessionID(sessionID);
         pd.show(getSupportFragmentManager(), "example dialog");
@@ -86,12 +111,12 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
 
     }
 
-    public void loginScreen(View v){
+    public void loginScreen(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    public void orderScreen(View v){
+    public void orderScreen(View v) {
         Intent intent = new Intent(this, storeOwnerOrder.class);
         intent.putExtra("ID", sessionID);
         intent.putExtra("email", storeEmail);
@@ -100,20 +125,22 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
 
 
     @Override
-    public void setEmailPassword(String email, Products p) {
+    public void setProduct(Products p) {
         deleteProduct(p);
     }
 
-    public void deleteProduct(Products p){
+    public void deleteProduct(Products p) {
         DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot products: snapshot.getChildren()){
-                    Products product = products.getValue(Products.class);
+                Log.i("TESTING", "didnt work");
+                for (DataSnapshot current_products : snapshot.getChildren()) {
+                    Products product = current_products.getValue(Products.class);
                     //if product that needs to be removed is found in database
-                    if(product.equals(p)){
-                        products.getRef().removeValue();
+                    if (product.equals(p)) {
+                        Log.i("TESTING", current_products.getRef().getKey());
+                        current_products.getRef().removeValue();
                         break;
                     }
                 }
@@ -125,4 +152,24 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder{
             }
         });
     }
+    /*
+    @Override
+    public void onResume() {
+        ref.addValueEventListener(listener);
+        super.onResume();
+    }
+
+     */
+
+    @Override
+    public void onPause() {
+        if(ref != null && listener != null){
+            ref.removeEventListener(listener);
+            Log.i("TAG", "worked");
+        }
+        super.onPause();
+    }
+
+
+
 }

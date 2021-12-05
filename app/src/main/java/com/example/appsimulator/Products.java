@@ -15,7 +15,6 @@ public class Products implements Parcelable {
     private String brand;
     private String price; //price and quantity are string must ensure user enters ints
     private String quantity;
-    @Exclude
     private String storeID;
 
     public Products() {
@@ -52,6 +51,7 @@ public class Products implements Parcelable {
         return quantity;
     }
 
+    @Exclude
     public String getStoreID(){
         return storeID;
     }

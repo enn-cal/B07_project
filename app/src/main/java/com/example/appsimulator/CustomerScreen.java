@@ -109,7 +109,7 @@ public class CustomerScreen extends AppCompatActivity {
 
         ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner"); //Might have to change this
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {//changed
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ownerNames.clear();

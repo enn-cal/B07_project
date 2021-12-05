@@ -12,8 +12,8 @@ public class PresenterLogin implements Contracts.PresenterLogin {
     private Contracts.ModelLogin model;
     private Contracts.ViewLogin view;
 
-    public PresenterLogin(FirebaseDatabase f_db, DatabaseReference ref, Contracts.ViewLogin view){
-        model = new ModelLogin(f_db, ref, this);
+    public PresenterLogin(Contracts.ViewLogin view){
+        model = new ModelLogin(this);
         this.view = view;
     }
 

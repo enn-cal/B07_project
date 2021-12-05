@@ -53,7 +53,7 @@ public class addProductDialog extends AppCompatDialogFragment {
                     displayError("Empty Price. Try Again", "itemPrice");
                     v = false;
                 }
-                else if(!(Pattern.compile("(\\d+\\.\\d{1,2}|[1-9][0-9]*)")).matcher(input).matches()){ //a decimal number or whole number
+                else if(!(Pattern.compile("(\\$\\d+\\.\\d{1,2}|\\$[1-9][0-9]*)")).matcher(input).matches()){ //a decimal number or whole number
                     displayError("Invalid Price. Try Again", "itemPrice");
                     v = false;
                 }
@@ -85,31 +85,9 @@ public class addProductDialog extends AppCompatDialogFragment {
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store"); // path is hardcoded
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean storeExists = false;
-                //code below checks for duplicates in stores, need to change it to check for dupes in products
-//                for (DataSnapshot ds : snapshot.getChildren()){
-//                    if (ds.getKey().equals(Integer.toString(store.getStoreID()))) { // store exists will output error
-//                        storeExists = true;
-//                        break;
-//                    }
-//                }
-                for (Products p : store.getProducts())
-                    ref.child(Integer.toString(p.hashCode())).setValue(p); // adds in database
-                // section below is to portray error if store already in db
-//                else {
-//                    Toast.makeText(RegisterUser.this,"User Already Exists, Please Login",
-//                            Toast.LENGTH_LONG).show();
-//                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        for (Products p : store.getProducts()){
+            ref.child(Integer.toString(p.hashCode())).setValue(p); // adds in database
+        }
     }
 
     @NonNull
@@ -161,6 +139,8 @@ public class addProductDialog extends AppCompatDialogFragment {
                     p.setItem(itemName);
                     p.setBrand(brandName);
                     p.setPrice(itemPrice);
+                    p.setQuantity("1");
+                    p.setStoreID(sessionID); //TODO keeps writing sessionID in products
                     d.dismiss();
 
                     //add data to database
