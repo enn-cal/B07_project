@@ -29,9 +29,9 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
     private DatabaseReference ref;
     private String customerID;
     private ArrayList<Products> cartItems;
-    private ArrayList<String> cartItemQuantities;
-    private  CartRVAdapter myAdapter;
+    private CartRVAdapter myAdapter;
     private ValueEventListener listener;
+    private Double totalPrice = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,22 +43,20 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         //ArrayList<Products> cartItems = i.getParcelableArrayListExtra("itemsArray");
 
         cartItems = new ArrayList<>();
-        cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
-        //Log.i("Cart", "cartItemQuantities :" + cartItemQuantities.toString());
         customerID = i.getStringExtra("customerID");
 
         recyclerView = findViewById(R.id.cartItemsList);
 
         totalCost = findViewById(R.id.totalCost);
-        totalCost.setText(updateTotalCost(cartItems, cartItemQuantities));
+        updateTotalCost();
 
-        myAdapter = new CartRVAdapter(this, cartItems, cartItemQuantities, totalCost, this);
+        myAdapter = new CartRVAdapter(this, cartItems, totalCost, this);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         //Gets cart data from database
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart"); //TODO remove fixed path
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart");
 
         listener = new ValueEventListener() {
             @Override
@@ -78,46 +76,66 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         ref.addValueEventListener(listener);
     }
 
-    public String updateTotalCost(ArrayList<Products> mCartItems, ArrayList<String> mCartItemQuantities) {
-        double cost = 0;
-        DecimalFormat df = new DecimalFormat("###.##");
-        for (int i=0; i<mCartItems.size(); i++) {
-            cost += Double.parseDouble(mCartItems.get(i).getPrice().replaceAll("[^\\d\\.]", "")) *
-                    Double.parseDouble(mCartItemQuantities.get(i).replaceAll("[^\\d\\.]", ""));
-        }
-        return "$" + df.format(cost);
+    @Override
+    public void updateTotalCost() {
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart");
+
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                totalPrice = 0.0;
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Products p = ds.getValue(Products.class);
+                    String[] a = p.getPrice().split("[^\\d\\.]");
+                    double t_price = Double.parseDouble(a[1]);
+                    totalPrice += Integer.parseInt(p.getQuantity()) * t_price;
+                }
+                Log.i("Cart", "$" + totalPrice);
+                totalCost.setText("$" + totalPrice);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        ref.addValueEventListener(listener);
+
+        //return "$" + totalPrice;
     }
 
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
         resultIntent.putParcelableArrayListExtra("updatedCartItems", cartItems);
-        resultIntent.putStringArrayListExtra("updatedCartItemQuantities", cartItemQuantities);
-        Log.d("Cart", "on back pressed: " + cartItems.size());
+        Log.d("Shop", "on back pressed: " + cartItems.size());
         setResult(RESULT_OK, resultIntent);
         finish();
     }
 
     @Override
     public void onItemAdd(int pos, int repeats) {
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart"); //TODO remove fixed path
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart");
         ref.child(Integer.toString(pos)).child("quantity").setValue(Integer.toString(repeats));
         //cartItems.get(pos).setQuantity(Integer.toString(repeats));
+        updateTotalCost();
     }
 
     @Override
     public void onItemRemove(int pos, int repeats) {
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart"); //TODO remove fixed path
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID).child("Cart");
         // if repeats is zero then we remove item
         if (repeats == 0) {
             ref.child(Integer.toString(pos)).removeValue();
         }else
             ref.child(Integer.toString(pos)).child("quantity").setValue(Integer.toString(repeats));
+        updateTotalCost();
     }
 
     @Override
     public void onItemDelete(int pos) {
         ref.child(Integer.toString(pos)).removeValue();
+        updateTotalCost();
     }
 
     @Override

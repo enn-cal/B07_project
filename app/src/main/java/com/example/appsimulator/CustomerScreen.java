@@ -35,7 +35,7 @@ public class CustomerScreen extends AppCompatActivity {
     private Button signOut;
     private Button ordersCompleted;
     private RecyclerView mRecyclerView;
-    private int customerID;
+    private String customerID;
     private String sessionID;
     private Intent i;
     ArrayList<Products> cartItems;
@@ -53,8 +53,7 @@ public class CustomerScreen extends AppCompatActivity {
         sessionID = bundle.getString("ID");
 
         i = getIntent();
-        customerID = Integer.parseInt(i.getStringExtra("ID"));
-        //Log.i("TestID", String.valueOf(customerID));
+        customerID = i.getStringExtra("ID");
 
         signOut = (Button) findViewById(R.id.storeListSignOut);
 
@@ -90,9 +89,6 @@ public class CustomerScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
 
 
         mRecyclerView = findViewById(R.id.storeList);
@@ -136,7 +132,7 @@ public class CustomerScreen extends AppCompatActivity {
                 Intent intent = new Intent(CustomerScreen.this, Cart.class);
                 intent.putParcelableArrayListExtra("itemsArray", cartItems);
                 intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
-                intent.putExtra("customerID", String.valueOf(customerID));
+                intent.putExtra("customerID", customerID);
                 startActivityForResult(intent, 200);
             }
         });

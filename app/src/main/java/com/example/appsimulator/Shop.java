@@ -28,7 +28,6 @@ public class Shop extends AppCompatActivity {
     private DatabaseReference ref;
     private String storeOwnerID;
     private ArrayList<Products> cartItems;
-    private ArrayList<String> cartItemQuantities;
     private ArrayList<Products> products;
 
     @Override
@@ -44,13 +43,11 @@ public class Shop extends AppCompatActivity {
 
         // to update items for cart
         cartItems = i.getParcelableArrayListExtra("itemsArray");
-        cartItemQuantities = i.getStringArrayListExtra("quantitiesArray");
-        //Log.i("Shop", "Cart size: " + cartItems.size());
 
         recyclerView = findViewById(R.id.userShopList);
         products = new ArrayList<>();
 
-        ShopRVAdapter myAdapter = new ShopRVAdapter(this, products, cartItems, cartItemQuantities);
+        ShopRVAdapter myAdapter = new ShopRVAdapter(this, products, cartItems);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -80,7 +77,6 @@ public class Shop extends AppCompatActivity {
     public void onBackPressed() {
         Intent resultIntent = new Intent();
         resultIntent.putParcelableArrayListExtra("updatedCartItems", cartItems);
-        resultIntent.putStringArrayListExtra("updatedCartItemQuantities", cartItemQuantities);
         Log.d("Shop", "on back pressed: " + cartItems.size());
         setResult(RESULT_OK, resultIntent);
         finish();

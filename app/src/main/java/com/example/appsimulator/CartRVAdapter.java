@@ -18,14 +18,12 @@ import java.lang.Double;
 public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHolder> {
     Context ct;
     ArrayList<Products> items;
-    ArrayList<String> itemQuantities;
     TextView totalCostView;
     private OnItemListener monItemListener;
 
-    public CartRVAdapter(Context ct, ArrayList<Products> items, ArrayList<String> itemQuantities, TextView totalCostView, OnItemListener monItemListener) {
+    public CartRVAdapter(Context ct, ArrayList<Products> items, TextView totalCostView, OnItemListener monItemListener) {
         this.ct = ct;
         this.items = items;
-        this.itemQuantities = itemQuantities;
         this.totalCostView = totalCostView;
         this.monItemListener = monItemListener;
     }
@@ -44,9 +42,6 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 
         String brandItemName = items.get(position).getBrand() + " - " + items.get(position).getItem(); //Combined brand and item name
         holder.itemName.setText(brandItemName);
-
-        //holder.brand.setText(items.get(position).getBrand());
-        //holder.itemName.setText(items.get(position).getItem());
 
         holder.price.setText(items.get(position).getPrice());
         holder.quantity.setText(items.get(position).getQuantity());
@@ -80,7 +75,6 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 
         public MyViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
-            //brand = itemView.findViewById(R.id.cartBrandText);
             itemName = itemView.findViewById(R.id.cartItemName);
             price = itemView.findViewById(R.id.cartPrice);
             quantity = itemView.findViewById(R.id.cartQuantity);
@@ -88,9 +82,9 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
             increaseQ = itemView.findViewById(R.id.increaseQuantity);
             decreaseQ = itemView.findViewById(R.id.decreaseQuantity);
             remove = itemView.findViewById(R.id.removeItem);
+            TextView totalCost = itemView.findViewById(R.id.totalCost);
+
             this.onItemListener = onItemListener;
-
-
 
             increaseQ.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,6 +100,7 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                         quantity.setText("" + count);
                         cost.setText("$" + String.valueOf(t_price));
                         onItemListener.onItemAdd(getAdapterPosition(), count);
+                        //onItemListener.updateTotalCost();
                     }
                 }
             });
@@ -141,5 +136,6 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
         void onItemAdd(int pos, int repeats); // Increments Quantity
         void onItemRemove(int pos, int repeats); // Decrements Quantity
         void onItemDelete(int pos); // Removes Item
+        void updateTotalCost();
     }
 }

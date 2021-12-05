@@ -19,13 +19,11 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
     Context ct;
     ArrayList<Products> storeProducts;
     ArrayList<Products> cartItems;
-    ArrayList<String> cartItemQuantities;
 
-    public ShopRVAdapter(Context ct, ArrayList<Products> storeProducts, ArrayList<Products> cartItems, ArrayList<String> cartItemQuantities) {
+    public ShopRVAdapter(Context ct, ArrayList<Products> storeProducts, ArrayList<Products> cartItems) {
         this.ct = ct;
         this.storeProducts = storeProducts;
         this.cartItems = cartItems;
-        this.cartItemQuantities = cartItemQuantities;
     }
 
     @NonNull
@@ -70,7 +68,6 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
                     if (!(cartItems.contains(storeProducts.get(getLayoutPosition())))) {
                         Toast.makeText(ct, itemName.getText() + " added to cart.", Toast.LENGTH_SHORT).show();
                         cartItems.add(storeProducts.get(getLayoutPosition()));
-                        cartItemQuantities.add("1");
                         addToCart.setBackgroundColor(Color.WHITE);
                     } else {
                         Toast.makeText(ct, itemName.getText() + " is already added to cart.", Toast.LENGTH_SHORT).show();
