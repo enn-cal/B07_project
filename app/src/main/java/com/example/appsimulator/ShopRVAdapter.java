@@ -42,7 +42,6 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
     public void onBindViewHolder(@NonNull ShopRVAdapter.MyViewHolder holder, int position) {
         holder.itemName.setText(storeProducts.get(position).getItem());
         holder.price.setText(storeProducts.get(position).getPrice());
-        holder.brandName.setText(storeProducts.get(position).getBrand());
         if (cartItems.contains(storeProducts.get(position)))
             holder.addToCart.setBackgroundColor(Color.WHITE);
     }
@@ -53,7 +52,6 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView brandName;
         TextView itemName;
         TextView price;
         Button addToCart;
@@ -64,7 +62,6 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
             itemName = itemView.findViewById(R.id.shopItemName);
             price = itemView.findViewById(R.id.shopPrice);
             addToCart = itemView.findViewById(R.id.addToCartButton);
-            //brandName = itemView.findViewById(R.id.shopBrandName);
             this.is = is;
 
             addToCart.setOnClickListener(new View.OnClickListener() {
