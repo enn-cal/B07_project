@@ -13,8 +13,11 @@ public class PresenterLogin implements Contracts.PresenterLogin {
     private Contracts.ViewLogin view;
 
     public PresenterLogin(Contracts.ViewLogin view){
-        model = new ModelLogin(this);
         this.view = view;
+    }
+
+    public void setModel(Contracts.ModelLogin model) {
+        this.model = model;
     }
 
     @Override

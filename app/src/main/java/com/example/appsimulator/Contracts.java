@@ -15,5 +15,6 @@ public interface Contracts {
         public void start(String email, String password, String userType);
         public void loginSuccess(String ID);
         public void loginFailed(String message);
+        void setModel(Contracts.ModelLogin modelLogin);
     }
 }
