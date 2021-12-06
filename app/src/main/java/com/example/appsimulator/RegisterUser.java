@@ -1,11 +1,13 @@
 package com.example.appsimulator;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,12 +26,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 
 public class RegisterUser extends AppCompatActivity{
     private EditText Name, password, dob, PostalCode, email;
     private Spinner accountSpinner;
+    private Calendar calendar = Calendar.getInstance();
+    private int day, month, year;
 
 
     public boolean isValid(String input, String type) {
@@ -68,10 +73,10 @@ public class RegisterUser extends AppCompatActivity{
                     displayError("Empty DOB. Try Again", "dob");
                     v = false;
                 }
-                else if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
-                    displayError("Invalid DOB. Try Again", "dob");
-                    v = false;
-                }
+//                else if(!(Pattern.compile("(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\\d\\d")).matcher(input).matches()) {
+//                    displayError("Invalid DOB. Try Again", "dob");
+//                    v = false;
+//                }
                 break;
             case "postal":
                 if(input.isEmpty()){
@@ -180,7 +185,16 @@ public class RegisterUser extends AppCompatActivity{
 
          */
 
-
+        dob = (EditText)findViewById(R.id.editTextDate3);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        year = calendar.get(Calendar.YEAR);
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CalendarPopUp();
+            }
+        });
 
 
     }
@@ -241,5 +255,17 @@ public class RegisterUser extends AppCompatActivity{
         });
 
          */
+    }
+
+    public void CalendarPopUp(){
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                dob.setText(month+1 + "/" + day + "/" + year);
+            }
+        };
+
+        DatePickerDialog popUp = new DatePickerDialog(RegisterUser.this, listener, year, month, day);
+        popUp.show();
     }
 }
