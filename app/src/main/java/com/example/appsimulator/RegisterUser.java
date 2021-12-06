@@ -201,7 +201,9 @@ public class RegisterUser extends AppCompatActivity{
 
         User user = new User(name, em, pwd, pCode, bday);
         addToFirebase(user,spinnerString);
-
+        Intent intent  = new Intent(RegisterUser.this, MainActivity.class);
+        startActivity(intent);
+        /*
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
 
         ChildEventListener childLister = ref.addChildEventListener(new ChildEventListener() {
@@ -237,5 +239,7 @@ public class RegisterUser extends AppCompatActivity{
 
             }
         });
+
+         */
     }
 }

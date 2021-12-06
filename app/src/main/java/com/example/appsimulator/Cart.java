@@ -35,7 +35,6 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
     private ArrayList<Products> cartItems;
     private CartRVAdapter myAdapter;
     private ValueEventListener listener;
-    private Button placeOrder;
     private Double totalPrice = 0.0;
 
     @Override
@@ -144,6 +143,7 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         Intent intent;
         intent = new Intent(this, CustomerScreen.class);
         intent.putExtra("ID", customerID);
+        intent.putExtra("email", customerEmail);
         startActivity(intent);
     }
 

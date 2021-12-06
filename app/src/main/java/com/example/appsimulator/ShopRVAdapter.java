@@ -44,6 +44,7 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
         holder.price.setText(storeProducts.get(position).getPrice());
         if (cartItems.contains(storeProducts.get(position)))
             holder.addToCart.setBackgroundColor(Color.WHITE);
+        holder.brandName.setText(storeProducts.get(position).getBrand());
     }
 
     @Override
@@ -53,6 +54,7 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView itemName;
+        TextView brandName;
         TextView price;
         Button addToCart;
         IShop is;
@@ -62,6 +64,7 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
             itemName = itemView.findViewById(R.id.shopItemName);
             price = itemView.findViewById(R.id.shopPrice);
             addToCart = itemView.findViewById(R.id.addToCartButton);
+            brandName = itemView.findViewById(R.id.shopBrandName);
             this.is = is;
 
             addToCart.setOnClickListener(new View.OnClickListener() {
