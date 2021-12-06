@@ -2,6 +2,7 @@ package com.example.appsimulator;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,13 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
     Context ct;
     ArrayList<Products> storeProducts;
     ArrayList<Products> cartItems;
+    String storeOwnerID;
 
-    public ShopRVAdapter(Context ct, ArrayList<Products> storeProducts, ArrayList<Products> cartItems) {
+    public ShopRVAdapter(Context ct, ArrayList<Products> storeProducts, ArrayList<Products> cartItems, String storeOwnerID) {
         this.ct = ct;
         this.storeProducts = storeProducts;
         this.cartItems = cartItems;
+        this.storeOwnerID = storeOwnerID;
     }
 
     @NonNull
@@ -36,10 +39,9 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ShopRVAdapter.MyViewHolder holder, int position) {
-        String brandItemName = storeProducts.get(position).getBrand() + " - " + storeProducts.get(position).getItem(); //Combined brand and item name
-        holder.itemName.setText(brandItemName);
+        holder.itemName.setText(storeProducts.get(position).getItem());
         holder.price.setText(storeProducts.get(position).getPrice());
-        holder.quantity.setText(storeProducts.get(position).getQuantity());
+        holder.brandName.setText(storeProducts.get(position).getBrand());
         if (cartItems.contains(storeProducts.get(position)))
             holder.addToCart.setBackgroundColor(Color.WHITE);
     }
@@ -50,16 +52,17 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView brandName;
         TextView itemName;
         TextView price;
-        TextView quantity;
+
         Button addToCart;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.shopItemName);
             price = itemView.findViewById(R.id.shopPrice);
-            quantity = itemView.findViewById(R.id.shopQuantity);
+            brandName = itemView.findViewById(R.id.shopBrandName);
             addToCart = itemView.findViewById(R.id.addToCartButton);
 
             addToCart.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +70,9 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
                 public void onClick(View view) {
                     if (!(cartItems.contains(storeProducts.get(getLayoutPosition())))) {
                         Toast.makeText(ct, itemName.getText() + " added to cart.", Toast.LENGTH_SHORT).show();
-                        cartItems.add(storeProducts.get(getLayoutPosition()));
+                        Products p = storeProducts.get(getLayoutPosition());
+                        p.setStoreID(storeOwnerID);
+                        cartItems.add(p);
                         addToCart.setBackgroundColor(Color.WHITE);
                     } else {
                         Toast.makeText(ct, itemName.getText() + " is already added to cart.", Toast.LENGTH_SHORT).show();

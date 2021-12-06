@@ -20,16 +20,13 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
     ArrayList<String> ownerNames;
     ArrayList<String> ownerIDs;
     ArrayList<Products> cartItems;
-    ArrayList<String> cartItemQuantities;
     Context ct;
 
-    public CustomerRVAdapter(Context ct, ArrayList<String> ownerNames, ArrayList<String> ownerIDs, ArrayList<Products> cartItems, ArrayList<String> cartItemQuantities) {
+    public CustomerRVAdapter(Context ct, ArrayList<String> ownerNames, ArrayList<String> ownerIDs, ArrayList<Products> cartItems) {
         this.ct = ct;
         this.ownerNames = ownerNames;
         this.ownerIDs = ownerIDs;
         this.cartItems = cartItems;
-        this.cartItemQuantities = cartItemQuantities;
-
     }
 
     @NonNull
@@ -64,7 +61,6 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
                     intent.putExtra("StoreName", ownerNames.get(getLayoutPosition()));
                     intent.putExtra("OwnerID", ownerIDs.get(getLayoutPosition()));
                     intent.putParcelableArrayListExtra("itemsArray", cartItems);
-                    intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
                     // startActivityForResult is used to return results (from Shop) to parent (CustomerScreen) activity
                     ((Activity) ct).startActivityForResult(intent, 100);
                     notifyDataSetChanged();
@@ -76,11 +72,10 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
 
     }
 
-    public void updateAdapter(ArrayList<Products> updatedCartItems, ArrayList<String> updatedCartItemQuantities){
+    public void updateAdapter(ArrayList<Products> updatedCartItems){
 
         // update cart details
         cartItems = updatedCartItems;
-        cartItemQuantities = updatedCartItemQuantities;
 
         // notify the RecyclerView in order to refresh the views
         notifyDataSetChanged();

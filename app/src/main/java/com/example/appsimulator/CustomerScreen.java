@@ -39,7 +39,6 @@ public class CustomerScreen extends AppCompatActivity {
     private String sessionID;
     private Intent i;
     ArrayList<Products> cartItems;
-    ArrayList<String> cartItemQuantities;
     CustomerRVAdapter myAdapter;
 
 
@@ -95,10 +94,9 @@ public class CustomerScreen extends AppCompatActivity {
         ArrayList<String> ownerNames = new ArrayList<>();
         ArrayList<String> ownerIDs = new ArrayList<>();
         cartItems = new ArrayList<>();
-        cartItemQuantities = new ArrayList<>();
-//      cartItemDetails = new ArrayList<>();
 
-        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, cartItemQuantities);
+
+        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems);
 //      myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItemsDetails);
         mRecyclerView.setAdapter(myAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -131,7 +129,6 @@ public class CustomerScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(CustomerScreen.this, Cart.class);
                 intent.putParcelableArrayListExtra("itemsArray", cartItems);
-                intent.putStringArrayListExtra("quantitiesArray", cartItemQuantities);
                 intent.putExtra("customerID", customerID);
                 startActivityForResult(intent, 200);
             }
@@ -160,10 +157,9 @@ public class CustomerScreen extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Get cart data from Intent
                 cartItems = data.getParcelableArrayListExtra("updatedCartItems");
-                cartItemQuantities = (ArrayList<String>) data.getStringArrayListExtra("updatedCartItemQuantities");
                 Log.d("CustomerScreen", "after result: " + cartItems.size());
                 // update adapter to reflect changes
-                myAdapter.updateAdapter(cartItems, cartItemQuantities);
+                myAdapter.updateAdapter(cartItems);
 
             }
         }

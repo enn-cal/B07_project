@@ -47,7 +47,7 @@ public class Shop extends AppCompatActivity {
         recyclerView = findViewById(R.id.userShopList);
         products = new ArrayList<>();
 
-        ShopRVAdapter myAdapter = new ShopRVAdapter(this, products, cartItems);
+        ShopRVAdapter myAdapter = new ShopRVAdapter(this, products, cartItems, storeOwnerID);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

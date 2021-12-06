@@ -86,11 +86,10 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
                 totalPrice = 0.0;
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Products p = ds.getValue(Products.class);
-                    String[] a = p.getPrice().split("[^\\d\\.]");
-                    double t_price = Double.parseDouble(a[1]);
+                    String a = p.getPrice().substring(1);
+                    double t_price = Double.parseDouble(a);
                     totalPrice += Integer.parseInt(p.getQuantity()) * t_price;
                 }
-                Log.i("Cart", "$" + totalPrice);
                 totalCost.setText("$" + totalPrice);
             }
 

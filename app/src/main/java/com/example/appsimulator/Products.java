@@ -7,7 +7,7 @@ import com.google.firebase.database.Query;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-@IgnoreExtraProperties
+//@IgnoreExtraProperties
 
 public class Products implements Parcelable {
 
@@ -51,7 +51,7 @@ public class Products implements Parcelable {
         return quantity;
     }
 
-    @Exclude
+    //@Exclude
     public String getStoreID(){
         return storeID;
     }
