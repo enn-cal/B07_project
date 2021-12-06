@@ -81,59 +81,50 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         };
         ref.addValueEventListener(listener);
 
-        //Log.i("testing", cartItems.get(0).getItem());
 
-        //Customer places order
-        placeOrder = findViewById(R.id.placeOrder);
-        placeOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatabaseReference p_check = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(customerID)
-                        .child("Cart");
-                p_check.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()) {
-                            //if the cart still has items inside it
-                            for(DataSnapshot products: snapshot.getChildren()){
-                                Products p = products.getValue(Products.class);
-                                Log.i("item:", p.getItem());
-                                customerStore new_customer = new customerStore(customerEmail, p.getStoreID());
-                                new_customer.order.add(p);
-                                updateCustomer(p.getStoreID(), customerID, new_customer);
-                                products.getRef().removeValue();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-        });
     }
 
-    public void updateCustomer(String storeID, String customerID, customerStore new_customer){
-        DatabaseReference check = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(storeID).child("Customers").child(customerID);
-        check.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void onPlaceOrder(View v){
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer")
+                .child(customerID);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //if the customer already exists
-                if(!snapshot.exists() && snapshot.getChildrenCount() == 0){
-                    Log.i("test", new_customer.email);
-                    snapshot.getRef().setValue(new_customer);
+                String email = snapshot.child("email").getValue(String.class);
+                cartItems.clear();
+
+                // Populates the cartItems by reading the Cart tree
+                for(DataSnapshot ds : snapshot.child("Cart").getChildren()){
+                    Products p = ds.getValue(Products.class);
+                    cartItems.add(p);
                 }
-                else{
-                    customerStore old_cs = snapshot.getValue(customerStore.class);
-                    Log.i("test", old_cs.email);
-                    old_cs.order.addAll(new_customer.order);
-                    for(Products p :old_cs.order){
-                        Log.i("test", p.getItem());
+
+                // going into store owner tree
+                DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").
+                        child("Store Owner");
+
+                for (Products p : cartItems)
+                    Log.i("Items", p.getItem());
+
+                // add to respective Store Owners
+                for (int i = 0; i < cartItems.size(); i++){
+                    customerStore cs = new customerStore(email, cartItems.get(i).getStoreID());
+                    for (int j = 0; j < cartItems.size(); j++){
+                        // check if the other products have the same StoreID
+                        if (cartItems.get(i).getStoreID().equals(cartItems.get(j).getStoreID())) {
+                            cs.order.add(cartItems.get(j));
+                        }
                     }
-                    snapshot.getRef().setValue(old_cs);
+                    ref2.child(cartItems.get(i).getStoreID()).child("Customers").setValue(cs);
                 }
+
+                // delete from our cart
+                for(DataSnapshot ds : snapshot.child("Cart").getChildren()){
+                    Products p = ds.getValue(Products.class);
+                    cartItems.remove(p);
+                    ds.getRef().removeValue();
+                }
+                myAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -141,6 +132,12 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
 
             }
         });
+
+        // We leave activity
+        Intent intent;
+        intent = new Intent(this, CustomerScreen.class);
+        intent.putExtra("ID", customerID);
+        startActivity(intent);
     }
 
     @Override
