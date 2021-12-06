@@ -64,7 +64,7 @@ public class ShopRVAdapter extends RecyclerView.Adapter<ShopRVAdapter.MyViewHold
             itemName = itemView.findViewById(R.id.shopItemName);
             price = itemView.findViewById(R.id.shopPrice);
             addToCart = itemView.findViewById(R.id.addToCartButton);
-            brandName = itemView.findViewById(R.id.shopBrandName);
+            //brandName = itemView.findViewById(R.id.shopBrandName);
             this.is = is;
 
             addToCart.setOnClickListener(new View.OnClickListener() {

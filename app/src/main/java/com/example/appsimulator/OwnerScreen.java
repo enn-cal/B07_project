@@ -24,7 +24,7 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
 
     private RecyclerView recycleView;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference ref;// = db.getReference("Users").child("Store Owner").child("1902570695").child("Store"); // path is hardcoded
+    private DatabaseReference ref;
     private AdapterRv adapterRv;
     private ArrayList<Products> list;
     public String sessionID;
@@ -40,7 +40,6 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
         sessionID = bundle.getString("ID");
         storeEmail = bundle.getString("email");
         ref = db.getReference("Users").child("Store Owner").child(sessionID).child("Store");
-        //sessionID = "1902570695"; //hardcoded
 
         recycleView = findViewById(R.id.recyclerview);
         recycleView.setHasFixedSize(true);
@@ -75,27 +74,6 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
             }
         };
         ref.addValueEventListener(listener);
-
-/*
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Products product = ds.getValue(Products.class);
-                    list.add(product);
-
-                }
-                adapterRv.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
- */
 
     }
 
@@ -150,14 +128,6 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
             }
         });
     }
-    /*
-    @Override
-    public void onResume() {
-        ref.addValueEventListener(listener);
-        super.onResume();
-    }
-
-     */
 
     @Override
     public void onPause() {

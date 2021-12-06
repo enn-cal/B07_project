@@ -54,30 +54,6 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
 
         ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner")
                 .child(sessionID).child("Customers");
-/*
-        Products products = new Products("Pie", "Pizza Hut", "$12.5", "30","1");
-        Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
-        Products products3 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
-        Stores s = new Stores(sessionID);
-        //Orders o = new Orders("12345678");
-        //o.addProduct(products);
-        //o.addProduct(products2);
-        //o.addProduct(products3);
-        //o.storeID = (sessionID);
-        customerStore cs = new customerStore("c@gmail.com",sessionID);
-        cs.addProduct(products);
-        cs.addProduct(products2);
-        cs.addProduct(products3);
-        //cs.setOrder(o);
-        //String key_path = ref2.push().getKey();
-        ref2.child(Integer.toString("c@gmail.com".hashCode())).setValue(cs);
-        /*
-        int i = 0;
-        for (Products p : cs.orderList.order){
-            ref2.child(Integer.toString("c@gmail.com".hashCode())).child("order").child(Integer.toString(++i)).setValue(p);
-        }
-
-         */
 
 
 

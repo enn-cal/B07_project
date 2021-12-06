@@ -7,10 +7,6 @@ import java.util.ArrayList;
 
 public class CartProductDetails implements Parcelable {
 
-//        ArrayList<Products> item;
-//        ArrayList<String> quantity;
-//        ArrayList<String> storeID;
-//        ArrayList<String> price;
 
     Products item;
     String quantity;

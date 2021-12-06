@@ -47,12 +47,8 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         customerID = bundle.getString("customerID");
         customerEmail = bundle.getString("customerEmail");
         i = getIntent();
-        // get cart data from CustomerScreen (on MyCart clicked)
-        //ArrayList<Products> cartItems = i.getParcelableArrayListExtra("itemsArray");
 
         cartItems = new ArrayList<>();
-        //customerID = i.getStringExtra("customerID");
-
         recyclerView = findViewById(R.id.cartItemsList);
 
         totalCost = findViewById(R.id.totalCost);
