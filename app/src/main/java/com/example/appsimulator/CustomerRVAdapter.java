@@ -21,12 +21,15 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
     ArrayList<String> ownerIDs;
     ArrayList<Products> cartItems;
     Context ct;
+    private String customerID;
 
-    public CustomerRVAdapter(Context ct, ArrayList<String> ownerNames, ArrayList<String> ownerIDs, ArrayList<Products> cartItems) {
+    public CustomerRVAdapter(Context ct, ArrayList<String> ownerNames, ArrayList<String> ownerIDs, ArrayList<Products> cartItems, String customerID) {
         this.ct = ct;
         this.ownerNames = ownerNames;
         this.ownerIDs = ownerIDs;
         this.cartItems = cartItems;
+        this.customerID = customerID;
+
     }
 
     @NonNull
@@ -60,6 +63,7 @@ public class CustomerRVAdapter extends RecyclerView.Adapter<CustomerRVAdapter.My
                     Intent intent = new Intent(ct, Shop.class);
                     intent.putExtra("StoreName", ownerNames.get(getLayoutPosition()));
                     intent.putExtra("OwnerID", ownerIDs.get(getLayoutPosition()));
+                    intent.putExtra("customerID", customerID);
                     intent.putParcelableArrayListExtra("itemsArray", cartItems);
                     // startActivityForResult is used to return results (from Shop) to parent (CustomerScreen) activity
                     ((Activity) ct).startActivityForResult(intent, 100);

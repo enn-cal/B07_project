@@ -162,6 +162,7 @@ public class RegisterUser extends AppCompatActivity{
                   following code is to manually enter data in database
                   feel free to remove it or keep it if you want to add data manually again.
                  */
+        /*
                 String em = email.getText().toString();
                 DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child("1302843028").child("Cart");
                 Products products = new Products("Pepperoni Pizza", "Dominoes", "$25", "5", "5059");
@@ -176,6 +177,8 @@ public class RegisterUser extends AppCompatActivity{
                 int i = 0;
                 for (Products p : o.order)
                     ref1.child(Integer.toString(i++)).setValue(p);
+
+         */
 
 
 

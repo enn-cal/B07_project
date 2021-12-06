@@ -65,7 +65,6 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Products product = ds.getValue(Products.class);
                     list.add(product);
-
                 }
                 adapterRv.notifyDataSetChanged();
             }
@@ -106,9 +105,10 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
         addProductDialog pd = new addProductDialog();
         pd.setSessionID(sessionID);
         pd.show(getSupportFragmentManager(), "example dialog");
-        list.add(pd.getProduct());
-        adapterRv.notifyDataSetChanged();
-
+        if(pd.getProduct().getItem() != null && pd.getProduct().getBrand() != null && pd.getProduct().getPrice() != null){
+            list.add(pd.getProduct());
+            adapterRv.notifyDataSetChanged();
+        }
     }
 
     public void loginScreen(View v) {
@@ -134,12 +134,10 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.i("TESTING", "didnt work");
                 for (DataSnapshot current_products : snapshot.getChildren()) {
                     Products product = current_products.getValue(Products.class);
                     //if product that needs to be removed is found in database
                     if (product.equals(p)) {
-                        Log.i("TESTING", current_products.getRef().getKey());
                         current_products.getRef().removeValue();
                         break;
                     }

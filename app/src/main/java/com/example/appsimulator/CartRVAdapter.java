@@ -45,8 +45,9 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
 
         holder.price.setText(items.get(position).getPrice());
         holder.quantity.setText(items.get(position).getQuantity());
-        String[] a = items.get(position).getPrice().split("[^\\d\\.]");
-        double t_price = Double.parseDouble(a[1]);
+        String a = items.get(position).getPrice().substring(1);
+        //String[] a = items.get(position).getPrice().split("[^\\d\\.]");
+        double t_price = Double.parseDouble(a);
         t_price = t_price * Integer.parseInt(items.get(position).getQuantity());
         holder.cost.setText("$" + t_price);
 
@@ -94,13 +95,14 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                     if (!(getAdapterPosition() == -1)) {
                         count = Integer.parseInt(items.get(getAdapterPosition()).getQuantity());
                         count++;
-                        String[] a = price.getText().toString().split("[^\\d\\.]");
-                        double t_price = Double.parseDouble(a[1]);
+                        String a = price.getText().toString().substring(1);
+                        //String[] a = price.getText().toString().split("[^\\d\\.]");
+                        double t_price = Double.parseDouble(a);
                         t_price = t_price * count;
                         quantity.setText("" + count);
                         cost.setText("$" + String.valueOf(t_price));
-                        onItemListener.onItemAdd(getAdapterPosition(), count);
-                        //onItemListener.updateTotalCost();
+                        String [] temp = itemName.getText().toString().split(" - ");
+                        onItemListener.onItemAdd(temp[1].hashCode(), count);
                     }
                 }
             });
@@ -111,12 +113,14 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                     if (!(getAdapterPosition() == -1)) {
                         count = Integer.parseInt(items.get(getAdapterPosition()).getQuantity());
                         count--;
-                        String[] a = price.getText().toString().split("[^\\d\\.]");
-                        double t_price = Double.parseDouble(a[1]);
+                        //String[] a = price.getText().toString().split("[^\\d\\.]");
+                        String a = price.getText().toString().substring(1);
+                        double t_price = Double.parseDouble(a);
                         t_price = t_price * count;
                         quantity.setText("" + count);
                         cost.setText("$" + String.valueOf(t_price));
-                        onItemListener.onItemRemove(getAdapterPosition(), count);
+                        String [] temp = itemName.getText().toString().split(" - ");
+                        onItemListener.onItemRemove(temp[1].hashCode(), count);
                     }
                 }
             });
@@ -125,7 +129,8 @@ public class CartRVAdapter extends RecyclerView.Adapter<CartRVAdapter.MyViewHold
                 @Override
                 public void onClick(View v) {
                     if (!(getAdapterPosition() == -1)) {
-                        onItemListener.onItemDelete(getAdapterPosition());
+                        String [] temp = itemName.getText().toString().split(" - ");
+                        onItemListener.onItemDelete(temp[1].hashCode());
                     }
                 }
             });

@@ -1,21 +1,22 @@
 package com.example.appsimulator;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
-@IgnoreExtraProperties
+import java.util.ArrayList;
+
 
 public class customerStore{
     public String email;
     public String storeID;
-    @Exclude
-    public Orders orderList = new Orders();
+    public ArrayList<Products> order = new ArrayList<>();
+
+    public customerStore(){
+    }
 
     public customerStore(String email, String storeID){
         this.email = email;
         this.storeID = storeID;
     }
 
-    public void setOrder(Orders o){
-        orderList = o;
+    public void addProduct(Products p){
+        order.add(p);
     }
 }

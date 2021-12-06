@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
@@ -30,36 +31,55 @@ public class addProductDialog extends AppCompatDialogFragment {
     private EditText editTextItemBrand;
     private EditText editTextItemPrice;
     private String sessionID;
+    DatabaseReference ref;
     private Products p = new Products();
 
     public boolean isValid(String input, String type){
         //Consider the type to compare corresponding regex with
-        boolean v = true;
+        final boolean[] v = {true};
         switch(type){
             case "itemName":
                 if(input.isEmpty()){
                     displayError("Empty Item Name. Try Again", "itemName");
-                    v = false;
+                    v[0] = false;
                 }
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot products: snapshot.getChildren()){
+                            for(DataSnapshot products_info: products.getChildren()){
+                                if(products_info.getKey().equals("item")){
+                                    if(products_info.getValue().equals(input)){
+                                        displayError("Will Replace Duplicate Product", "itemName");
+                                        v[0] = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
                 break;
             case "brandName":
                 if(input.isEmpty()){
                     displayError("Empty Brand Name. Try Again", "brandName");
-                    v = false;
+                    v[0] = false;
                 }
                 break;
             case "itemPrice":
                 if(input.isEmpty()){
                     displayError("Empty Price. Try Again", "itemPrice");
-                    v = false;
+                    v[0] = false;
                 }
                 else if(!(Pattern.compile("(\\$\\d+\\.\\d{1,2}|\\$[1-9][0-9]*)")).matcher(input).matches()){ //a decimal number or whole number
                     displayError("Invalid Price. Try Again", "itemPrice");
-                    v = false;
+                    v[0] = false;
                 }
                 break;
         }
-        return v;
+        return v[0];
     }
 
     public void displayError(String error, String type) {
@@ -126,6 +146,8 @@ public class addProductDialog extends AppCompatDialogFragment {
             pd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    p.setStoreID(sessionID);
+                    ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Store");
 
                     String itemName = editTextItemName.getText().toString();
                     if(!isValid(itemName, "itemName")) return;
@@ -140,7 +162,7 @@ public class addProductDialog extends AppCompatDialogFragment {
                     p.setBrand(brandName);
                     p.setPrice(itemPrice);
                     p.setQuantity("1");
-                    p.setStoreID(sessionID); //TODO keeps writing sessionID in products
+
                     d.dismiss();
 
                     //add data to database

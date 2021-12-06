@@ -21,7 +21,6 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
     ArrayList<String> uList;
     String email;
     Context context;
-    //transferOrder data;
     IMyViewHolder im;
     String storeEmail;
 
@@ -49,6 +48,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
         holder.item.setText(product.getItem());
         holder.brand.setText(product.getBrand());
         holder.price.setText(product.getPrice());
+        holder.quantity.setText(product.getQuantity());
         email = s;
     }
 
@@ -59,7 +59,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView customerName, item, brand, price;
+        TextView customerName, item, brand, price, quantity;
         private ownerOrderAdapter oa;
         IMyViewHolder im;
         Button button;
@@ -70,6 +70,7 @@ public class ownerOrderAdapter extends RecyclerView.Adapter<ownerOrderAdapter.My
             item = itemView.findViewById(R.id.item_text_2);
             brand = itemView.findViewById(R.id.brand_text_2);
             price = itemView.findViewById(R.id.price_text_2);
+            quantity = itemView.findViewById(R.id.quantity_text_2);
             this.im = im;
 
             button = itemView.findViewById(R.id.button13);

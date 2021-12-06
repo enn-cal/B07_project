@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class CustomerScreen extends AppCompatActivity {
+public class CustomerScreen extends AppCompatActivity{
 
     private FirebaseDatabase f_db;
     private DatabaseReference ref;
@@ -37,6 +37,7 @@ public class CustomerScreen extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private String customerID;
     private String sessionID;
+    private String customerEmail;
     private Intent i;
     ArrayList<Products> cartItems;
     CustomerRVAdapter myAdapter;
@@ -50,6 +51,7 @@ public class CustomerScreen extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         sessionID = bundle.getString("ID");
+        customerEmail = bundle.getString("email");
 
         i = getIntent();
         customerID = i.getStringExtra("ID");
@@ -96,12 +98,11 @@ public class CustomerScreen extends AppCompatActivity {
         cartItems = new ArrayList<>();
 
 
-        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems);
-//      myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItemsDetails);
+        myAdapter = new CustomerRVAdapter(this, ownerNames, ownerIDs, cartItems, sessionID);
         mRecyclerView.setAdapter(myAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner"); //Might have to change this
+        ref = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {//changed
             @Override
@@ -130,11 +131,12 @@ public class CustomerScreen extends AppCompatActivity {
                 Intent intent = new Intent(CustomerScreen.this, Cart.class);
                 intent.putParcelableArrayListExtra("itemsArray", cartItems);
                 intent.putExtra("customerID", customerID);
+                intent.putExtra("customerEmail", customerEmail);
                 startActivityForResult(intent, 200);
             }
         });
     }
-
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -142,10 +144,22 @@ public class CustomerScreen extends AppCompatActivity {
         //Adds Cart to database (We probably should change when this happens)
         if(!cartItems.isEmpty()){
             Intent i = getIntent();
+            ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(String.valueOf(customerID)).child("Cart");
+            for(Products p: cartItems){
+                ref.child(Integer.toString(p.hashCode())).setValue(p);
+            }
+        }
+
+ */
+
+        /*
+        if(!cartItems.isEmpty()){
+            Intent i = getIntent();
             ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(String.valueOf(customerID));
             ref.child("Cart").setValue(cartItems);
         }
-    }
+
+         */
 
     // used to receive updated cart details from Shop activity
     @Override
