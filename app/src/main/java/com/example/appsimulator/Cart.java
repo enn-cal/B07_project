@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -99,6 +100,13 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
                     cartItems.add(p);
                 }
 
+                //If cart empty then nothing happens
+                if (cartItems.isEmpty()){
+                    // Toast to notify Customer
+                    Toast.makeText(Cart.this, "But your cart is empty :(", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // going into store owner tree
                 DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").
                         child("Store Owner");
@@ -125,6 +133,9 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
                     ds.getRef().removeValue();
                 }
                 myAdapter.notifyDataSetChanged();
+
+                // Toast to notify Customer
+                Toast.makeText(Cart.this, "Order Has Been placed :)", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -132,7 +143,7 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
 
             }
         });
-
+        
         // We leave activity
         Intent intent;
         intent = new Intent(this, CustomerScreen.class);
@@ -200,13 +211,6 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
         ref.child(Integer.toString(pos)).removeValue();
         updateTotalCost();
     }
-/*
-    @Override
-    public void setCartItems(ArrayList<Products> cartItems) {
-        tempCart = cartItems;
-    }
-
- */
 
     @Override
     public void onPause() {
