@@ -115,7 +115,7 @@ public class Cart extends AppCompatActivity implements CartRVAdapter.OnItemListe
                             cs.order.add(cartItems.get(j));
                         }
                     }
-                    ref2.child(cartItems.get(i).getStoreID()).child("Customers").setValue(cs);
+                    ref2.child(cartItems.get(i).getStoreID()).child("Customers").child(customerID).setValue(cs);
                 }
 
                 // delete from our cart

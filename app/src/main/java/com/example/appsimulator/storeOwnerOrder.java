@@ -43,11 +43,6 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
         sessionID = bundle.getString("ID");
         emailTemp = bundle.getString("email");
 
-        //Log.i("testing", emailTemp);
-
-
-        //sessionID = "1902570695";
-
         rView = findViewById(R.id.storeOwnerRCView);
         rView.setHasFixedSize(true);
         rView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,10 +50,10 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
         customerList = new ArrayList<>();
         productsList = new ArrayList<>();
         adapter = new ownerOrderAdapter(emailTemp,storeOwnerOrder.this, customerList, productsList,this);
-        //DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
         rView.setAdapter(adapter);
 
-        ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner").child(sessionID).child("Customers");
+        ref2 = FirebaseDatabase.getInstance().getReference("Users").child("Store Owner")
+                .child(sessionID).child("Customers");
 /*
         Products products = new Products("Pie", "Pizza Hut", "$12.5", "30","1");
         Products products2 = new Products("Pizza", "Pizza Hut", "$50", "1","1");
@@ -115,39 +110,6 @@ public class storeOwnerOrder extends AppCompatActivity implements ownerOrderAdap
             }
         };
         ref2.addValueEventListener(listener);
-
-
-        /*
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                customerList.clear();
-                productsList.clear();
-                //loop through customers given store owner id
-                for (DataSnapshot customers : snapshot.getChildren()){
-                    for(DataSnapshot customerInfo: customers.getChildren()){
-                        if(customerInfo.exists() && customerInfo.getKey().equals("email")){
-                            email = customerInfo.getValue().toString();
-                        }
-                        if(customerInfo.exists() && customerInfo.getKey().equals("order")){
-                            for(DataSnapshot product: customerInfo.getChildren()){
-                                Products p = product.getValue(Products.class);
-                                productsList.add(p);
-                                customerList.add(email);
-                            }
-                        }
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-         */
     }
 
     @Override
