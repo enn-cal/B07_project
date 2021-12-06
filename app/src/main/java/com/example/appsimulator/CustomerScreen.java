@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -128,38 +129,49 @@ public class CustomerScreen extends AppCompatActivity{
         myCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CustomerScreen.this, Cart.class);
-                intent.putParcelableArrayListExtra("itemsArray", cartItems);
-                intent.putExtra("customerID", customerID);
-                intent.putExtra("customerEmail", customerEmail);
-                startActivityForResult(intent, 200);
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users")
+                        .child("Store Owner");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds : snapshot.getChildren()){
+                            if (ds.child("Customers").child(customerID).exists()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CustomerScreen.this);
+                                builder.setMessage("Adding new Orders will cancel previous orders")
+                                        .setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Toast.makeText(CustomerScreen.this, "Previous Orders will be cancelled on new order", Toast.LENGTH_LONG).show();
+                                                Intent intent = new Intent(CustomerScreen.this, Cart.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                intent.putExtra("customerID", customerID);
+                                                intent.putExtra("customerEmail", customerEmail);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.cancel, null);
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                                return;
+                            } else {
+                                Intent intent = new Intent(CustomerScreen.this, Cart.class);
+                                intent.putParcelableArrayListExtra("itemsArray", cartItems);
+                                intent.putExtra("customerID", customerID);
+                                intent.putExtra("customerEmail", customerEmail);
+                                startActivityForResult(intent, 200);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //Adds Cart to database (We probably should change when this happens)
-        if(!cartItems.isEmpty()){
-            Intent i = getIntent();
-            ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(String.valueOf(customerID)).child("Cart");
-            for(Products p: cartItems){
-                ref.child(Integer.toString(p.hashCode())).setValue(p);
-            }
-        }
-
- */
-
-        /*
-        if(!cartItems.isEmpty()){
-            Intent i = getIntent();
-            ref = FirebaseDatabase.getInstance().getReference("Users").child("Customer").child(String.valueOf(customerID));
-            ref.child("Cart").setValue(cartItems);
-        }
-
-         */
 
     // used to receive updated cart details from Shop activity
     @Override
