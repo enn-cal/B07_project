@@ -1,17 +1,21 @@
 package com.example.appsimulator;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +34,8 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
     public String sessionID;
     public String storeEmail;
     private ValueEventListener listener;
+    private Button signOut;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,29 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
         };
         ref.addValueEventListener(listener);
 
+        signOut = (Button) findViewById(R.id.button5);
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(OwnerScreen.this);
+                builder.setMessage(R.string.sign_out_msg)
+                        .setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(OwnerScreen.this, "Signed Out", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(OwnerScreen.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null);
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
     }
 
 
@@ -89,10 +118,10 @@ public class OwnerScreen extends AppCompatActivity implements transferOrder {
         }
     }
 
-    public void loginScreen(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+//    public void loginScreen(View v) {
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//    }
 
     public void orderScreen(View v) {
         Intent intent = new Intent(this, storeOwnerOrder.class);
