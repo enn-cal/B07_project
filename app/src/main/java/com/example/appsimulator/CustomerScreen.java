@@ -138,16 +138,16 @@ public class CustomerScreen extends AppCompatActivity{
                         for (DataSnapshot ds : snapshot.getChildren()){
                             if (ds.child("Customers").child(customerID).exists()){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(CustomerScreen.this);
-                                builder.setMessage("Adding new Orders will cancel previous orders")
+                                builder.setMessage("Placing a new Orders will cancel previous orders")
                                         .setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                Toast.makeText(CustomerScreen.this, "Previous Orders will be cancelled on new order", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(CustomerScreen.this, "Previous Orders will be cancelled on a new order", Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(CustomerScreen.this, Cart.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                intent.putParcelableArrayListExtra("itemsArray", cartItems);
                                                 intent.putExtra("customerID", customerID);
                                                 intent.putExtra("customerEmail", customerEmail);
-                                                startActivity(intent);
+                                                startActivityForResult(intent, 200);
                                             }
                                         })
                                         .setNegativeButton(R.string.cancel, null);
@@ -160,6 +160,7 @@ public class CustomerScreen extends AppCompatActivity{
                                 intent.putExtra("customerID", customerID);
                                 intent.putExtra("customerEmail", customerEmail);
                                 startActivityForResult(intent, 200);
+                                return;
                             }
                         }
                     }
