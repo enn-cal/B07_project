@@ -4,35 +4,32 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/B07_project/app/src/main/res/layout/activity_cart.xml" value="0.2682291666666667" />
-        <entry key="..\:/B07_project/app/src/main/res/layout/activity_customer_screen.xml" value="0.296875" />
         <entry key="..\:/B07_project/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/B07_project/app/src/main/res/layout/activity_owner_screen.xml" value="0.27291666666666664" />
         <entry key="..\:/B07_project/app/src/main/res/layout/activity_register_user.xml" value="0.24635416666666668" />
         <entry key="..\:/B07_project/app/src/main/res/layout/activity_store_owner_order.xml" value="0.4210970464135021" />
         <entry key="..\:/B07_project/app/src/main/res/layout/cart_items.xml" value="0.275" />
-        <entry key="..\:/B07_project/app/src/main/res/layout/item.xml" value="0.36666666666666664" />
+        <entry key="..\:/B07_project/app/src/main/res/layout/item.xml" value="0.2601851851851852" />
         <entry key="..\:/B07_project/app/src/main/res/layout/owner_rc_view.xml" value="0.2328125" />
-        <entry key="..\:/B07_project/app/src/main/res/layout/shop_items.xml" value="0.296875" />
-        <entry key="..\:/B07_project/app/src/main/res/layout/sign_out_popup.xml" value="0.2917948717948718" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Undergrad/Computer Science/CSCB07/project/app/src/main/res/layout/activity_register_user.xml" value="0.264" />
         <entry key="..\:/Users/Emin's Desktop/Desktop/B07_Project/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Emin's Desktop/Desktop/B07_Project/app/src/main/res/layout/activity_profile_page.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Emin's Desktop/Desktop/B07_Project/app/src/main/res/layout/activity_register_user.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/activity_cart.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/activity_customer_orders.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/activity_orders_completed.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/activity_store_owner_order.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/cart_items.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/orders_completed_items.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/owner_rc_view.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/shop.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/willi/Desktop/CSCB07Project/B07_project/app/src/main/res/layout/shop_items.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_cart.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_customer_orders.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_orders_completed.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_owner_screen.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/activity_store_owner_order.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/orders_completed_items.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/owner_rc_view.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/shop.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Emin's Desktop/Desktop/B07_project/app/src/main/res/layout/shop_items.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
